@@ -21,16 +21,305 @@
         </Field>
       </Fields>
     </DataSet>
+    <DataSet Name="DS_INFORMATION_USER">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT
+	cc.ref_no,
+	ap.name as prefix,
+	cc.given_name_en,
+	cc.given_name_kh,
+	cc.family_name_en,
+	cc.family_name_kh,
+	cc.phone_number,
+	cc.home_phone_number,
+	cc.email,
+	to_char(cc.date_of_birth,'DD/MM/YYYY') as dob,
+	'' as fax_number,
+	'' as Dual_Citizenships,
+	'' AS office_phone_number,
+	an.NAME 
+FROM
+	cus_customer cc
+	INNER JOIN adm_nationality an ON an.ID = cc.nationality_id
+  inner join adm_prefix ap on ap.id = cc.prefix_id     </CommandText>
+      </Query>
+      <Fields>
+        <Field Name="ref_no">
+          <DataField>ref_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="given_name_en">
+          <DataField>given_name_en</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="prefix">
+          <DataField>prefix</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="given_name_kh">
+          <DataField>given_name_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="family_name_en">
+          <DataField>family_name_en</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="family_name_kh">
+          <DataField>family_name_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="phone_number">
+          <DataField>phone_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="home_phone_number">
+          <DataField>home_phone_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="email">
+          <DataField>email</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="dob">
+          <DataField>dob</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="fax_number">
+          <DataField>fax_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="dual_citizenships">
+          <DataField>dual_citizenships</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="office_phone_number">
+          <DataField>office_phone_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="name">
+          <DataField>name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DS_ADRESS_CORR">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT
+	cca.street_no,
+	cca.group_no,
+	apc.province_kh,
+	avc.village_kh,
+	adc.district_kh,
+	acc.commune_kh,
+	ac.country_en, 
+	cca.house_no,
+	CASE WHEN ac.country_en='CAMBODIA' then 'កម្ពុជា' END AS country_kh 
+FROM
+	cus_customer cc
+	INNER JOIN cus_corr_address cca on cca.customer_id = cc.id
+ INNER JOIN adm_province_cbc apc ON apc.ID = cca.province_id
+	INNER JOIN adm_village_cbc avc ON avc.ID = cca.village_id
+	INNER JOIN adm_commune_cbc acc ON acc.ID = cca.commune_id
+	INNER JOIN adm_district_cbc adc ON adc.ID = cca.district_id
+	INNER JOIN adm_country ac ON ac.ID = cca.country_id</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="street_no">
+          <DataField>street_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="province_kh">
+          <DataField>province_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="group_no">
+          <DataField>group_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="village_kh">
+          <DataField>village_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="district_kh">
+          <DataField>district_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="commune_kh">
+          <DataField>commune_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="country_en">
+          <DataField>country_en</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="house_no">
+          <DataField>house_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="country_kh">
+          <DataField>country_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DS_ADRESS_PER">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT
+	apc.province_kh,
+	avc.village_kh,
+	adc.district_kh,
+	acc.commune_kh,
+	ac.country_en, 
+	cca.house_no,
+	CASE WHEN ac.country_en='CAMBODIA' then 'កម្ពុជា' END AS country_kh 
+FROM
+	cus_customer cc
+	INNER JOIN cus_permanent_address cca on cca.customer_id = cc.id
+ INNER JOIN adm_province_cbc apc ON apc.ID = cca.province_id
+	INNER JOIN adm_village_cbc avc ON avc.ID = cca.village_id
+	INNER JOIN adm_commune_cbc acc ON acc.ID = cca.commune_id
+	INNER JOIN adm_district_cbc adc ON adc.ID = cca.district_id
+	INNER JOIN adm_country ac ON ac.ID = cca.country_id
+</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="province_kh">
+          <DataField>province_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="village_kh">
+          <DataField>village_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="district_kh">
+          <DataField>district_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="commune_kh">
+          <DataField>commune_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="country_en">
+          <DataField>country_en</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="house_no">
+          <DataField>house_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="country_kh">
+          <DataField>country_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DS_IDENTIFICATION">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT ci.id_number,
+ci.issued_date,
+ci.expiry_date,
+ait.name from cus_customer cc
+inner join cus_identification ci on ci.customer_id = cc.id
+inner join adm_identification_type ait on ait.id = ci.identification_type_id</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="id_number">
+          <DataField>id_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="issued_date">
+          <DataField>issued_date</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="expiry_date">
+          <DataField>expiry_date</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="name">
+          <DataField>name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DS_MARITAL_STATUS">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT ams.name
+ from cus_customer cc 
+inner join adm_marital_status ams on ams.id = cc.marital_status_id</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="name">
+          <DataField>name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DS_FOR_BANK">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT
+	acc.NAME CLASSTI,
+	act.NAME AS CAT,
+	cc.cif_number,
+	cc.short_name,
+	'' as resident
+FROM
+	cus_customer cc
+	INNER JOIN adm_customer_classification acc ON acc.ID = cc.cus_classification_id
+	INNER JOIN adm_customer_category act ON act.id = cc.customer_category_id
+	</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="classti">
+          <DataField>classti</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="cat">
+          <DataField>cat</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="cif_number">
+          <DataField>cif_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="short_name">
+          <DataField>short_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="resident">
+          <DataField>resident</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
   </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
         <ReportItems>
+          <Image Name="Image1">
+            <Source>Embedded</Source>
+            <Value>ID5de9df9bd2e21</Value>
+            <Sizing>FitProportional</Sizing>
+            <Left>0.00833in</Left>
+            <Height>0.46667in</Height>
+            <Width>1.99167in</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Image>
           <Tablix Name="Tablix1">
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>4.54445in</Width>
+                  <Width>6.37778in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -46,7 +335,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>សម្រង់ព័ត៌មានអតិថិជន រូបវន្តបុគ្គល</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -103,9 +392,12 @@
                 <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
-            <Left>3.84722in</Left>
+            <DataSetName>DS_ADRESS_PER</DataSetName>
+            <Top>0.01389in</Top>
+            <Left>2.01389in</Left>
             <Height>0.46667in</Height>
-            <Width>4.54445in</Width>
+            <Width>6.37778in</Width>
+            <ZIndex>1</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -138,7 +430,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Date:</Value>
+                                  <Value>កាលបរិច្ឆេទ/Date:</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Battambang</FontFamily>
@@ -224,7 +516,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Branch:</Value>
+                                  <Value>សាខា/Branch:</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -311,11 +603,11 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DS_INFORMATION_APPLICANT</DataSetName>
-            <Top>0.48056in</Top>
+            <Top>0.49445in</Top>
             <Left>0.01389in</Left>
             <Height>0.5in</Height>
             <Width>8.37778in</Width>
-            <ZIndex>1</ZIndex>
+            <ZIndex>2</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -351,7 +643,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>2. ADDRESS INFORMATION</Value>
+                                  <Value>2. ព័ត៌មានអាសយដ្ឋាន/ADDRESS INFORMATION</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -397,7 +689,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>CORRESPONDENCE/ CURRENT ADDRESS</Value>
+                                  <Value>អាសយដ្ឋានទំនាក់ទំនង/ CORRESPONDENCE/ CURRENT ADDRESS</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -407,7 +699,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox61</rd:DefaultName>
@@ -447,7 +741,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>House No, St., Group</Value>
+                                  <Value>លេខផ្ទះ ផ្លូវ ក្រុម/House No, St., Group</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -457,7 +751,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox65</rd:DefaultName>
@@ -482,13 +778,44 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!house_no.Value, "DS_ADRESS_CORR")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value xml:space="preserve">   </Value>
+                                  <Style>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!street_no.Value, "DS_ADRESS_CORR")</Value>
+                                  <Style>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value xml:space="preserve">   </Value>
+                                  <Style>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!group_no.Value, "DS_ADRESS_CORR")</Value>
+                                  <Style>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox66</rd:DefaultName>
@@ -513,7 +840,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>District</Value>
+                                  <Value>ស្រុក/ខណ្ឌ/ក្រុង/District</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -548,13 +875,16 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!district_kh.Value, "DS_ADRESS_CORR")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox68</rd:DefaultName>
@@ -584,7 +914,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Village</Value>
+                                  <Value>ភូមិ /Village</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -594,7 +924,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox69</rd:DefaultName>
@@ -619,13 +951,16 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!village_kh.Value, "DS_ADRESS_CORR")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox70</rd:DefaultName>
@@ -650,7 +985,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Province</Value>
+                                  <Value>ខេត្ត/រាជធានី/Province</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -685,13 +1020,16 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!province_kh.Value, "DS_ADRESS_CORR")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox72</rd:DefaultName>
@@ -721,7 +1059,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Commune</Value>
+                                  <Value>ឃុំ/សង្កាត់/Commune</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -731,7 +1069,9 @@
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox73</rd:DefaultName>
@@ -756,13 +1096,16 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!commune_kh.Value, "DS_ADRESS_CORR")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox74</rd:DefaultName>
@@ -787,7 +1130,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Country</Value>
+                                  <Value>ប្រទេស/Country</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -822,13 +1165,16 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!country_kh.Value, "DS_ADRESS_CORR")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox76</rd:DefaultName>
@@ -858,7 +1204,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>PERMANENT ADDRESS                                    </Value>
+                                  <Value>អាសយដ្ឋានទីលំនៅអចិន្ត្រៃយ៍/PERMANENT ADDRESS                                    </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -883,7 +1229,7 @@
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>As Correspondence Address</Value>
+                                  <Value>ដូចអាសយដ្ឋានទំនាក់ទំនង/As Correspondence Address</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -935,7 +1281,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>House No, St., Group</Value>
+                                  <Value>លេខផ្ទះ ផ្លូវ ក្រុម/House No, St., Group</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -970,13 +1316,16 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!house_no.Value, "DS_ADRESS_PER")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox12</rd:DefaultName>
@@ -1001,7 +1350,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>District</Value>
+                                  <Value>ស្រុក/ខណ្ឌ/ក្រុង/District</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -1036,13 +1385,16 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!district_kh.Value, "DS_ADRESS_PER")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox17</rd:DefaultName>
@@ -1072,7 +1424,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Village</Value>
+                                  <Value>ភូមិ /Village</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -1107,13 +1459,16 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!village_kh.Value, "DS_ADRESS_PER")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox20</rd:DefaultName>
@@ -1138,7 +1493,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Province</Value>
+                                  <Value>ខេត្ត/រាជធានី/Province</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -1173,13 +1528,16 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!province_kh.Value, "DS_ADRESS_PER")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox45</rd:DefaultName>
@@ -1209,7 +1567,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Commune</Value>
+                                  <Value>ឃុំ/សង្កាត់/Commune</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -1244,13 +1602,16 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!commune_kh.Value, "DS_ADRESS_PER")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox47</rd:DefaultName>
@@ -1275,7 +1636,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Country</Value>
+                                  <Value>ប្រទេស/Country</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -1310,13 +1671,16 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!country_kh.Value, "DS_ADRESS_PER")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox49</rd:DefaultName>
@@ -1346,7 +1710,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>**PLACE OF BIRTH BASE ON IDENTITY DOCUMENT</Value>
+                                  <Value>**ទីកន្លែងកំណើតយោងតាមឯកសារសម្គាល់អត្តសញ្ញាណ/ PLACE OF BIRTH BASE ON IDENTITY DOCUMENT</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -1396,7 +1760,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>3. IDENTIFICATION INFORMATION</Value>
+                                  <Value>3. ព័ត៌មានអត្តសញ្ញាណ /IDENTIFICATION INFORMATION</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -1442,7 +1806,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Identity Types</Value>
+                                  <Value>ឯកសារសម្គាល់អត្តសញ្ញាណ/Identity Types</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -1477,13 +1841,16 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!name.Value, "DS_IDENTIFICATION")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox80</rd:DefaultName>
@@ -1508,7 +1875,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Other Identity Types</Value>
+                                  <Value>ឯកសារសម្គាល់អត្តសញ្ញាណផ្សេងៗ /Other Identity Types</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -1579,7 +1946,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Identity No</Value>
+                                  <Value>លេខសម្គាល់/Identity No</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -1614,13 +1981,16 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!id_number.Value, "DS_IDENTIFICATION")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox59</rd:DefaultName>
@@ -1645,7 +2015,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Identity No</Value>
+                                  <Value>លេខសម្គាល់/Identity No</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -1716,7 +2086,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Issue Date</Value>
+                                  <Value>ថ្ងៃចេញប័ណ្ណ /Issue Date</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -1751,13 +2121,16 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!issued_date.Value, "DS_IDENTIFICATION")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox84</rd:DefaultName>
@@ -1782,7 +2155,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Other Identity Types</Value>
+                                  <Value>ឯកសារសម្គាល់អត្តសញ្ញាណផ្សេងៗ /Other Identity Types</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -1853,7 +2226,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Expiry Date</Value>
+                                  <Value>ថ្ងៃផុតកំណត់/Expiry Date</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -1888,13 +2261,16 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!expiry_date.Value, "DS_IDENTIFICATION")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox88</rd:DefaultName>
@@ -1919,7 +2295,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Identity No</Value>
+                                  <Value>លេខសម្គាល់/Identity No</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -1993,7 +2369,7 @@
                           <Paragraph>
                             <TextRuns>
                               <TextRun>
-                                <Value>1. PERSONAL INFORMATION</Value>
+                                <Value>1. ព័ត៌មានផ្ទាល់ខ្លួន/PERSONAL INFORMATION</Value>
                                 <Style>
                                   <FontStyle>Normal</FontStyle>
                                   <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -2033,7 +2409,7 @@
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value>Given Name (KH)</Value>
+                                    <Value>នាមខ្លួន/Given Name (KH)</Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -2071,7 +2447,7 @@
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value>Family Name (KH)</Value>
+                                        <Value>នាមត្រកូល/Family Name (KH)</Value>
                                         <Style>
                                           <FontStyle>Normal</FontStyle>
                                           <FontFamily>Khmer OS Content</FontFamily>
@@ -2109,7 +2485,7 @@
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value>Given Name (EN)</Value>
+                                            <Value>នាមខ្លួន/Given Name (EN)</Value>
                                             <Style>
                                               <FontStyle>Normal</FontStyle>
                                               <FontFamily>Khmer OS Content</FontFamily>
@@ -2147,7 +2523,7 @@
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>Family Name (EN)</Value>
+                                                <Value>នាមត្រកូល/Family Name (EN)</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -2185,7 +2561,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>Prefix</Value>
+                                                    <Value>ងារ/Prefix</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -2223,7 +2599,7 @@
                                                   <Paragraph>
                                                     <TextRuns>
                                                       <TextRun>
-                                                        <Value>Date of Birth</Value>
+                                                        <Value>ថ្ងៃខែឆ្នាំកំណើត/Date of Birth</Value>
                                                         <Style>
                                                           <FontStyle>Normal</FontStyle>
                                                           <FontFamily>Khmer OS Content</FontFamily>
@@ -2261,7 +2637,7 @@
                                                       <Paragraph>
                                                         <TextRuns>
                                                           <TextRun>
-                                                            <Value>Communication Mode</Value>
+                                                            <Value>មធ្យោបាយទំនាក់ទំនង/ Communication Mode</Value>
                                                             <Style>
                                                               <FontStyle>Normal</FontStyle>
                                                               <FontFamily>Khmer OS Content</FontFamily>
@@ -2363,13 +2739,16 @@
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value />
+                                    <Value>=First(Fields!given_name_kh.Value, "DS_INFORMATION_USER")</Value>
                                     <Style>
-                                      <FontFamily>Arial</FontFamily>
+                                      <FontFamily>khmer os content</FontFamily>
+                                      <FontSize>8pt</FontSize>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
-                                <Style />
+                                <Style>
+                                  <TextAlign>Left</TextAlign>
+                                </Style>
                               </Paragraph>
                             </Paragraphs>
                             <rd:DefaultName>Group1</rd:DefaultName>
@@ -2397,13 +2776,16 @@
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value />
+                                        <Value>=First(Fields!family_name_kh.Value, "DS_INFORMATION_USER")</Value>
                                         <Style>
-                                          <FontFamily>Arial</FontFamily>
+                                          <FontFamily>khmer os content</FontFamily>
+                                          <FontSize>8pt</FontSize>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
-                                    <Style />
+                                    <Style>
+                                      <TextAlign>Left</TextAlign>
+                                    </Style>
                                   </Paragraph>
                                 </Paragraphs>
                                 <rd:DefaultName>Textbox22</rd:DefaultName>
@@ -2431,13 +2813,16 @@
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value />
+                                            <Value>=First(Fields!given_name_en.Value, "DS_INFORMATION_USER")</Value>
                                             <Style>
-                                              <FontFamily>Arial</FontFamily>
+                                              <FontFamily>khmer os content</FontFamily>
+                                              <FontSize>8pt</FontSize>
                                             </Style>
                                           </TextRun>
                                         </TextRuns>
-                                        <Style />
+                                        <Style>
+                                          <TextAlign>Left</TextAlign>
+                                        </Style>
                                       </Paragraph>
                                     </Paragraphs>
                                     <rd:DefaultName>Textbox26</rd:DefaultName>
@@ -2465,13 +2850,16 @@
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value />
+                                                <Value>=First(Fields!family_name_en.Value, "DS_INFORMATION_USER")</Value>
                                                 <Style>
-                                                  <FontFamily>Arial</FontFamily>
+                                                  <FontFamily>khmer os content</FontFamily>
+                                                  <FontSize>8pt</FontSize>
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>
-                                            <Style />
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                            </Style>
                                           </Paragraph>
                                         </Paragraphs>
                                         <rd:DefaultName>Textbox34</rd:DefaultName>
@@ -2499,17 +2887,17 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>   o</Value>
+                                                    <Value>=iif(First(Fields!prefix.Value, "DS_INFORMATION_USER")="MR", Chr(254), Chr(168))</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Wingdings</FontFamily>
-                                                      <FontSize>12pt</FontSize>
+                                                      <FontSize>8pt</FontSize>
                                                       <FontWeight>Normal</FontWeight>
                                                       <TextDecoration>None</TextDecoration>
                                                     </Style>
                                                   </TextRun>
                                                   <TextRun>
-                                                    <Value>Mr.      </Value>
+                                                    <Value>លោក/Mr.      </Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -2519,17 +2907,17 @@
                                                     </Style>
                                                   </TextRun>
                                                   <TextRun>
-                                                    <Value>o</Value>
+                                                    <Value>=iif(First(Fields!prefix.Value, "DS_INFORMATION_USER")="MS", Chr(254), Chr(168))</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Wingdings</FontFamily>
-                                                      <FontSize>12pt</FontSize>
+                                                      <FontSize>8pt</FontSize>
                                                       <FontWeight>Normal</FontWeight>
                                                       <TextDecoration>None</TextDecoration>
                                                     </Style>
                                                   </TextRun>
                                                   <TextRun>
-                                                    <Value>Ms.      </Value>
+                                                    <Value>កញ្ញា/Ms.      </Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -2539,17 +2927,17 @@
                                                     </Style>
                                                   </TextRun>
                                                   <TextRun>
-                                                    <Value>o</Value>
+                                                    <Value>=iif(First(Fields!prefix.Value, "DS_INFORMATION_USER")="MRS", Chr(254), Chr(168))</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
-                                                      <FontFamily>Wingdings</FontFamily>
-                                                      <FontSize>12pt</FontSize>
+                                                      <FontFamily>wingdings</FontFamily>
+                                                      <FontSize>8pt</FontSize>
                                                       <FontWeight>Normal</FontWeight>
                                                       <TextDecoration>None</TextDecoration>
                                                     </Style>
                                                   </TextRun>
                                                   <TextRun>
-                                                    <Value>Mrs.</Value>
+                                                    <Value>លោកស្រី/Mrs.</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -2578,7 +2966,7 @@
                                       <TablixMembers>
                                         <TablixMember>
                                           <TablixHeader>
-                                            <Size>0.5in</Size>
+                                            <Size>0.25in</Size>
                                             <CellContents>
                                               <Textbox Name="Textbox38">
                                                 <CanGrow>true</CanGrow>
@@ -2587,41 +2975,11 @@
                                                   <Paragraph>
                                                     <TextRuns>
                                                       <TextRun>
-                                                        <Value>   o</Value>
+                                                        <Value />
                                                         <Style>
                                                           <FontStyle>Normal</FontStyle>
                                                           <FontFamily>Wingdings</FontFamily>
                                                           <FontSize>12pt</FontSize>
-                                                          <FontWeight>Normal</FontWeight>
-                                                          <TextDecoration>None</TextDecoration>
-                                                        </Style>
-                                                      </TextRun>
-                                                      <TextRun>
-                                                        <Value>Phone                  </Value>
-                                                        <Style>
-                                                          <FontStyle>Normal</FontStyle>
-                                                          <FontFamily>Khmer OS Content</FontFamily>
-                                                          <FontSize>8pt</FontSize>
-                                                          <FontWeight>Normal</FontWeight>
-                                                          <TextDecoration>None</TextDecoration>
-                                                        </Style>
-                                                      </TextRun>
-                                                      <TextRun>
-                                                        <Value>o</Value>
-                                                        <Style>
-                                                          <FontStyle>Normal</FontStyle>
-                                                          <FontFamily>Wingdings</FontFamily>
-                                                          <FontSize>12pt</FontSize>
-                                                          <FontWeight>Normal</FontWeight>
-                                                          <TextDecoration>None</TextDecoration>
-                                                        </Style>
-                                                      </TextRun>
-                                                      <TextRun>
-                                                        <Value>Email</Value>
-                                                        <Style>
-                                                          <FontStyle>Normal</FontStyle>
-                                                          <FontFamily>Khmer OS Content</FontFamily>
-                                                          <FontSize>8pt</FontSize>
                                                           <FontWeight>Normal</FontWeight>
                                                           <TextDecoration>None</TextDecoration>
                                                         </Style>
@@ -2647,16 +3005,16 @@
                                           <TablixMembers>
                                             <TablixMember>
                                               <TablixHeader>
-                                                <Size>0.05833in</Size>
+                                                <Size>0.25in</Size>
                                                 <CellContents>
-                                                  <Textbox Name="Textbox54">
+                                                  <Textbox Name="Textbox4">
                                                     <CanGrow>true</CanGrow>
                                                     <KeepTogether>true</KeepTogether>
                                                     <Paragraphs>
                                                       <Paragraph>
                                                         <TextRuns>
                                                           <TextRun>
-                                                            <Value />
+                                                            <Value> o</Value>
                                                             <Style>
                                                               <FontStyle>Normal</FontStyle>
                                                               <FontFamily>Wingdings</FontFamily>
@@ -2665,24 +3023,45 @@
                                                               <TextDecoration>None</TextDecoration>
                                                             </Style>
                                                           </TextRun>
+                                                          <TextRun>
+                                                            <Value>ទូរសព្ទ/Phone                  </Value>
+                                                            <Style>
+                                                              <FontStyle>Normal</FontStyle>
+                                                              <FontFamily>Khmer OS Content</FontFamily>
+                                                              <FontSize>8pt</FontSize>
+                                                              <FontWeight>Normal</FontWeight>
+                                                              <TextDecoration>None</TextDecoration>
+                                                            </Style>
+                                                          </TextRun>
+                                                          <TextRun>
+                                                            <Value>o</Value>
+                                                            <Style>
+                                                              <FontStyle>Normal</FontStyle>
+                                                              <FontFamily>Wingdings</FontFamily>
+                                                              <FontSize>12pt</FontSize>
+                                                              <FontWeight>Normal</FontWeight>
+                                                              <TextDecoration>None</TextDecoration>
+                                                            </Style>
+                                                          </TextRun>
+                                                          <TextRun>
+                                                            <Value>អ៊ីម៉ែល/Email</Value>
+                                                            <Style>
+                                                              <FontStyle>Normal</FontStyle>
+                                                              <FontFamily>Khmer OS Content</FontFamily>
+                                                              <FontSize>8pt</FontSize>
+                                                              <FontWeight>Normal</FontWeight>
+                                                              <TextDecoration>None</TextDecoration>
+                                                            </Style>
+                                                          </TextRun>
                                                         </TextRuns>
                                                         <Style />
                                                       </Paragraph>
                                                     </Paragraphs>
-                                                    <rd:DefaultName>Textbox54</rd:DefaultName>
+                                                    <rd:DefaultName>Textbox4</rd:DefaultName>
                                                     <Style>
                                                       <Border>
                                                         <Style>Solid</Style>
                                                       </Border>
-                                                      <BottomBorder>
-                                                        <Style>None</Style>
-                                                      </BottomBorder>
-                                                      <LeftBorder>
-                                                        <Style>None</Style>
-                                                      </LeftBorder>
-                                                      <RightBorder>
-                                                        <Style>None</Style>
-                                                      </RightBorder>
                                                       <VerticalAlign>Middle</VerticalAlign>
                                                       <PaddingLeft>2pt</PaddingLeft>
                                                       <PaddingRight>2pt</PaddingRight>
@@ -2693,7 +3072,57 @@
                                                 </CellContents>
                                               </TablixHeader>
                                               <TablixMembers>
-                                                <TablixMember />
+                                                <TablixMember>
+                                                  <TablixHeader>
+                                                    <Size>0.05833in</Size>
+                                                    <CellContents>
+                                                      <Textbox Name="Textbox54">
+                                                        <CanGrow>true</CanGrow>
+                                                        <KeepTogether>true</KeepTogether>
+                                                        <Paragraphs>
+                                                          <Paragraph>
+                                                            <TextRuns>
+                                                              <TextRun>
+                                                                <Value />
+                                                                <Style>
+                                                                  <FontStyle>Normal</FontStyle>
+                                                                  <FontFamily>Wingdings</FontFamily>
+                                                                  <FontSize>12pt</FontSize>
+                                                                  <FontWeight>Normal</FontWeight>
+                                                                  <TextDecoration>None</TextDecoration>
+                                                                </Style>
+                                                              </TextRun>
+                                                            </TextRuns>
+                                                            <Style />
+                                                          </Paragraph>
+                                                        </Paragraphs>
+                                                        <rd:DefaultName>Textbox54</rd:DefaultName>
+                                                        <Style>
+                                                          <Border>
+                                                            <Style>Solid</Style>
+                                                          </Border>
+                                                          <BottomBorder>
+                                                            <Style>None</Style>
+                                                          </BottomBorder>
+                                                          <LeftBorder>
+                                                            <Style>None</Style>
+                                                          </LeftBorder>
+                                                          <RightBorder>
+                                                            <Style>None</Style>
+                                                          </RightBorder>
+                                                          <VerticalAlign>Middle</VerticalAlign>
+                                                          <PaddingLeft>2pt</PaddingLeft>
+                                                          <PaddingRight>2pt</PaddingRight>
+                                                          <PaddingTop>2pt</PaddingTop>
+                                                          <PaddingBottom>2pt</PaddingBottom>
+                                                        </Style>
+                                                      </Textbox>
+                                                    </CellContents>
+                                                  </TablixHeader>
+                                                  <TablixMembers>
+                                                    <TablixMember />
+                                                  </TablixMembers>
+                                                </TablixMember>
                                               </TablixMembers>
                                             </TablixMember>
                                           </TablixMembers>
@@ -2719,7 +3148,7 @@
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value>Nationality</Value>
+                                    <Value>សញ្ជាតិ/Nationality</Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -2757,7 +3186,7 @@
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value>Dual Citizenships</Value>
+                                        <Value>សញ្ជាតិផ្សេង/Dual Citizenships</Value>
                                         <Style>
                                           <FontStyle>Normal</FontStyle>
                                           <FontFamily>Khmer OS Content</FontFamily>
@@ -2795,7 +3224,7 @@
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value>Email</Value>
+                                            <Value>អ៊ីម៉ែល/Email</Value>
                                             <Style>
                                               <FontStyle>Normal</FontStyle>
                                               <FontFamily>Khmer OS Content</FontFamily>
@@ -2833,7 +3262,7 @@
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>Fax No</Value>
+                                                <Value>លេខទូរសារ/Fax No</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -2871,7 +3300,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>Mobile No</Value>
+                                                    <Value>លេខទូរសព្ទដៃ/Mobile No</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -2909,7 +3338,7 @@
                                                   <Paragraph>
                                                     <TextRuns>
                                                       <TextRun>
-                                                        <Value>Home Phone No</Value>
+                                                        <Value>លេខទូរសព្ទផ្ទះ/Home Phone No</Value>
                                                         <Style>
                                                           <FontStyle>Normal</FontStyle>
                                                           <FontFamily>Khmer OS Content</FontFamily>
@@ -2947,7 +3376,7 @@
                                                       <Paragraph>
                                                         <TextRuns>
                                                           <TextRun>
-                                                            <Value>Office Phone No</Value>
+                                                            <Value>លេខទូរសព្ទ ការិយាល័យ/Office Phone No</Value>
                                                             <Style>
                                                               <FontStyle>Normal</FontStyle>
                                                               <FontFamily>Khmer OS Content</FontFamily>
@@ -3049,13 +3478,16 @@
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value />
+                                    <Value>=First(Fields!name.Value, "DS_INFORMATION_USER")</Value>
                                     <Style>
-                                      <FontFamily>Arial</FontFamily>
+                                      <FontFamily>khmer os content</FontFamily>
+                                      <FontSize>8pt</FontSize>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
-                                <Style />
+                                <Style>
+                                  <TextAlign>Left</TextAlign>
+                                </Style>
                               </Paragraph>
                             </Paragraphs>
                             <rd:DefaultName>Textbox19</rd:DefaultName>
@@ -3083,13 +3515,16 @@
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value />
+                                        <Value>=First(Fields!dual_citizenships.Value, "DS_INFORMATION_USER")</Value>
                                         <Style>
-                                          <FontFamily>Arial</FontFamily>
+                                          <FontFamily>khmer os content</FontFamily>
+                                          <FontSize>8pt</FontSize>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
-                                    <Style />
+                                    <Style>
+                                      <TextAlign>Left</TextAlign>
+                                    </Style>
                                   </Paragraph>
                                 </Paragraphs>
                                 <rd:DefaultName>Textbox24</rd:DefaultName>
@@ -3117,13 +3552,16 @@
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value />
+                                            <Value>=First(Fields!email.Value, "DS_INFORMATION_USER")</Value>
                                             <Style>
-                                              <FontFamily>Arial</FontFamily>
+                                              <FontFamily>khmer os content</FontFamily>
+                                              <FontSize>8pt</FontSize>
                                             </Style>
                                           </TextRun>
                                         </TextRuns>
-                                        <Style />
+                                        <Style>
+                                          <TextAlign>Left</TextAlign>
+                                        </Style>
                                       </Paragraph>
                                     </Paragraphs>
                                     <rd:DefaultName>Textbox28</rd:DefaultName>
@@ -3151,13 +3589,16 @@
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value />
+                                                <Value>=First(Fields!fax_number.Value, "DS_INFORMATION_USER")</Value>
                                                 <Style>
-                                                  <FontFamily>Arial</FontFamily>
+                                                  <FontFamily>khmer os content</FontFamily>
+                                                  <FontSize>8pt</FontSize>
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>
-                                            <Style />
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                            </Style>
                                           </Paragraph>
                                         </Paragraphs>
                                         <rd:DefaultName>Textbox36</rd:DefaultName>
@@ -3185,13 +3626,16 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value>=First(Fields!phone_number.Value, "DS_INFORMATION_USER")</Value>
                                                     <Style>
-                                                      <FontFamily>Arial</FontFamily>
+                                                      <FontFamily>khmer os content</FontFamily>
+                                                      <FontSize>8pt</FontSize>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
-                                                <Style />
+                                                <Style>
+                                                  <TextAlign>Left</TextAlign>
+                                                </Style>
                                               </Paragraph>
                                             </Paragraphs>
                                             <rd:DefaultName>Textbox44</rd:DefaultName>
@@ -3219,13 +3663,16 @@
                                                   <Paragraph>
                                                     <TextRuns>
                                                       <TextRun>
-                                                        <Value />
+                                                        <Value>=First(Fields!home_phone_number.Value, "DS_INFORMATION_USER")</Value>
                                                         <Style>
-                                                          <FontFamily>Arial</FontFamily>
+                                                          <FontFamily>khmer os content</FontFamily>
+                                                          <FontSize>8pt</FontSize>
                                                         </Style>
                                                       </TextRun>
                                                     </TextRuns>
-                                                    <Style />
+                                                    <Style>
+                                                      <TextAlign>Left</TextAlign>
+                                                    </Style>
                                                   </Paragraph>
                                                 </Paragraphs>
                                                 <rd:DefaultName>Textbox40</rd:DefaultName>
@@ -3253,13 +3700,16 @@
                                                       <Paragraph>
                                                         <TextRuns>
                                                           <TextRun>
-                                                            <Value />
+                                                            <Value>=First(Fields!office_phone_number.Value, "DS_INFORMATION_USER")</Value>
                                                             <Style>
-                                                              <FontFamily>Arial</FontFamily>
+                                                              <FontFamily>khmer os content</FontFamily>
+                                                              <FontSize>8pt</FontSize>
                                                             </Style>
                                                           </TextRun>
                                                         </TextRuns>
-                                                        <Style />
+                                                        <Style>
+                                                          <TextAlign>Left</TextAlign>
+                                                        </Style>
                                                       </Paragraph>
                                                     </Paragraphs>
                                                     <rd:DefaultName>Textbox32</rd:DefaultName>
@@ -3360,11 +3810,11 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DS_INFORMATION_APPLICANT</DataSetName>
-            <Top>0.99445in</Top>
+            <Top>1.00834in</Top>
             <Left>0.01389in</Left>
             <Height>5.80833in</Height>
             <Width>8.37778in</Width>
-            <ZIndex>2</ZIndex>
+            <ZIndex>3</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -3450,7 +3900,7 @@
                           <Paragraph>
                             <TextRuns>
                               <TextRun>
-                                <Value>4. OTHER INFORMATION</Value>
+                                <Value>4. ព័ត៌មានផ្សេងៗ/OTHER INFORMATION</Value>
                                 <Style>
                                   <FontStyle>Normal</FontStyle>
                                   <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -3490,7 +3940,7 @@
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value>Marital Status</Value>
+                                    <Value>ស្ថានភាពគ្រួសារ/Marital Status</Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -3528,7 +3978,7 @@
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value>Occupation/Position</Value>
+                                        <Value>មុខរបរ/តួនាទី/Occupation/Position</Value>
                                         <Style>
                                           <FontStyle>Normal</FontStyle>
                                           <FontFamily>Khmer OS Content</FontFamily>
@@ -3566,7 +4016,7 @@
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value>Employment Date</Value>
+                                            <Value>កាលបរិច្ឆេទបម្រើការងារ/Employment Date</Value>
                                             <Style>
                                               <FontStyle>Normal</FontStyle>
                                               <FontFamily>Khmer OS Content</FontFamily>
@@ -3611,17 +4061,17 @@
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value>o</Value>
+                                    <Value>=IIf(First(Fields!name.Value, "DS_MARITAL_STATUS") = "Single", Chr(225), Chr(168))</Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
                                       <FontFamily>Wingdings</FontFamily>
-                                      <FontSize>12pt</FontSize>
+                                      <FontSize>8pt</FontSize>
                                       <FontWeight>Normal</FontWeight>
                                       <TextDecoration>None</TextDecoration>
                                     </Style>
                                   </TextRun>
                                   <TextRun>
-                                    <Value>Single                 </Value>
+                                    <Value>លីវ /Single                                   </Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -3631,17 +4081,17 @@
                                     </Style>
                                   </TextRun>
                                   <TextRun>
-                                    <Value>o</Value>
+                                    <Value>=IIf(First(Fields!name.Value, "DS_MARITAL_STATUS") = "Married", Chr(254), Chr(168))</Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
-                                      <FontFamily>Wingdings</FontFamily>
-                                      <FontSize>12pt</FontSize>
+                                      <FontFamily>wingdings</FontFamily>
+                                      <FontSize>8pt</FontSize>
                                       <FontWeight>Normal</FontWeight>
                                       <TextDecoration>None</TextDecoration>
                                     </Style>
                                   </TextRun>
                                   <TextRun>
-                                    <Value>Married                </Value>
+                                    <Value>រៀបការ /Married                                   </Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -3651,17 +4101,42 @@
                                     </Style>
                                   </TextRun>
                                   <TextRun>
-                                    <Value>o</Value>
+                                    <Value>=IIf(First(Fields!name.Value, "DS_MARITAL_STATUS") = "Divorced", Chr(225), Chr(168))</Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
-                                      <FontFamily>Wingdings</FontFamily>
-                                      <FontSize>12pt</FontSize>
+                                      <FontFamily>wingdings</FontFamily>
+                                      <FontSize>8pt</FontSize>
                                       <FontWeight>Normal</FontWeight>
                                       <TextDecoration>None</TextDecoration>
                                     </Style>
                                   </TextRun>
                                   <TextRun>
-                                    <Value>Divorced                 </Value>
+                                    <Value>លែងលះ /Divorced</Value>
+                                    <Style>
+                                      <FontStyle>Normal</FontStyle>
+                                      <FontFamily>Khmer OS Content</FontFamily>
+                                      <FontSize>8pt</FontSize>
+                                      <FontWeight>Normal</FontWeight>
+                                      <TextDecoration>None</TextDecoration>
+                                    </Style>
+                                  </TextRun>
+                                </TextRuns>
+                                <Style />
+                              </Paragraph>
+                              <Paragraph>
+                                <TextRuns>
+                                  <TextRun>
+                                    <Value>=IIf(First(Fields!name.Value, "DS_MARITAL_STATUS") = "Widower", Chr(225), Chr(168))</Value>
+                                    <Style>
+                                      <FontStyle>Normal</FontStyle>
+                                      <FontFamily>wingdings</FontFamily>
+                                      <FontSize>8pt</FontSize>
+                                      <FontWeight>Normal</FontWeight>
+                                      <TextDecoration>None</TextDecoration>
+                                    </Style>
+                                  </TextRun>
+                                  <TextRun>
+                                    <Value>ពោះម៉ាយ-មេម៉ាយ /Window-Widower                                                             </Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -3671,37 +4146,17 @@
                                     </Style>
                                   </TextRun>
                                   <TextRun>
-                                    <Value>o</Value>
+                                    <Value>=IIf(First(Fields!name.Value, "DS_MARITAL_STATUS") = "Separated", Chr(225), Chr(168))</Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
-                                      <FontFamily>Wingdings</FontFamily>
-                                      <FontSize>12pt</FontSize>
-                                      <FontWeight>Normal</FontWeight>
-                                      <TextDecoration>None</TextDecoration>
-                                    </Style>
-                                  </TextRun>
-                                  <TextRun>
-                                    <Value>Window-Widower                     </Value>
-                                    <Style>
-                                      <FontStyle>Normal</FontStyle>
-                                      <FontFamily>Khmer OS Content</FontFamily>
+                                      <FontFamily>wingdings</FontFamily>
                                       <FontSize>8pt</FontSize>
                                       <FontWeight>Normal</FontWeight>
                                       <TextDecoration>None</TextDecoration>
                                     </Style>
                                   </TextRun>
                                   <TextRun>
-                                    <Value>o</Value>
-                                    <Style>
-                                      <FontStyle>Normal</FontStyle>
-                                      <FontFamily>Wingdings</FontFamily>
-                                      <FontSize>12pt</FontSize>
-                                      <FontWeight>Normal</FontWeight>
-                                      <TextDecoration>None</TextDecoration>
-                                    </Style>
-                                  </TextRun>
-                                  <TextRun>
-                                    <Value>Separated</Value>
+                                    <Value>  រស់នៅបែកគ្នា /Separated</Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -3812,7 +4267,7 @@
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value>Name of Employer/ Department (if any)</Value>
+                                        <Value>ឈ្មោះនិយោជក/នាយកដ្ឋាន(បើមាន)/Name of Employer/ Department (if any)</Value>
                                         <Style>
                                           <FontStyle>Normal</FontStyle>
                                           <FontFamily>Khmer OS Content</FontFamily>
@@ -3892,11 +4347,11 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DS_INFORMATION_APPLICANT</DataSetName>
-            <Top>6.84445in</Top>
+            <Top>6.85834in</Top>
             <Left>0.01389in</Left>
             <Height>1.025in</Height>
             <Width>8.37778in</Width>
-            <ZIndex>3</ZIndex>
+            <ZIndex>4</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -3978,7 +4433,7 @@
                           <Paragraph>
                             <TextRuns>
                               <TextRun>
-                                <Value>5. DECLARATION OF US PERSON</Value>
+                                <Value>5. សេចក្តីប្រកាស US PERSON / DECLARATION OF US PERSON</Value>
                                 <Style>
                                   <FontStyle>Normal</FontStyle>
                                   <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -4018,7 +4473,7 @@
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value>1. Do Applicant / Joint Account Holder have US Citizenship or lawful permanent resident (i.e. Green Card Holder).</Value>
+                                    <Value>1. តើអ្នកដាក់ពាក្យស្នើសុំ/អ្នករួមគណនី មានសញ្ជាតិអាមេរិក ឬមានសិទ្ធរស់នៅអចិន្រ្តៃយ៍ (អ្នកកាន់បណ្ណបៃតង)ឬទេ?Do Applicant / Joint Account Holder have US Citizenship or lawful permanent resident (i.e. Green Card Holder).</Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -4056,7 +4511,7 @@
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value>2. Is Applicant / Joint Account Holder place of birth in the US.     </Value>
+                                        <Value>2. តើអ្នកដាក់ពាក្យសុំ/អ្នករួមគណនី មានទីកន្លែងកំណើតនៅអាមេរិក ឬទេ?Is Applicant / Joint Account Holder place of birth in the US.     </Value>
                                         <Style>
                                           <FontStyle>Normal</FontStyle>
                                           <FontFamily>Khmer OS Content</FontFamily>
@@ -4094,7 +4549,7 @@
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value>3. Do the Applicant / Joint Account Holder have Residence address or Correspondence address in the US (including US post office box).</Value>
+                                            <Value>3. តើអ្នកដាក់ពាក្យស្នើសុំ/អ្នករួមគណនី មានអាសយដ្ឋានស្នាក់នៅ ឬ អាសយដ្ឋានទំនាក់ទំនងនៅអាមរិក(រួមទាំងប្រអប់សំបុត្រ នៅអាមេរិក)ឬទេ?Do the Applicant / Joint Account Holder have Residence address or Correspondence address in the US (including US post office box).</Value>
                                             <Style>
                                               <FontStyle>Normal</FontStyle>
                                               <FontFamily>Khmer OS Content</FontFamily>
@@ -4132,7 +4587,7 @@
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>4. Do the Applicant / Joint Account Holder have a US Telephone Number.     </Value>
+                                                <Value>4. តើអ្នកដាក់ពាក្យស្នើសុំ/អ្នករួមគណនី មានលេខទូរសព្ទអាមេរិក ឬទេ?Do the Applicant / Joint Account Holder have a US Telephone Number.     </Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -4170,7 +4625,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>5. Do the Applicant/ Joint Account Holder have any Standing instruction to transfer fund to an account maintained in the US or direction regularly received from a US address.</Value>
+                                                    <Value>5. តើអ្នកដាក់ពាក្យស្នើសុំ/អ្នករួមគណនី មានការផ្ទេរប្រាក់ទៅគណនីនៅអាមេរិក ឬទទួលដោយផ្ទាល់ពីអាសយដ្ឋាននៅ អាមេរិក ឬទេ? Do the Applicant/ Joint Account Holder have any Standing instruction to transfer fund to an account maintained in the US or direction regularly received from a US address.</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -4208,7 +4663,7 @@
                                                   <Paragraph>
                                                     <TextRuns>
                                                       <TextRun>
-                                                        <Value>6. Do the Applicant/ Joint Account Holder have “In Care of” or “Hold mail” address that is the sole address with respect to the client.</Value>
+                                                        <Value>6. តើអ្នកដាក់ពាក្យស្នើសុំ/អ្នករួមគណនី មានកាតព្វកិច្ច“អ្នកថែរក្សាទ្រព្យសម្បតិ្ត ”ជំនួសជនជាតិអាមេរិក ឬ “កាន់កាប់” អ៊ីម៉ែលដែលមានអាសយដ្ឋាននៅប្រទេសអាមេរិក ឬទេ?Do the Applicant/ Joint Account Holder have “In Care of” or “Hold mail” address that is the sole address with respect to the client.</Value>
                                                         <Style>
                                                           <FontStyle>Normal</FontStyle>
                                                           <FontFamily>Khmer OS Content</FontFamily>
@@ -4246,7 +4701,7 @@
                                                       <Paragraph>
                                                         <TextRuns>
                                                           <TextRun>
-                                                            <Value>7. Do that Applicant/ Joint Account Holder have Power of Attorney or signature authority granted to a person with a US address.</Value>
+                                                            <Value>7. អ្នកដាក់ពាក្យស្នើសុំ/អ្នករួមគណនី មានសិទ្ធតំណាង(ការផ្ទេរសិទ្ធ) ឬសិទ្ធចុះហត្ថលេខាបានផ្តល់ទៅឱ្យបុគ្គលអាមេរិក ឬទេ?Do that Applicant/ Joint Account Holder have Power of Attorney or signature authority granted to a person with a US address.</Value>
                                                             <Style>
                                                               <FontStyle>Normal</FontStyle>
                                                               <FontFamily>Khmer OS Content</FontFamily>
@@ -4309,7 +4764,7 @@
                                     </Style>
                                   </TextRun>
                                   <TextRun>
-                                    <Value>Yes</Value>
+                                    <Value>មាន/Yes</Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -4336,7 +4791,7 @@
                                     </Style>
                                   </TextRun>
                                   <TextRun>
-                                    <Value>No</Value>
+                                    <Value>ទេ/No</Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -4390,7 +4845,7 @@
                                         </Style>
                                       </TextRun>
                                       <TextRun>
-                                        <Value>Yes</Value>
+                                        <Value>មាន/Yes</Value>
                                         <Style>
                                           <FontStyle>Normal</FontStyle>
                                           <FontFamily>Khmer OS Content</FontFamily>
@@ -4415,7 +4870,7 @@
                                         </Style>
                                       </TextRun>
                                       <TextRun>
-                                        <Value>No</Value>
+                                        <Value>ទេ/No</Value>
                                         <Style>
                                           <FontStyle>Normal</FontStyle>
                                           <FontFamily>Khmer OS Content</FontFamily>
@@ -4471,7 +4926,7 @@
                                             </Style>
                                           </TextRun>
                                           <TextRun>
-                                            <Value>Yes</Value>
+                                            <Value>មាន/Yes</Value>
                                             <Style>
                                               <FontStyle>Normal</FontStyle>
                                               <FontFamily>Khmer OS Content</FontFamily>
@@ -4496,7 +4951,7 @@
                                             </Style>
                                           </TextRun>
                                           <TextRun>
-                                            <Value>No</Value>
+                                            <Value>ទេ/No</Value>
                                             <Style>
                                               <FontStyle>Normal</FontStyle>
                                               <FontFamily>Khmer OS Content</FontFamily>
@@ -4596,7 +5051,7 @@
                                                     </Style>
                                                   </TextRun>
                                                   <TextRun>
-                                                    <Value>Yes</Value>
+                                                    <Value>មាន/Yes</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -4621,7 +5076,7 @@
                                                     </Style>
                                                   </TextRun>
                                                   <TextRun>
-                                                    <Value>No</Value>
+                                                    <Value>ទេ/No</Value>
                                                     <Style>
                                                       <FontStyle>Normal</FontStyle>
                                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -4677,7 +5132,7 @@
                                                         </Style>
                                                       </TextRun>
                                                       <TextRun>
-                                                        <Value>Yes</Value>
+                                                        <Value>មាន/Yes</Value>
                                                         <Style>
                                                           <FontStyle>Normal</FontStyle>
                                                           <FontFamily>Khmer OS Content</FontFamily>
@@ -4702,7 +5157,7 @@
                                                         </Style>
                                                       </TextRun>
                                                       <TextRun>
-                                                        <Value>No</Value>
+                                                        <Value>ទេ/No</Value>
                                                         <Style>
                                                           <FontStyle>Normal</FontStyle>
                                                           <FontFamily>Khmer OS Content</FontFamily>
@@ -4758,7 +5213,7 @@
                                                             </Style>
                                                           </TextRun>
                                                           <TextRun>
-                                                            <Value>Yes</Value>
+                                                            <Value>មាន/Yes</Value>
                                                             <Style>
                                                               <FontStyle>Normal</FontStyle>
                                                               <FontFamily>Khmer OS Content</FontFamily>
@@ -4783,7 +5238,7 @@
                                                             </Style>
                                                           </TextRun>
                                                           <TextRun>
-                                                            <Value>No</Value>
+                                                            <Value>ទេ/No</Value>
                                                             <Style>
                                                               <FontStyle>Normal</FontStyle>
                                                               <FontFamily>Khmer OS Content</FontFamily>
@@ -4841,7 +5296,41 @@
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value>If yes, obtain form W-9</Value>
+                                    <Value>ប្រសិនបើមានចំលើយ“មាន” ១ឬច្រើន</Value>
+                                    <Style>
+                                      <FontStyle>Normal</FontStyle>
+                                      <FontFamily>Khmer OS Content</FontFamily>
+                                      <FontSize>8pt</FontSize>
+                                      <FontWeight>Normal</FontWeight>
+                                      <TextDecoration>None</TextDecoration>
+                                    </Style>
+                                  </TextRun>
+                                </TextRuns>
+                                <Style>
+                                  <TextAlign>Center</TextAlign>
+                                </Style>
+                              </Paragraph>
+                              <Paragraph>
+                                <TextRuns>
+                                  <TextRun>
+                                    <Value>ក្នុងចំនោមចំលើយទាំងអស់ ត្រូវ</Value>
+                                    <Style>
+                                      <FontStyle>Normal</FontStyle>
+                                      <FontFamily>Khmer OS Content</FontFamily>
+                                      <FontSize>8pt</FontSize>
+                                      <FontWeight>Normal</FontWeight>
+                                      <TextDecoration>None</TextDecoration>
+                                    </Style>
+                                  </TextRun>
+                                </TextRuns>
+                                <Style>
+                                  <TextAlign>Center</TextAlign>
+                                </Style>
+                              </Paragraph>
+                              <Paragraph>
+                                <TextRuns>
+                                  <TextRun>
+                                    <Value>បំពេញទម្រង់ W9/ If yes, obtain form W-9</Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
                                       <FontFamily>Khmer OS Content</FontFamily>
@@ -4884,11 +5373,11 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DS_INFORMATION_APPLICANT</DataSetName>
-            <Top>7.88334in</Top>
+            <Top>7.89723in</Top>
             <Left>0.01389in</Left>
             <Height>2.125in</Height>
             <Width>8.37778in</Width>
-            <ZIndex>4</ZIndex>
+            <ZIndex>5</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -4918,7 +5407,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>6. CUSTOMER’S ACKNOWLEDGEMENT AND ACCEPTANCE</Value>
+                                  <Value>6. ការយល់ព្រមរបស់អតិថិជន/ CUSTOMER’S ACKNOWLEDGEMENT AND ACCEPTANCE</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -4962,7 +5451,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>By signing this form, I certify that information provided above is true, correct, and complete without any forgery and acknowledge that it’s an offense if I commit any fraud or cheating under Cambodia law. I have read and agreed to accept all relevant terms and conditions governed by Phillip Bank Plc.</Value>
+                                  <Value>តាមរយៈការចុះហត្ថលេខាឬផ្តិតស្នាមមេដៃលើទម្រង់នេះ ខ្ញុំសូមបញ្ជាក់ថាព័ត៌មានដែលបានផ្តល់ជូនខាងលើគឺពិតជាតឹ្រមត្រូវ និងគ្រប់គ្រាន់ ដោយគ្មានការក្លែងបន្លំ ហើយខ្ញុំព្រមទទួលស្គាល់ថាវាជាបទល្មើសមួយស្របតាមច្បាប់នៃប្រទេសកមុ្ពជា ប្រសិនបើខុំ្ញមានបំណងប្រពឹ្រត្តការក្លែងបន្លំ ឬបោកប្រាស់ ។ ខុំ្ញបានអាននិងយល់ព្រមទទួលយកលក្ខខណ្ឌដែលពាក់ព័ន្ធទាំងអស់ដែលគ្រប់គ្រងដោយធនាគារហ្វីលីពភីអិលស៊ី។
+By signing this form, I certify that information provided above is true, correct, and complete without any forgery and acknowledge that it’s an offense if I commit any fraud or cheating under Cambodia law. I have read and agreed to accept all relevant terms and conditions governed by Phillip Bank Plc.</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -5058,7 +5548,8 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Customer’s Signature/Thumbprint</Value>
+                                  <Value>ហត្ថលេខាឬស្នាមមេដៃអតិថិជន
+/Customer’s Signature/Thumbprint</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -5103,11 +5594,11 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DS_INFORMATION_APPLICANT</DataSetName>
-            <Top>10.02222in</Top>
+            <Top>10.03611in</Top>
             <Left>0.01389in</Left>
             <Height>0.5in</Height>
             <Width>8.37778in</Width>
-            <ZIndex>5</ZIndex>
+            <ZIndex>6</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -5578,7 +6069,7 @@
                           <Paragraph>
                             <TextRuns>
                               <TextRun>
-                                <Value>7. FOR BANK USE ONLY</Value>
+                                <Value>7. សម្រាប់ធនាគារ/FOR BANK USE ONLY</Value>
                                 <Style>
                                   <FontStyle>Normal</FontStyle>
                                   <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -5766,13 +6257,16 @@
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value />
+                                    <Value>=First(Fields!cif_number.Value, "DS_FOR_BANK")</Value>
                                     <Style>
-                                      <FontFamily>Arial</FontFamily>
+                                      <FontFamily>khmer os content</FontFamily>
+                                      <FontSize>8pt</FontSize>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
-                                <Style />
+                                <Style>
+                                  <TextAlign>Left</TextAlign>
+                                </Style>
                               </Paragraph>
                             </Paragraphs>
                             <rd:DefaultName>Textbox245</rd:DefaultName>
@@ -5800,13 +6294,16 @@
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value />
+                                        <Value>=First(Fields!short_name.Value, "DS_FOR_BANK")</Value>
                                         <Style>
-                                          <FontFamily>Arial</FontFamily>
+                                          <FontFamily>khmer os content</FontFamily>
+                                          <FontSize>8pt</FontSize>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
-                                    <Style />
+                                    <Style>
+                                      <TextAlign>Left</TextAlign>
+                                    </Style>
                                   </Paragraph>
                                 </Paragraphs>
                                 <rd:DefaultName>Textbox250</rd:DefaultName>
@@ -5834,13 +6331,16 @@
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value />
+                                            <Value>=First(Fields!cat.Value, "DS_FOR_BANK")</Value>
                                             <Style>
-                                              <FontFamily>Arial</FontFamily>
+                                              <FontFamily>khmer os content</FontFamily>
+                                              <FontSize>8pt</FontSize>
                                             </Style>
                                           </TextRun>
                                         </TextRuns>
-                                        <Style />
+                                        <Style>
+                                          <TextAlign>Left</TextAlign>
+                                        </Style>
                                       </Paragraph>
                                     </Paragraphs>
                                     <rd:DefaultName>Textbox233</rd:DefaultName>
@@ -5958,13 +6458,16 @@
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value />
+                                    <Value>=First(Fields!classti.Value, "DS_FOR_BANK")</Value>
                                     <Style>
-                                      <FontFamily>Arial</FontFamily>
+                                      <FontFamily>khmer os content</FontFamily>
+                                      <FontSize>8pt</FontSize>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
-                                <Style />
+                                <Style>
+                                  <TextAlign>Left</TextAlign>
+                                </Style>
                               </Paragraph>
                             </Paragraphs>
                             <rd:DefaultName>Textbox248</rd:DefaultName>
@@ -6062,33 +6565,19 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DS_INFORMATION_APPLICANT</DataSetName>
-            <Top>10.63833in</Top>
+            <Top>10.65222in</Top>
             <Left>0.01389in</Left>
             <Height>1.25in</Height>
             <Width>8.37779in</Width>
-            <ZIndex>6</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-            </Style>
-          </Tablix>
-          <Image Name="Image1">
-            <Source>Embedded</Source>
-            <Value>photo_20240111_153019</Value>
-            <Sizing>FitProportional</Sizing>
-            <Left>0.01389in</Left>
-            <Height>0.45278in</Height>
-            <Width>2.45695in</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
               </Border>
             </Style>
-          </Image>
+          </Tablix>
         </ReportItems>
-        <Height>11.88833in</Height>
+        <Height>11.90222in</Height>
         <Style />
       </Body>
       <Width>8.39168in</Width>
@@ -6317,24 +6806,6 @@ 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</ImageData>
-    </EmbeddedImage>
-    <EmbeddedImage Name="photo_20240111_153019">
-      <MIMEType>image/jpeg</MIMEType>
-      <ImageData>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</ImageData>
     </EmbeddedImage>
   </EmbeddedImages>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
