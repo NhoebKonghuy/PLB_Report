@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Micro Loan Application Form" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="Micro_Loan_Application_Form.aspx.cs" Inherits="LOS_PLB_Report.Reports.Micro_Loan_Application_Form" %>
+﻿<%@ Page Title="Micro Loan Application" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="Micro_Loan_Application.aspx.cs" Inherits="LOS_PLB_Report.Reports.Micro_Loan_Application" %>
 <%@ Register Assembly="Microsoft.ReportViewer.WebForms" Namespace="Microsoft.Reporting.WebForms" TagPrefix="rsweb" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
@@ -10,3 +10,4 @@
         </center>
     </div>
 </asp:Content>
+

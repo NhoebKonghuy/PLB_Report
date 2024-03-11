@@ -11,7 +11,7 @@ namespace LOS_PLB_Report.Reports
 {
 
 
-    public partial class Micro_Loan_Application_Form
+    public partial class Micro_Loan_Application
     {
 
         /// <summary>
