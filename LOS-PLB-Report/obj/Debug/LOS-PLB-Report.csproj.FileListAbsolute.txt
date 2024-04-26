@@ -150,6 +150,8 @@ D:\Backup from T440s\projects\LOS-Phillip-Bank\Deployment\LOS-PLB-Report\LOS-PLB
 D:\Backup from T440s\projects\LOS-Phillip-Bank\Deployment\LOS-PLB-Report\LOS-PLB-Report\bin\LOS-PLB-Report.pdb
 D:\Backup from T440s\projects\LOS-Phillip-Bank\Deployment\LOS-PLB-Report\LOS-PLB-Report\obj\Debug\LOS-PLB-Report.dll
 D:\Backup from T440s\projects\LOS-Phillip-Bank\Deployment\LOS-PLB-Report\LOS-PLB-Report\obj\Debug\LOS-PLB-Report.pdb
+D:\Finig Workplace\plb-report\LOS-PLB-Report\obj\Debug\LOS-PLB-Report.csproj.AssemblyReference.cache
+D:\Finig Workplace\plb-report\LOS-PLB-Report\obj\Debug\LOS-PLB-Report.csproj.CoreCompileInputs.cache
 D:\Finig Workplace\plb-report\LOS-PLB-Report\bin\SqlServerTypes\x64\msvcr120.dll
 D:\Finig Workplace\plb-report\LOS-PLB-Report\bin\SqlServerTypes\x64\SqlServerSpatial140.dll
 D:\Finig Workplace\plb-report\LOS-PLB-Report\bin\SqlServerTypes\x86\msvcr120.dll
@@ -297,8 +299,6 @@ D:\Finig Workplace\plb-report\LOS-PLB-Report\bin\pt\Microsoft.ReportViewer.WebFo
 D:\Finig Workplace\plb-report\LOS-PLB-Report\bin\ru\Microsoft.ReportViewer.WebForms.resources.dll
 D:\Finig Workplace\plb-report\LOS-PLB-Report\bin\zh-CHS\Microsoft.ReportViewer.WebForms.resources.dll
 D:\Finig Workplace\plb-report\LOS-PLB-Report\bin\zh-CHT\Microsoft.ReportViewer.WebForms.resources.dll
-D:\Finig Workplace\plb-report\LOS-PLB-Report\obj\Debug\LOS-PLB-Report.csproj.AssemblyReference.cache
-D:\Finig Workplace\plb-report\LOS-PLB-Report\obj\Debug\LOS-PLB-Report.csproj.CoreCompileInputs.cache
 D:\Finig Workplace\plb-report\LOS-PLB-Report\obj\Debug\LOS-PLB-.67722287.Up2Date
 D:\Finig Workplace\plb-report\LOS-PLB-Report\obj\Debug\LOS-PLB-Report.dll
 D:\Finig Workplace\plb-report\LOS-PLB-Report\obj\Debug\LOS-PLB-Report.pdb

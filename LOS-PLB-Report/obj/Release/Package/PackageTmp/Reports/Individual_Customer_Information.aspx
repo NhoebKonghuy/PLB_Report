@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Individual Customer Information" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="Individual_Customer_Information.aspx.cs" Inherits="LOS_AC_Report.Reports.Individual_Customer_Information" %>
+﻿<%@ Page Title="Individual Customer Information" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="Individual_Customer_Information.aspx.cs" Inherits="LOS_PLB_Report.Reports.Individual_Customer_Information" %>
 <%@ Register Assembly="Microsoft.ReportViewer.WebForms" Namespace="Microsoft.Reporting.WebForms" TagPrefix="rsweb" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">

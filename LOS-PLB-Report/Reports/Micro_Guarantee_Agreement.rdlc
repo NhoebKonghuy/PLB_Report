@@ -1,0 +1,2581 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.6.33723.286</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.9.34622.214</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2024-04-10T02:31:52.8956840Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
+  <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource1">
+      <DataSourceReference>DataSource1</DataSourceReference>
+      <rd:SecurityType>None</rd:SecurityType>
+      <rd:DataSourceID>a6d14ebf-04fa-4781-80d4-f3b478c3c566</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="GUANRATOR_INFO">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT
+	* 
+FROM
+	(
+	SELECT ROW_NUMBER
+		( ) OVER ( ORDER BY AG.ID ) AS num,
+  AP.APPLICATION_NO,
+  CC.FAMILY_NAME_KH|| ' ' || CC.GIVEN_NAME_KH AS COL_NAME,
+CASE
+    
+    WHEN CC.GENDER = 'MALE' THEN
+    'ប្រុស' ELSE'ស្រី' 
+  END AS GENDER,
+CASE
+    
+    WHEN ANN.NAME = 'Cambodian' THEN
+    'ខ្មែរ' 
+  END AS NATIONALITY,
+  TO_CHAR( CC.DATE_OF_BIRTH, 'DD' ) AS DOB_DAY,
+CASE
+    
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JAN' THEN
+    'មករា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'FEB' THEN
+    'កុម្ភៈ' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAR' THEN
+    'មីនា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'APR' THEN
+    'មេសា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAY' THEN
+    'ឧសភា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUN' THEN
+    'មិថុនា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUL' THEN
+    'កក្កដា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'AUG' THEN
+    'សីហា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'SEP' THEN
+    'កញ្ញា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'OCT' THEN
+    'តុលា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'NOV' THEN
+    'វិច្ឆិកា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'DEC' THEN
+    'ធ្នូ' 
+  END AS DOB_MONTH,
+
+  TO_CHAR( CC.DATE_OF_BIRTH, 'YYYY' ) AS DOB_YEAR,
+  A.ID_NUMBER,
+  A.IDENTIFICATION_TYPE,
+  A.ISSUE_DAY,
+	A.ISSUE_MONTH ,
+	A.ISSUE_YEAR ,
+  ACC.COMMUNE_KH,
+  APC.PROVINCE_KH,
+  AVC.VILLAGE_KH,
+  ADC.DISTRICT_KH,
+CASE
+    
+    WHEN CCA.STREET_NO = '' THEN
+    '..........' ELSE CCA.STREET_NO 
+  END AS STEET_NO,
+CASE
+    
+    WHEN CCA.HOUSE_NO = '' THEN
+    '..........' ELSE CCA.HOUSE_NO 
+  END AS HOUSE_NO,
+CASE
+    
+    WHEN CCA.GROUP_NO = '' THEN
+    '.........' ELSE CCA.GROUP_NO 
+  END AS GROUP_NO 
+FROM
+  APP_APPLICATION AP
+  INNER JOIN APP_SUPPLEMENTARY AST ON AST.APPLICATION_ID = AP.ID AND AST.STATUS='t' AND AST.CUSTOMER_TYPE='PERSONAL_GUARANTOR'
+	INNER JOIN app_guarantor ag ON ag.supplementary_id = AST.
+	ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id 
+	LEFT JOIN CUS_PERMANENT_ADDRESS CCA ON CCA.CUSTOMER_ID = CC.
+  ID AND CCA.STATUS = 't' LEFT JOIN ADM_PROVINCE_CBC APC ON APC.ID = CCA.PROVINCE_ID
+  LEFT JOIN ADM_VILLAGE_CBC AVC ON AVC.ID = CCA.VILLAGE_ID
+  LEFT JOIN ADM_COMMUNE_CBC ACC ON ACC.ID = CCA.COMMUNE_ID
+  LEFT JOIN ADM_DISTRICT_CBC ADC ON ADC.ID = CCA.DISTRICT_ID
+  LEFT JOIN ADM_NATIONALITY ANN ON ANN.ID = CC.NATIONALITY_ID 
+  --IDENTIFICATION
+  LEFT JOIN (
+  SELECT
+    CI.CREATED,
+    CI.APPLICATION_ID,
+    CI.CUSTOMER_ID,
+  CASE
+      
+      WHEN IT.ID_TYPE = 'F' THEN
+      'សៀវភៅគ្រួសារ' 
+      WHEN IT.ID_TYPE = 'CD' THEN
+      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+      WHEN IT.ID_TYPE = 'N' THEN
+      'អត្តសញ្ញាណប័ណ្ណ' 
+      WHEN IT.ID_TYPE = 'P' THEN
+      'លិខិតឆ្លងដែន' 
+      WHEN IT.ID_TYPE = 'MI' THEN
+      'ឆាយា' 
+      WHEN IT.ID_TYPE = 'R' THEN
+      'សៀវភៅស្នាក់នៅ' 
+      WHEN IT.ID_TYPE = 'B' THEN
+      'សំបុត្រកំណើត' 
+    END AS IDENTIFICATION_TYPE,
+    CI.ID_NUMBER,
+
+TO_CHAR( CI.ISSUED_DATE, 'DD' ) AS ISSUE_DAY,
+CASE
+    
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'JAN' THEN
+    'មករា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'FEB' THEN
+    'កុម្ភៈ' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'MAR' THEN
+    'មីនា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'APR' THEN
+    'មេសា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'MAY' THEN
+    'ឧសភា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'JUN' THEN
+    'មិថុនា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'JUL' THEN
+    'កក្កដា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'AUG' THEN
+    'សីហា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'SEP' THEN
+    'កញ្ញា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'OCT' THEN
+    'តុលា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'NOV' THEN
+    'វិច្ឆិកា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'DEC' THEN
+    'ធ្នូ' 
+  END AS ISSUE_MONTH,
+	TO_CHAR( CI.ISSUED_DATE, 'YYYY' ) AS ISSUE_YEAR
+  FROM
+    APP_CUSTOMER_IDENTIFICATION CI
+    INNER JOIN ADM_IDENTIFICATION_TYPE IT ON IT.ID = CI.IDENTIFICATION_TYPE_ID
+    INNER JOIN (
+    SELECT MIN
+      ( CI.ID ) AS CREATED,
+      CI.APPLICATION_ID,
+      CI.CUSTOMER_ID 
+    FROM
+      APP_CUSTOMER_IDENTIFICATION CI 
+    WHERE
+      CI.STATUS = 't' 
+    GROUP BY
+      CI.APPLICATION_ID,
+      CI.CUSTOMER_ID 
+    ) A ON A.CREATED = CI.ID 
+    AND A.APPLICATION_ID = CI.APPLICATION_ID 
+    AND A.CUSTOMER_ID = CI.CUSTOMER_ID 
+  WHERE
+    CI.STATUS = 't' 
+  ) A ON A.APPLICATION_ID = AP.ID 
+  AND CC.ID = A.CUSTOMER_ID 
+	WHERE
+		ap.application_no = '012-A41856' 
+	) A 
+WHERE
+	A.num = 1
+</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="num">
+          <DataField>num</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="application_no">
+          <DataField>application_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="col_name">
+          <DataField>col_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="gender">
+          <DataField>gender</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="dob_day">
+          <DataField>dob_day</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="id_number">
+          <DataField>id_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="dob_month">
+          <DataField>dob_month</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="dob_year">
+          <DataField>dob_year</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="village_kh">
+          <DataField>village_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="commune_kh">
+          <DataField>commune_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="district_kh">
+          <DataField>district_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="identification_type">
+          <DataField>identification_type</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="issue_day">
+          <DataField>issue_day</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="province_kh">
+          <DataField>province_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="issue_month">
+          <DataField>issue_month</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="issue_year">
+          <DataField>issue_year</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="nationality">
+          <DataField>nationality</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="house_no">
+          <DataField>house_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="group_no">
+          <DataField>group_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="steet_no">
+          <DataField>steet_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="BRANCH_NAME">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT ap.application_no,
+mb.name
+ FROM
+app_application ap 
+inner join app_application_detail apd on apd.application_id = ap.id
+inner join mas_branch mb on mb.id = apd.branch_id</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="application_no">
+          <DataField>application_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="name">
+          <DataField>name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="APPROVAL_DATE">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT to_char(aas.complete_date, 'DD/MM/YYYY')
+ from app_application ap 
+inner join app_application_stage aas on aas.application_id = ap.id and aas.application_stages='APPROVAL'</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="to_char">
+          <DataField>to_char</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="GUANRATOR_INFO_2">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT
+	* 
+FROM
+	(
+	SELECT ROW_NUMBER
+		( ) OVER ( ORDER BY ag.ID ) AS num,
+  AP.APPLICATION_NO,
+  ' អ្នករួមធានាឈ្មោះ  '||CC.FAMILY_NAME_KH|| ' ' || CC.GIVEN_NAME_KH ||' ភេទ '||
+    CASE
+    WHEN CC.GENDER = 'MALE' THEN
+    'ប្រុស' ELSE'ស្រី' END
+||' សញ្ជាតិ ​'||
+	CASE
+    WHEN ANN.NAME = 'Cambodian' THEN
+    'ខ្មែរ' ELSE '..........' END
+||' ថ្ងៃខែឆ្នាំកំណើត​​ ថ្ងៃទី '||
+  TO_CHAR( CC.DATE_OF_BIRTH, 'DD' )||' ខែ'||
+CASE
+    
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JAN' THEN
+    'មករា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'FEB' THEN
+    'កុម្ភៈ' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAR' THEN
+    'មីនា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'APR' THEN
+    'មេសា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAY' THEN
+    'ឧសភា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUN' THEN
+    'មិថុនា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUL' THEN
+    'កក្កដា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'AUG' THEN
+    'សីហា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'SEP' THEN
+    'កញ្ញា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'OCT' THEN
+    'តុលា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'NOV' THEN
+    'វិច្ឆិកា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'DEC' THEN
+    'ធ្នូ' END
+||' ឆ្នាំ '||
+
+  TO_CHAR( CC.DATE_OF_BIRTH, 'YYYY' )
+
+
+||' ឯកសារសម្គាល់អត្តសញ្ញាណ '||
+CASE WHEN A.IDENTIFICATION_TYPE IS NULL THEN '..........'ELSE A.IDENTIFICATION_TYPE END ||' លេខ '||
+	CASE WHEN A.ID_NUMBER IS NULL THEN '.........' ELSE A.ID_NUMBER END||' ចុះថ្ងៃទី '||
+  CASE WHEN A.ISSUE_DAY IS NULL THEN '..........' ELSE A.ISSUE_DAY END ||' ខែ '||
+	CASE WHEN A.ISSUE_MONTH IS NULL THEN '..........' ELSE A.ISSUE_MONTH END||' ឆ្នាំ '||
+	CASE WHEN A.ISSUE_YEAR IS NULL THEN '..........' ELSE A.ISSUE_YEAR END AS SUB_BORROWER
+FROM
+  APP_APPLICATION AP
+  INNER JOIN APP_SUPPLEMENTARY AST ON AST.APPLICATION_ID = AP.ID AND AST.STATUS='t' AND AST.CUSTOMER_TYPE = 'PERSONAL_GUARANTOR'
+	INNER JOIN app_guarantor ag ON ag.supplementary_id = AST.
+	ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id  
+  LEFT JOIN ADM_NATIONALITY ANN ON ANN.ID = CC.NATIONALITY_ID 
+  --IDENTIFICATION
+  LEFT JOIN (
+  SELECT
+    CI.CREATED,
+    CI.APPLICATION_ID,
+    CI.CUSTOMER_ID,
+  CASE
+      
+      WHEN IT.ID_TYPE = 'F' THEN
+      'សៀវភៅគ្រួសារ' 
+      WHEN IT.ID_TYPE = 'CD' THEN
+      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+      WHEN IT.ID_TYPE = 'N' THEN
+      'អត្តសញ្ញាណប័ណ្ណ' 
+      WHEN IT.ID_TYPE = 'P' THEN
+      'លិខិតឆ្លងដែន' 
+      WHEN IT.ID_TYPE = 'MI' THEN
+      'ឆាយា' 
+      WHEN IT.ID_TYPE = 'R' THEN
+      'សៀវភៅស្នាក់នៅ' 
+      WHEN IT.ID_TYPE = 'B' THEN
+      'សំបុត្រកំណើត' 
+    END AS IDENTIFICATION_TYPE,
+    CI.ID_NUMBER,
+
+TO_CHAR( CI.ISSUED_DATE, 'DD' ) AS ISSUE_DAY,
+CASE
+    
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'JAN' THEN
+    'មករា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'FEB' THEN
+    'កុម្ភៈ' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'MAR' THEN
+    'មីនា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'APR' THEN
+    'មេសា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'MAY' THEN
+    'ឧសភា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'JUN' THEN
+    'មិថុនា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'JUL' THEN
+    'កក្កដា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'AUG' THEN
+    'សីហា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'SEP' THEN
+    'កញ្ញា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'OCT' THEN
+    'តុលា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'NOV' THEN
+    'វិច្ឆិកា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'DEC' THEN
+    'ធ្នូ' 
+  END AS ISSUE_MONTH,
+	TO_CHAR( CI.ISSUED_DATE, 'YYYY' ) AS ISSUE_YEAR
+  FROM
+    APP_CUSTOMER_IDENTIFICATION CI
+    INNER JOIN ADM_IDENTIFICATION_TYPE IT ON IT.ID = CI.IDENTIFICATION_TYPE_ID
+    INNER JOIN (
+    SELECT MIN
+      ( CI.ID ) AS CREATED,
+      CI.APPLICATION_ID,
+      CI.CUSTOMER_ID 
+    FROM
+      APP_CUSTOMER_IDENTIFICATION CI 
+    WHERE
+      CI.STATUS = 't' 
+    GROUP BY
+      CI.APPLICATION_ID,
+      CI.CUSTOMER_ID 
+    ) A ON A.CREATED = CI.ID 
+    AND A.APPLICATION_ID = CI.APPLICATION_ID 
+    AND A.CUSTOMER_ID = CI.CUSTOMER_ID 
+  WHERE
+    CI.STATUS = 't' 
+  ) A ON A.APPLICATION_ID = AP.ID 
+  AND CC.ID = A.CUSTOMER_ID 
+	WHERE
+		ap.application_no = '012-A41856' 
+	) A 
+WHERE
+	A.num = 2</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="num">
+          <DataField>num</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="application_no">
+          <DataField>application_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="sub_borrower">
+          <DataField>sub_borrower</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="GUANRATOR_INFO_3">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT
+	* 
+FROM
+	(
+	SELECT ROW_NUMBER
+		( ) OVER ( ORDER BY ag.ID ) AS num,
+  AP.APPLICATION_NO,
+  ' អ្នករួមធានាឈ្មោះ  '||CC.FAMILY_NAME_KH|| ' ' || CC.GIVEN_NAME_KH ||' ភេទ '||
+    CASE
+    WHEN CC.GENDER = 'MALE' THEN
+    'ប្រុស' ELSE'ស្រី' END
+||' សញ្ជាតិ ​'||
+	CASE
+    WHEN ANN.NAME = 'Cambodian' THEN
+    'ខ្មែរ' ELSE '..........' END
+||' ថ្ងៃខែឆ្នាំកំណើត​​ ថ្ងៃទី '||
+  TO_CHAR( CC.DATE_OF_BIRTH, 'DD' )||' ខែ'||
+CASE
+    
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JAN' THEN
+    'មករា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'FEB' THEN
+    'កុម្ភៈ' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAR' THEN
+    'មីនា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'APR' THEN
+    'មេសា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAY' THEN
+    'ឧសភា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUN' THEN
+    'មិថុនា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUL' THEN
+    'កក្កដា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'AUG' THEN
+    'សីហា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'SEP' THEN
+    'កញ្ញា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'OCT' THEN
+    'តុលា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'NOV' THEN
+    'វិច្ឆិកា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'DEC' THEN
+    'ធ្នូ' END
+||' ឆ្នាំ '||
+
+  TO_CHAR( CC.DATE_OF_BIRTH, 'YYYY' )
+
+
+||' ឯកសារសម្គាល់អត្តសញ្ញាណ '||
+CASE WHEN A.IDENTIFICATION_TYPE IS NULL THEN '..........'ELSE A.IDENTIFICATION_TYPE END ||' លេខ '||
+	CASE WHEN A.ID_NUMBER IS NULL THEN '.........' ELSE A.ID_NUMBER END||' ចុះថ្ងៃទី '||
+  CASE WHEN A.ISSUE_DAY IS NULL THEN '..........' ELSE A.ISSUE_DAY END ||' ខែ '||
+	CASE WHEN A.ISSUE_MONTH IS NULL THEN '..........' ELSE A.ISSUE_MONTH END||' ឆ្នាំ '||
+	CASE WHEN A.ISSUE_YEAR IS NULL THEN '..........' ELSE A.ISSUE_YEAR END AS SUB_BORROWER
+FROM
+  APP_APPLICATION AP
+  INNER JOIN APP_SUPPLEMENTARY AST ON AST.APPLICATION_ID = AP.ID AND AST.STATUS='t' AND AST.CUSTOMER_TYPE = 'PERSONAL_GUARANTOR'
+	INNER JOIN app_guarantor ag ON ag.supplementary_id = AST.
+	ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id  
+  LEFT JOIN ADM_NATIONALITY ANN ON ANN.ID = CC.NATIONALITY_ID 
+  --IDENTIFICATION
+  LEFT JOIN (
+  SELECT
+    CI.CREATED,
+    CI.APPLICATION_ID,
+    CI.CUSTOMER_ID,
+  CASE
+      
+      WHEN IT.ID_TYPE = 'F' THEN
+      'សៀវភៅគ្រួសារ' 
+      WHEN IT.ID_TYPE = 'CD' THEN
+      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+      WHEN IT.ID_TYPE = 'N' THEN
+      'អត្តសញ្ញាណប័ណ្ណ' 
+      WHEN IT.ID_TYPE = 'P' THEN
+      'លិខិតឆ្លងដែន' 
+      WHEN IT.ID_TYPE = 'MI' THEN
+      'ឆាយា' 
+      WHEN IT.ID_TYPE = 'R' THEN
+      'សៀវភៅស្នាក់នៅ' 
+      WHEN IT.ID_TYPE = 'B' THEN
+      'សំបុត្រកំណើត' 
+    END AS IDENTIFICATION_TYPE,
+    CI.ID_NUMBER,
+
+TO_CHAR( CI.ISSUED_DATE, 'DD' ) AS ISSUE_DAY,
+CASE
+    
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'JAN' THEN
+    'មករា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'FEB' THEN
+    'កុម្ភៈ' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'MAR' THEN
+    'មីនា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'APR' THEN
+    'មេសា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'MAY' THEN
+    'ឧសភា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'JUN' THEN
+    'មិថុនា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'JUL' THEN
+    'កក្កដា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'AUG' THEN
+    'សីហា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'SEP' THEN
+    'កញ្ញា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'OCT' THEN
+    'តុលា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'NOV' THEN
+    'វិច្ឆិកា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'DEC' THEN
+    'ធ្នូ' 
+  END AS ISSUE_MONTH,
+	TO_CHAR( CI.ISSUED_DATE, 'YYYY' ) AS ISSUE_YEAR
+  FROM
+    APP_CUSTOMER_IDENTIFICATION CI
+    INNER JOIN ADM_IDENTIFICATION_TYPE IT ON IT.ID = CI.IDENTIFICATION_TYPE_ID
+    INNER JOIN (
+    SELECT MIN
+      ( CI.ID ) AS CREATED,
+      CI.APPLICATION_ID,
+      CI.CUSTOMER_ID 
+    FROM
+      APP_CUSTOMER_IDENTIFICATION CI 
+    WHERE
+      CI.STATUS = 't' 
+    GROUP BY
+      CI.APPLICATION_ID,
+      CI.CUSTOMER_ID 
+    ) A ON A.CREATED = CI.ID 
+    AND A.APPLICATION_ID = CI.APPLICATION_ID 
+    AND A.CUSTOMER_ID = CI.CUSTOMER_ID 
+  WHERE
+    CI.STATUS = 't' 
+  ) A ON A.APPLICATION_ID = AP.ID 
+  AND CC.ID = A.CUSTOMER_ID 
+	WHERE
+		ap.application_no = '012-A41856' 
+	) A 
+WHERE
+	A.num = 3</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="num">
+          <DataField>num</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="application_no">
+          <DataField>application_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="sub_borrower">
+          <DataField>sub_borrower</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="GUARANTOR_INFO_4">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT
+	* 
+FROM
+	(
+	SELECT ROW_NUMBER
+		( ) OVER ( ORDER BY ag.ID ) AS num,
+  AP.APPLICATION_NO,
+  ' អ្នករួមធានាឈ្មោះ  '||CC.FAMILY_NAME_KH|| ' ' || CC.GIVEN_NAME_KH ||' ភេទ '||
+    CASE
+    WHEN CC.GENDER = 'MALE' THEN
+    'ប្រុស' ELSE'ស្រី' END
+||' សញ្ជាតិ ​'||
+	CASE
+    WHEN ANN.NAME = 'Cambodian' THEN
+    'ខ្មែរ' ELSE '..........' END
+||' ថ្ងៃខែឆ្នាំកំណើត​​ ថ្ងៃទី '||
+  TO_CHAR( CC.DATE_OF_BIRTH, 'DD' )||' ខែ'||
+CASE
+    
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JAN' THEN
+    'មករា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'FEB' THEN
+    'កុម្ភៈ' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAR' THEN
+    'មីនា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'APR' THEN
+    'មេសា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAY' THEN
+    'ឧសភា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUN' THEN
+    'មិថុនា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUL' THEN
+    'កក្កដា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'AUG' THEN
+    'សីហា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'SEP' THEN
+    'កញ្ញា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'OCT' THEN
+    'តុលា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'NOV' THEN
+    'វិច្ឆិកា' 
+    WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'DEC' THEN
+    'ធ្នូ' END
+||' ឆ្នាំ '||
+
+  TO_CHAR( CC.DATE_OF_BIRTH, 'YYYY' )
+
+
+||' ឯកសារសម្គាល់អត្តសញ្ញាណ '||
+CASE WHEN A.IDENTIFICATION_TYPE IS NULL THEN '..........'ELSE A.IDENTIFICATION_TYPE END ||' លេខ '||
+	CASE WHEN A.ID_NUMBER IS NULL THEN '.........' ELSE A.ID_NUMBER END||' ចុះថ្ងៃទី '||
+  CASE WHEN A.ISSUE_DAY IS NULL THEN '..........' ELSE A.ISSUE_DAY END ||' ខែ '||
+	CASE WHEN A.ISSUE_MONTH IS NULL THEN '..........' ELSE A.ISSUE_MONTH END||' ឆ្នាំ '||
+	CASE WHEN A.ISSUE_YEAR IS NULL THEN '..........' ELSE A.ISSUE_YEAR END AS SUB_BORROWER
+FROM
+  APP_APPLICATION AP
+  INNER JOIN APP_SUPPLEMENTARY AST ON AST.APPLICATION_ID = AP.ID AND AST.STATUS='t' AND AST.CUSTOMER_TYPE = 'PERSONAL_GUARANTOR'
+	INNER JOIN app_guarantor ag ON ag.supplementary_id = AST.
+	ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id  
+  LEFT JOIN ADM_NATIONALITY ANN ON ANN.ID = CC.NATIONALITY_ID 
+  --IDENTIFICATION
+  LEFT JOIN (
+  SELECT
+    CI.CREATED,
+    CI.APPLICATION_ID,
+    CI.CUSTOMER_ID,
+  CASE
+      
+      WHEN IT.ID_TYPE = 'F' THEN
+      'សៀវភៅគ្រួសារ' 
+      WHEN IT.ID_TYPE = 'CD' THEN
+      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+      WHEN IT.ID_TYPE = 'N' THEN
+      'អត្តសញ្ញាណប័ណ្ណ' 
+      WHEN IT.ID_TYPE = 'P' THEN
+      'លិខិតឆ្លងដែន' 
+      WHEN IT.ID_TYPE = 'MI' THEN
+      'ឆាយា' 
+      WHEN IT.ID_TYPE = 'R' THEN
+      'សៀវភៅស្នាក់នៅ' 
+      WHEN IT.ID_TYPE = 'B' THEN
+      'សំបុត្រកំណើត' 
+    END AS IDENTIFICATION_TYPE,
+    CI.ID_NUMBER,
+
+TO_CHAR( CI.ISSUED_DATE, 'DD' ) AS ISSUE_DAY,
+CASE
+    
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'JAN' THEN
+    'មករា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'FEB' THEN
+    'កុម្ភៈ' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'MAR' THEN
+    'មីនា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'APR' THEN
+    'មេសា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'MAY' THEN
+    'ឧសភា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'JUN' THEN
+    'មិថុនា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'JUL' THEN
+    'កក្កដា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'AUG' THEN
+    'សីហា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'SEP' THEN
+    'កញ្ញា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'OCT' THEN
+    'តុលា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'NOV' THEN
+    'វិច្ឆិកា' 
+    WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'DEC' THEN
+    'ធ្នូ' 
+  END AS ISSUE_MONTH,
+	TO_CHAR( CI.ISSUED_DATE, 'YYYY' ) AS ISSUE_YEAR
+  FROM
+    APP_CUSTOMER_IDENTIFICATION CI
+    INNER JOIN ADM_IDENTIFICATION_TYPE IT ON IT.ID = CI.IDENTIFICATION_TYPE_ID
+    INNER JOIN (
+    SELECT MIN
+      ( CI.ID ) AS CREATED,
+      CI.APPLICATION_ID,
+      CI.CUSTOMER_ID 
+    FROM
+      APP_CUSTOMER_IDENTIFICATION CI 
+    WHERE
+      CI.STATUS = 't' 
+    GROUP BY
+      CI.APPLICATION_ID,
+      CI.CUSTOMER_ID 
+    ) A ON A.CREATED = CI.ID 
+    AND A.APPLICATION_ID = CI.APPLICATION_ID 
+    AND A.CUSTOMER_ID = CI.CUSTOMER_ID 
+  WHERE
+    CI.STATUS = 't' 
+  ) A ON A.APPLICATION_ID = AP.ID 
+  AND CC.ID = A.CUSTOMER_ID 
+	WHERE
+		ap.application_no = '012-A41856' 
+	) A 
+WHERE
+	A.num = 4</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="num">
+          <DataField>num</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="application_no">
+          <DataField>application_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="sub_borrower">
+          <DataField>sub_borrower</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <ReportItems>
+          <Tablix Name="Tablix1">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>3.55417in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>3.55417in</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox3">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>ព្រះរាជាណាចក្រកម្ពុជា</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>ជាតិ សាសនា ព្រះមហាក្សត្រ</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                                <LineHeight>10pt</LineHeight>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>dd</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Wingdings 2</FontFamily>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>{</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Wingdings</FontFamily>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>cc</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Wingdings 2</FontFamily>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                                <LineHeight>10pt</LineHeight>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>កិច្ចសន្យាធានា និងសំណង</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                                <LineHeight>10pt</LineHeight>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>១.</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value xml:space="preserve"> </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value xml:space="preserve"> </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ឈ្មោះ និង អាសយដ្ឋានរបស់ភាគីនៃកិច្ចសន្យា</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                                <LineHeight>10pt</LineHeight>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>កិច្ចសន្យាធានា និងសំណងនេះធ្វើឡើងដោយ និងរវាង :</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>(</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>១</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>)</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>អ្នកធានាឈ្មោះ​ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!col_name.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value> ភេទ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!gender.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value> សញ្ជាតិ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!nationality.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value> ថ្ងៃខែឆ្នាំកំណើត ថ្ងៃទី </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!dob_day.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>  ខែ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!dob_month.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>  ឆ្នាំ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!dob_year.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value> ឯកសារសម្គាល់អត្តសញ្ញាណ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!identification_type.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>  លេខ​ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!id_number.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!sub_borrower.Value, "GUANRATOR_INFO_2")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!sub_borrower.Value, "GUANRATOR_INFO_3")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!sub_borrower.Value, "GUARANTOR_INFO_4")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <HangingIndent>14.2pt</HangingIndent>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value> ដែលមានអាសយដ្ឋានផ្ទះលេខ</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!house_no.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>  ផ្លូវ .......... ក្រុម </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!group_no.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value> ភូមិ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!village_kh.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>  ឆ្នាំ ឃុំ/សង្កាត់ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!commune_kh.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value> ស្រុក/ខណ្ឌ/ក្រុង </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!district_kh.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value> ខេត្ត/រាជធានី </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!province_kh.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value xml:space="preserve">  </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>(</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>តទៅហៅថាភាគី​ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>“</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ក</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>”</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>)​</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>។</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>(</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>២</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>)</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>​ម្ចាស់បំណុលឈ្មោះ​ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ធនាគារ ហ្វីលីព ភីអិលស៊ី សាខា </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!name.Value, "BRANCH_NAME")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value xml:space="preserve"> </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ជាក្រុមហ៊ុនមហាជនទទួលខុសត្រូវមានកម្រិត ដែលត្រូវបានចុះបញ្ជី ពាណិជ្ជកម្មក្រោមលេខ ០០០០០២៩២ ចុះថ្ងៃទី ១៩ ខែ មិថុនា ឆ្នាំ ២០០៩ និងទទួលបានអាជ្ញាប័ណ្ណធ្វើប្រតិបត្តិការធនាគារស្របច្បាប់នៃព្រះរាជាណា ចក្រកម្ពុជា</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value xml:space="preserve"> </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>និងមានអាសយដ្ឋាននៅផ្ទះលេខ</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!house_no.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>  ផ្លូវ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!steet_no.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value> ក្រុម </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!group_no.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value> ភូមិ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!village_kh.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>  ឃុំ/សង្កាត់ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!commune_kh.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value> ស្រុក/ខណ្ឌ/ក្រុង </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!district_kh.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value> ខេត្ត/រាជធានី </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!province_kh.Value, "GUANRATOR_INFO")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value xml:space="preserve"> </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>(</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>តទៅហៅថាភាគី​ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>“</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ខ</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>”</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>)</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>។</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <HangingIndent>14.2pt</HangingIndent>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>២. ការព្រមព្រៀងធានា</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value xml:space="preserve">        </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>2&gt;1</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Limon S1</FontFamily>
+                                    <FontSize>18pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value xml:space="preserve">     </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ភាគី </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>“</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ក</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>” </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>បាន​ព្រមព្រៀងគ្នា​ដោយស្ម័គ្រចិត្តធើ្វ​ជា​អ្នកធានា​​ឱ្យអ្នកខ្ចីដូចមានឈ្មោះនៅក្នុងកិច្ចសន្យាខ្ចីបរិភោគ ដែលមានគណនីឥណទាន​លេខ ..................................................................... ចុះថ្ងៃ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=First(Fields!to_char.Value, "APPROVAL_DATE")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value> ។</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <HangingIndent>-28.35pt</HangingIndent>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value xml:space="preserve">         </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>2&gt;2</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Limon S1</FontFamily>
+                                    <FontSize>18pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value xml:space="preserve">     </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>7pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ភាគី </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>“</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ក</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>” </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>សុខ​ចិត្ត​​បង់​សង​​ជំនួស​នូវប្រាក់ដើម ការប្រាក់ និងប្រាក់ពិន័យ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>(</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ប្រសិនបើមាន</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>)</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value> មក​ឱ្យ​​ភាគី </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>“</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ខ</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>” </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ឱ្យបានគ្រប់ចំនួន ​​ប្រសិនបើ​​អ្នកខ្ចី​​មិន​បាន​​អនុវត្ត​​កាតព្វ​កិច្ច​ចម្បង​​របស់​​ខ្លួន​​ដោយ​មិន​​បាន​​ទូទាត់សង​ប្រាក់​ឱ្យ​ភាគី </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>“</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ខ</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>”</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>។</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <HangingIndent>-28.35pt</HangingIndent>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>កិច្ចសន្យានេះធ្វើឡើងជា ២ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>(</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ពីរ</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>)</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value> ច្បាប់ នៅថ្ងៃ ............................................................... ខែ ............................................ ឆ្នាំ ........................................................ ព.ស ....................</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                                <LineHeight>10pt</LineHeight>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>........................................... ថ្ងៃទី .................................. ខែ .............................. ឆ្នាំ ................................. ។</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox3</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>2</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox9">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>ធនាគារ ហ្វីលីព ភីអិលស៊ី</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                    <Color>#000000</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>អ្នកតំណាងពេញសិទ្ធិ</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                    <Color>#000000</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox9</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox10">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>ភាគី​ </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>“</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ក</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>”</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>.......................           .......................</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Times New Roman</FontFamily>
+                                    <FontSize>8.5pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox10</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>GUANRATOR_INFO</DataSetName>
+            <Left>0.01389in</Left>
+            <Height>0.5in</Height>
+            <Width>7.10834in</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+            </Style>
+          </Tablix>
+        </ReportItems>
+        <Height>0.50833in</Height>
+        <Style />
+      </Body>
+      <Width>7.12223in</Width>
+      <Page>
+        <PageFooter>
+          <Height>0.26389in</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="Textbox1">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Micro_Guarantee Agreement_V1.2.docx</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Arial</FontFamily>
+                        <FontSize>6pt</FontSize>
+                        <FontWeight>Normal</FontWeight>
+                        <TextDecoration>None</TextDecoration>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Right</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>0.01389in</Top>
+              <Left>3.64722in</Left>
+              <Height>0.25in</Height>
+              <Width>3.475in</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <TopBorder>
+                  <Style>Dotted</Style>
+                </TopBorder>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox2">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>2022-11-22</Value>
+                      <Style>
+                        <FontStyle>Normal</FontStyle>
+                        <FontFamily>Arial</FontFamily>
+                        <FontSize>6pt</FontSize>
+                        <FontWeight>Normal</FontWeight>
+                        <TextDecoration>None</TextDecoration>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox2</rd:DefaultName>
+              <Top>0.01389in</Top>
+              <Height>0.25in</Height>
+              <Width>3.63333in</Width>
+              <ZIndex>1</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <TopBorder>
+                  <Style>Dotted</Style>
+                </TopBorder>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageFooter>
+        <PageHeight>11.69in</PageHeight>
+        <PageWidth>8.27in</PageWidth>
+        <LeftMargin>0.79in</LeftMargin>
+        <RightMargin>0.39in</RightMargin>
+        <TopMargin>0.3in</TopMargin>
+        <BottomMargin>0.4in</BottomMargin>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>5fa7fc56-59f4-4f73-876f-fa9889b20305</rd:ReportID>
+</Report>

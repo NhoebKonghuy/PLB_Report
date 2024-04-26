@@ -36,14 +36,18 @@ namespace LOS_PLB_Report
         public DataTable getPostgreSQLDataTable(string sql)
         {
             DataTable dt = new DataTable();
-            NpgsqlCommand cmd = new NpgsqlCommand(sql, conn);
-            NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(cmd);
-            adapter.Fill(dt);
+           
+                NpgsqlCommand cmd = new NpgsqlCommand(sql, conn);
+                NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(cmd);
+                adapter.Fill(dt);
+           
             return dt;
         }
 
         public void generateReport(ReportViewer reportViewer, string reportName, ReportParameter[] parameters, params ReportDataSource[] reportDataSources)
         {
+            reportViewer.KeepSessionAlive = false;
+            reportViewer.AsyncRendering = false;
             reportViewer.SizeToReportContent = true;
             reportViewer.LocalReport.ReportPath = HttpContext.Current.Server.MapPath(String.Format("~/Reports/{0}.rdlc", reportName));
             reportViewer.LocalReport.DataSources.Clear();
