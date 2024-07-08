@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>D:\OneDrive\Desktop\Deploy PLB\Report</_PublishTargetUrl>
-    <History>True|2024-04-26T03:11:23.3596332Z;True|2024-04-26T09:19:04.4061581+07:00;True|2024-04-22T11:53:05.5543989+07:00;True|2024-04-22T11:41:00.3908536+07:00;False|2024-04-22T11:40:31.2630144+07:00;</History>
+    <History>True|2024-07-05T10:44:13.6778877Z;True|2024-07-05T17:43:47.3954880+07:00;True|2024-07-05T17:36:38.0097271+07:00;True|2024-07-05T15:44:18.0916546+07:00;True|2024-07-05T15:40:39.7581358+07:00;True|2024-07-05T15:39:12.2078622+07:00;True|2024-07-05T15:39:05.8556561+07:00;True|2024-07-04T17:06:28.5051291+07:00;True|2024-07-04T17:00:12.6053020+07:00;True|2024-07-04T16:13:52.3760235+07:00;True|2024-07-04T15:56:54.8366699+07:00;True|2024-06-27T16:22:00.8935760+07:00;True|2024-05-29T13:46:30.0733988+07:00;True|2024-05-24T10:08:26.2543654+07:00;True|2024-05-24T09:48:24.0898924+07:00;True|2024-05-24T08:22:06.8852950+07:00;True|2024-05-23T15:37:44.9670483+07:00;True|2024-05-23T12:18:54.3706839+07:00;True|2024-05-23T12:12:10.3050377+07:00;False|2024-05-23T12:10:05.7548490+07:00;False|2024-05-23T12:04:34.6528499+07:00;False|2024-05-23T12:03:50.3184479+07:00;False|2024-05-23T12:03:18.9887174+07:00;False|2024-05-23T12:00:13.5970750+07:00;False|2024-05-23T11:57:40.8560247+07:00;False|2024-05-23T11:16:49.8604948+07:00;False|2024-05-23T11:15:49.3836374+07:00;True|2024-05-08T16:08:23.7845439+07:00;True|2024-05-08T14:22:15.6536373+07:00;True|2024-05-08T14:03:29.4505783+07:00;True|2024-05-08T13:53:20.2313586+07:00;True|2024-04-29T10:00:53.1662020+07:00;True|2024-04-26T10:11:23.3596332+07:00;True|2024-04-26T09:19:04.4061581+07:00;True|2024-04-22T11:53:05.5543989+07:00;True|2024-04-22T11:41:00.3908536+07:00;False|2024-04-22T11:40:31.2630144+07:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -121,10 +121,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>01/10/2024 16:41:12</publishTime>
     </File>
     <File Include="bin/LOS-PLB-Report.dll">
-      <publishTime>04/26/2024 10:11:22</publishTime>
+      <publishTime>07/05/2024 17:44:13</publishTime>
     </File>
     <File Include="bin/LOS-PLB-Report.pdb">
-      <publishTime>04/26/2024 10:11:22</publishTime>
+      <publishTime>07/05/2024 17:44:13</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.FriendlyUrls.dll">
       <publishTime>03/06/2024 10:46:37</publishTime>
@@ -547,31 +547,43 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>01/09/2024 09:21:27</publishTime>
     </File>
     <File Include="Reports/Colleteral_Receipt_Update.aspx">
-      <publishTime>04/01/2024 13:52:54</publishTime>
+      <publishTime>07/04/2024 15:51:13</publishTime>
     </File>
     <File Include="Reports/Facility_Agrement_Clean_Loan.aspx">
-      <publishTime>04/09/2024 11:15:31</publishTime>
+      <publishTime>07/04/2024 15:53:08</publishTime>
     </File>
     <File Include="Reports/Facility_Agrement_Clean_Loan_For_Normal_Customer.aspx">
-      <publishTime>04/10/2024 22:47:50</publishTime>
+      <publishTime>07/04/2024 15:55:30</publishTime>
+    </File>
+    <File Include="Reports/Guarantee_Agreement.aspx">
+      <publishTime>07/02/2024 14:06:42</publishTime>
     </File>
     <File Include="Reports/Individual_Customer_Information.aspx">
-      <publishTime>04/18/2024 10:09:48</publishTime>
+      <publishTime>05/23/2024 12:04:08</publishTime>
     </File>
     <File Include="Reports/Individual_Customer_Information.rdlc">
       <publishTime>01/10/2024 15:18:07</publishTime>
     </File>
     <File Include="Reports/Micro_Guarantee_Agreement.aspx">
-      <publishTime>04/10/2024 11:30:25</publishTime>
+      <publishTime>05/23/2024 12:04:12</publishTime>
     </File>
     <File Include="Reports/Micro_Hypothec_Agreement.aspx">
-      <publishTime>04/12/2024 14:12:37</publishTime>
+      <publishTime>07/04/2024 15:56:20</publishTime>
     </File>
     <File Include="Reports/Micro_Hypothec_Agreement_join.aspx">
-      <publishTime>04/18/2024 09:15:15</publishTime>
+      <publishTime>07/04/2024 15:51:46</publishTime>
     </File>
     <File Include="Reports/Micro_Loan_Application_update.aspx">
-      <publishTime>04/02/2024 14:00:36</publishTime>
+      <publishTime>05/23/2024 12:04:22</publishTime>
+    </File>
+    <File Include="Reports/Micro_Loan_Appraisal_Form.aspx">
+      <publishTime>05/29/2024 12:02:00</publishTime>
+    </File>
+    <File Include="Reports/Micro_Loan_Resultion.aspx">
+      <publishTime>07/02/2024 10:45:21</publishTime>
+    </File>
+    <File Include="Reports/Report.aspx">
+      <publishTime>05/08/2024 16:03:29</publishTime>
     </File>
     <File Include="Scripts/bootstrap.bundle.js">
       <publishTime>03/06/2024 10:46:35</publishTime>
@@ -718,7 +730,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>03/06/2024 10:46:36</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>04/26/2024 10:11:23</publishTime>
+      <publishTime>07/05/2024 17:44:13</publishTime>
     </File>
   </ItemGroup>
 </Project>

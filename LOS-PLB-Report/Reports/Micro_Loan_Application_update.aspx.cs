@@ -111,18 +111,20 @@ namespace LOS_PLB_Report.Reports
 										INNER JOIN adm_identification_type ait ON ait.ID = aci.identification_type_id
 									WHERE app.application_no= '" + applicationNo + "'";
                 var sqlemployee_work = @"SELECT
-								ap.application_no,
-								cir.company_name,
-								cir.length_of_business,
-								cir.primary_income,
-								cir.position,
-								cir.other_benefit 
-							FROM
-								app_application ap
-								INNER JOIN app_application_detail apd ON apd.application_id = ap.
-								ID INNER JOIN cus_customer cc ON apd.customer_id = cc.
-								ID INNER JOIN app_customer_income_employee cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
-							WHERE ap.application_no= '" + applicationNo + "'";
+										ap.application_no,
+										cir.company_name,
+										cir.length_of_business,
+										cir.base_salary,
+										cir.position,
+										cir.other_benefit,
+										ac.currency
+									FROM
+										app_application ap
+										INNER JOIN app_application_detail apd ON apd.application_id = ap.
+										ID INNER JOIN cus_customer cc ON apd.customer_id = cc.
+										ID INNER JOIN app_customer_income_employee cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
+										inner join adm_currency ac on ac.id = apd.currency_id 
+									WHERE ap.application_no= '" + applicationNo + "'";
                 var sqlsub_employee1 = @"SELECT
 								* 
 							FROM
@@ -494,7 +496,7 @@ FROM
 
 									AP.APPLICATION_NO ,
 
-									COL.DOCUMENT_TITLE ,
+									COL.Collateral_TITLE as DOCUMENT_TITLE,
 
 									COL.COLLATERAL_NO ,
 
@@ -502,13 +504,14 @@ FROM
 
 									SSU.NAME AS ISSUE_BY ,
 
-									CCD.MARKET_VALUE
+									ACVE.fair_market_value as MARKET_VALUE
 
 									FROM APP_APPLICATION AP 
 									INNER JOIN APP_COL_COLLATERAL_ASSET CCA ON CCA.APPLICATION_ID = AP.ID AND CCA.STATUS = 't'
 									INNER JOIN APP_COL_COLLATERAL_SECURE CS ON CS.APP_COLLATERAL_ASSET_ID = CCA.ID AND CS.STATUS = 't'
 									INNER JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID AND COL.STATUS = 't'
 									INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID AND CCD.STATUS = 't'
+									LEFT JOIN app_col_value_evaluation ACVE ON ACVE.app_collateral_detail_ID = CCD.ID AND ACVE.STATUS = 't'
 									LEFT JOIN ADM_ISSUE_BY SSU ON SSU.ID = CCD.ISSUE_BY_ID
 									WHERE AP.application_no = '" + applicationNo + "'";
                 var sqlIV_INFO = @"SELECT

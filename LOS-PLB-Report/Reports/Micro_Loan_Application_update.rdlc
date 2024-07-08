@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.9.34622.214</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-04-10T06:58:24.4118853Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-06-19T01:20:34.3194520Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -228,50 +228,74 @@ WHERE app.application_no='012-A892128809'</CommandText>
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
-	ap.application_no,
-	cir.company_name,
-	cir.length_of_business,
-	cir.base_salary,
-	cir.position,
-	cir.other_benefit,
-	ac.currency
-FROM
-	app_application ap
-	INNER JOIN app_application_detail apd ON apd.application_id = ap.
-	ID INNER JOIN cus_customer cc ON apd.customer_id = cc.
-	ID INNER JOIN app_customer_income_employee cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
-	inner join adm_currency ac on ac.id = apd.currency_id 
-	
-	
-	</CommandText>
+								* 
+							FROM
+								(
+								SELECT ROW_NUMBER
+									( ) OVER ( ORDER BY asu.ID ) AS num,
+									ap.application_no,
+									ag.full_name_kh,
+									ait.NAME,
+									ai.id_number,
+									cc.phone_number,
+									CAR.NAME AS career,
+									cir.length_of_business,
+									cir.primary_income,
+									'' AS other_income 
+								FROM
+									app_application ap
+									INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
+									AND asu.status = 't' 
+									AND asu.customer_type = 'PERSONAL_GUARANTOR'
+									INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
+									ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
+									INNER JOIN app_customer_identification ai ON ai.customer_id = cc.ID 
+									AND ai.application_id = ap.
+									ID INNER JOIN adm_identification_type ait ON ait.ID = ai.identification_type_id
+									LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
+									AND cc.ID = cir.customer_id 
+									LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
+								   WHERE ap.application_no = '" + applicationNo + "') A WHERE A.num = 2</CommandText>
       </Query>
       <Fields>
+        <Field Name="num">
+          <DataField>num</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
         <Field Name="application_no">
           <DataField>application_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="company_name">
-          <DataField>company_name</DataField>
+        <Field Name="full_name_kh">
+          <DataField>full_name_kh</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="length_of_business">
           <DataField>length_of_business</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="base_salary">
-          <DataField>base_salary</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
-        </Field>
-        <Field Name="position">
-          <DataField>position</DataField>
+        <Field Name="name">
+          <DataField>name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="other_benefit">
-          <DataField>other_benefit</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+        <Field Name="id_number">
+          <DataField>id_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="currency">
-          <DataField>currency</DataField>
+        <Field Name="phone_number">
+          <DataField>phone_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="career">
+          <DataField>career</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="primary_income">
+          <DataField>primary_income</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="other_income">
+          <DataField>other_income</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -472,31 +496,29 @@ WHERE
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
-	* 
-FROM
-	(
-	SELECT ROW_NUMBER
-		( ) OVER ( ORDER BY asd.ID ) AS num,
-		ap.application_no,
-		cir.career,
-		cir.length_of_business,
-		cir.business_income,
-		'' as other_income
-	FROM
-		app_application ap
-		 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-		AND asu.status = 't' 
-		AND asu.customer_type = 'CO_BORROWER'
-		inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-		AND asd.status = 't'
-		inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-		INNER JOIN app_customer_income_business cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
+											* 
+										FROM
+											(
+											SELECT ROW_NUMBER
+												( ) OVER ( ORDER BY asd.ID ) AS num,
+												ap.application_no,
+												CAR.NAME AS career,
+												cir.length_of_business,
+												cir.primary_income,
+												'' as other_income
+											FROM
+												app_application ap
+												 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
+												AND asu.status = 't' 
+												AND asu.customer_type = 'CO_BORROWER'
+												inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
+												AND asd.status = 't'
+												inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
+												INNER JOIN app_customer_income_business cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
+												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
 		
-	WHERE
-		ap.application_no = '012-A41856' 
-	) A 
-WHERE
-	A.num = 1</CommandText>
+											WHERE
+												ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 1</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -509,15 +531,15 @@ WHERE
         </Field>
         <Field Name="career">
           <DataField>career</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="length_of_business">
           <DataField>length_of_business</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="business_income">
-          <DataField>business_income</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+        <Field Name="primary_income">
+          <DataField>primary_income</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="other_income">
           <DataField>other_income</DataField>
@@ -529,31 +551,30 @@ WHERE
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
-	* 
-FROM
-	(
-	SELECT ROW_NUMBER
-		( ) OVER ( ORDER BY asd.ID ) AS num,
-		ap.application_no,
-		cir.career,
-		cir.length_of_business,
-		cir.business_income,
-		'' as other_income
-	FROM
-		app_application ap
-		 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-		AND asu.status = 't' 
-		AND asu.customer_type = 'CO_BORROWER'
-		inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-		AND asd.status = 't'
-		inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-		INNER JOIN app_customer_income_business cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
+											* 
+										FROM
+											(
+											SELECT ROW_NUMBER
+												( ) OVER ( ORDER BY asd.ID ) AS num,
+												ap.application_no,
+												CAR.NAME AS career,
+												cir.length_of_business,
+												cir.primary_income,
+												'' as other_income
+											FROM
+												app_application ap
+												 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
+												AND asu.status = 't' 
+												AND asu.customer_type = 'CO_BORROWER'
+												inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
+												AND asd.status = 't'
+												inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
+												INNER JOIN app_customer_income_business cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
+												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
 		
-	WHERE
-		ap.application_no = '012-A41856' 
-	) A 
-WHERE
-	A.num = 2</CommandText>
+											WHERE
+												ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 2
+</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -566,15 +587,15 @@ WHERE
         </Field>
         <Field Name="career">
           <DataField>career</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="length_of_business">
           <DataField>length_of_business</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="business_income">
-          <DataField>business_income</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+        <Field Name="primary_income">
+          <DataField>primary_income</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="other_income">
           <DataField>other_income</DataField>
@@ -586,31 +607,29 @@ WHERE
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
-	* 
-FROM
-	(
-	SELECT ROW_NUMBER
-		( ) OVER ( ORDER BY asd.ID ) AS num,
-		ap.application_no,
-		cir.career,
-		cir.length_of_business,
-		cir.business_income,
-		'' as other_income
-	FROM
-		app_application ap
-		 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-		AND asu.status = 't' 
-		AND asu.customer_type = 'CO_BORROWER'
-		inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-		AND asd.status = 't'
-		inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-		INNER JOIN app_customer_income_business cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
+											* 
+										FROM
+											(
+											SELECT ROW_NUMBER
+												( ) OVER ( ORDER BY asd.ID ) AS num,
+												ap.application_no,
+												CAR.NAME AS career,
+												cir.length_of_business,
+												cir.primary_income,
+												'' as other_income
+											FROM
+												app_application ap
+												 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
+												AND asu.status = 't' 
+												AND asu.customer_type = 'CO_BORROWER'
+												inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
+												AND asd.status = 't'
+												inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
+												INNER JOIN app_customer_income_business cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
+												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
 		
-	WHERE
-		ap.application_no = '012-A41856' 
-	) A 
-WHERE
-	A.num = 3</CommandText>
+											WHERE
+												ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 3</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -623,15 +642,15 @@ WHERE
         </Field>
         <Field Name="career">
           <DataField>career</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="length_of_business">
           <DataField>length_of_business</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="business_income">
-          <DataField>business_income</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+        <Field Name="primary_income">
+          <DataField>primary_income</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="other_income">
           <DataField>other_income</DataField>
@@ -644,7 +663,7 @@ WHERE
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
 	ap.application_no,
-		cir.career,
+		AC.name as career,
 		cir.length_of_business,
 		cir.business_income,
 		'' as other_income 
@@ -652,7 +671,8 @@ FROM
 	app_application ap
 	INNER JOIN app_application_detail apd ON apd.application_id = ap.
 	ID INNER JOIN cus_customer cc ON apd.customer_id = cc.
-	ID INNER JOIN app_customer_income_business cir ON cir.application_id = ap.ID and cc.id = cir.customer_id</CommandText>
+	ID INNER JOIN app_customer_income_business cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
+	INNER JOIN adm_career AC ON AC.ID = CIR.career_id</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -661,7 +681,7 @@ FROM
         </Field>
         <Field Name="career">
           <DataField>career</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="length_of_business">
           <DataField>length_of_business</DataField>
@@ -681,53 +701,50 @@ FROM
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
-	* 
-FROM
-	(
-	SELECT ROW_NUMBER
-		( ) OVER ( ORDER BY asu.ID ) AS num,
-		ap.application_no,
-		ag.full_name_kh,
-		Ci.id_number,
-		cc.phone_number,
-		cir.career,
-		cir.length_of_business||' ខែ' as length_of_bus,
-		'' AS other_income,
-		asu.customer_type,
-		CASE
-      WHEN IT.ID_TYPE = 'F' THEN
-      'សៀវភៅគ្រួសារ' 
-      WHEN IT.ID_TYPE = 'CD' THEN
-      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-      WHEN IT.ID_TYPE = 'N' THEN
-      'អត្តសញ្ញាណប័ណ្ណ' 
-      WHEN IT.ID_TYPE = 'P' THEN
-      'លិខិតឆ្លងដែន' 
-      WHEN IT.ID_TYPE = 'MI' THEN
-      'ឆាយា' 
-      WHEN IT.ID_TYPE = 'R' THEN
-      'សៀវភៅស្នាក់នៅ' 
-      WHEN IT.ID_TYPE = 'B' THEN
-      'សំបុត្រកំណើត' 
-    END AS IDENTIFICATION_TYPE
-	FROM
-		app_application ap
-		INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
-		AND asu.status = 't' 
-		AND asu.customer_type IN ('PERSONAL_GUARANTOR','MORTGAGOR')
-		INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
-		ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
-		left JOIN app_customer_identification Ci ON Ci.customer_id = cc.ID 
-		AND Ci.application_id = ap.
-		ID left JOIN adm_identification_type it ON it.ID = Ci.identification_type_id
-		LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
-		AND cc.ID = cir.customer_id 
-		
-	WHERE
-		ap.application_no = '012-A892128809' 
-	) A 
-WHERE
-	A.num = 1</CommandText>
+											* 
+										FROM
+											(
+											SELECT ROW_NUMBER
+												( ) OVER ( ORDER BY asu.ID ) AS num,
+												ap.application_no,
+												ag.full_name_kh,
+												Ci.id_number,
+												cc.phone_number,
+												CAR.NAME AS career,
+												cir.length_of_business||' ខែ' as length_of_bus,
+												'' AS other_income,
+												asu.customer_type,
+												CASE
+											  WHEN IT.ID_TYPE = 'F' THEN
+											  'សៀវភៅគ្រួសារ' 
+											  WHEN IT.ID_TYPE = 'CD' THEN
+											  'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+											  WHEN IT.ID_TYPE = 'N' THEN
+											  'អត្តសញ្ញាណប័ណ្ណ' 
+											  WHEN IT.ID_TYPE = 'P' THEN
+											  'លិខិតឆ្លងដែន' 
+											  WHEN IT.ID_TYPE = 'MI' THEN
+											  'ឆាយា' 
+											  WHEN IT.ID_TYPE = 'R' THEN
+											  'សៀវភៅស្នាក់នៅ' 
+											  WHEN IT.ID_TYPE = 'B' THEN
+											  'សំបុត្រកំណើត' 
+											END AS IDENTIFICATION_TYPE
+											FROM
+												app_application ap
+												INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
+												AND asu.status = 't' 
+												AND asu.customer_type IN ('PERSONAL_GUARANTOR','MORTGAGOR')
+												INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
+												ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
+												left JOIN app_customer_identification Ci ON Ci.customer_id = cc.ID 
+												AND Ci.application_id = ap.
+												ID left JOIN adm_identification_type it ON it.ID = Ci.identification_type_id
+												LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
+												AND cc.ID = cir.customer_id 
+												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
+											WHERE
+											ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 1</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -752,7 +769,7 @@ WHERE
         </Field>
         <Field Name="career">
           <DataField>career</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="length_of_bus">
           <DataField>length_of_bus</DataField>
@@ -776,53 +793,51 @@ WHERE
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
-	* 
-FROM
-	(
-	SELECT ROW_NUMBER
-		( ) OVER ( ORDER BY asu.ID ) AS num,
-		ap.application_no,
-		ag.full_name_kh,
-		Ci.id_number,
-		cc.phone_number,
-		cir.career,
-		cir.length_of_business||' ខែ' as length_of_bus,
-		'' AS other_income,
-		asu.customer_type,
-		CASE
-      WHEN IT.ID_TYPE = 'F' THEN
-      'សៀវភៅគ្រួសារ' 
-      WHEN IT.ID_TYPE = 'CD' THEN
-      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-      WHEN IT.ID_TYPE = 'N' THEN
-      'អត្តសញ្ញាណប័ណ្ណ' 
-      WHEN IT.ID_TYPE = 'P' THEN
-      'លិខិតឆ្លងដែន' 
-      WHEN IT.ID_TYPE = 'MI' THEN
-      'ឆាយា' 
-      WHEN IT.ID_TYPE = 'R' THEN
-      'សៀវភៅស្នាក់នៅ' 
-      WHEN IT.ID_TYPE = 'B' THEN
-      'សំបុត្រកំណើត' 
-    END AS IDENTIFICATION_TYPE
-	FROM
-		app_application ap
-		INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
-		AND asu.status = 't' 
-		AND asu.customer_type IN ('PERSONAL_GUARANTOR','MORTGAGOR')
-		INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
-		ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
-		left JOIN app_customer_identification Ci ON Ci.customer_id = cc.ID 
-		AND Ci.application_id = ap.
-		ID left JOIN adm_identification_type it ON it.ID = Ci.identification_type_id
-		LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
-		AND cc.ID = cir.customer_id 
-		
-	WHERE
-		ap.application_no = '012-A892128809' 
-	) A 
-WHERE
-	A.num = 2</CommandText>
+											* 
+										FROM
+											(
+											SELECT ROW_NUMBER
+												( ) OVER ( ORDER BY asu.ID ) AS num,
+												ap.application_no,
+												ag.full_name_kh,
+												Ci.id_number,
+												cc.phone_number,
+												CAR.NAME AS career,
+												cir.length_of_business||' ខែ' as length_of_bus,
+												'' AS other_income,
+												asu.customer_type,
+												CASE
+											  WHEN IT.ID_TYPE = 'F' THEN
+											  'សៀវភៅគ្រួសារ' 
+											  WHEN IT.ID_TYPE = 'CD' THEN
+											  'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+											  WHEN IT.ID_TYPE = 'N' THEN
+											  'អត្តសញ្ញាណប័ណ្ណ' 
+											  WHEN IT.ID_TYPE = 'P' THEN
+											  'លិខិតឆ្លងដែន' 
+											  WHEN IT.ID_TYPE = 'MI' THEN
+											  'ឆាយា' 
+											  WHEN IT.ID_TYPE = 'R' THEN
+											  'សៀវភៅស្នាក់នៅ' 
+											  WHEN IT.ID_TYPE = 'B' THEN
+											  'សំបុត្រកំណើត' 
+											END AS IDENTIFICATION_TYPE
+											FROM
+												app_application ap
+												INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
+												AND asu.status = 't' 
+												AND asu.customer_type IN ('PERSONAL_GUARANTOR','MORTGAGOR')
+												INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
+												ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
+												left JOIN app_customer_identification Ci ON Ci.customer_id = cc.ID 
+												AND Ci.application_id = ap.
+												ID left JOIN adm_identification_type it ON it.ID = Ci.identification_type_id
+												LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
+												AND cc.ID = cir.customer_id 
+												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
+											WHERE
+											ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 2
+</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -847,7 +862,7 @@ WHERE
         </Field>
         <Field Name="career">
           <DataField>career</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="length_of_bus">
           <DataField>length_of_bus</DataField>
@@ -871,53 +886,50 @@ WHERE
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
-	* 
-FROM
-	(
-	SELECT ROW_NUMBER
-		( ) OVER ( ORDER BY asu.ID ) AS num,
-		ap.application_no,
-		ag.full_name_kh,
-		Ci.id_number,
-		cc.phone_number,
-		cir.career,
-		cir.length_of_business||' ខែ' as length_of_bus,
-		'' AS other_income,
-		asu.customer_type,
-		CASE
-      WHEN IT.ID_TYPE = 'F' THEN
-      'សៀវភៅគ្រួសារ' 
-      WHEN IT.ID_TYPE = 'CD' THEN
-      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-      WHEN IT.ID_TYPE = 'N' THEN
-      'អត្តសញ្ញាណប័ណ្ណ' 
-      WHEN IT.ID_TYPE = 'P' THEN
-      'លិខិតឆ្លងដែន' 
-      WHEN IT.ID_TYPE = 'MI' THEN
-      'ឆាយា' 
-      WHEN IT.ID_TYPE = 'R' THEN
-      'សៀវភៅស្នាក់នៅ' 
-      WHEN IT.ID_TYPE = 'B' THEN
-      'សំបុត្រកំណើត' 
-    END AS IDENTIFICATION_TYPE
-	FROM
-		app_application ap
-		INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
-		AND asu.status = 't' 
-		AND asu.customer_type IN ('PERSONAL_GUARANTOR','MORTGAGOR')
-		INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
-		ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
-		left JOIN app_customer_identification Ci ON Ci.customer_id = cc.ID 
-		AND Ci.application_id = ap.
-		ID left JOIN adm_identification_type it ON it.ID = Ci.identification_type_id
-		LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
-		AND cc.ID = cir.customer_id 
-		
-	WHERE
-		ap.application_no = '012-A892128809' 
-	) A 
-WHERE
-	A.num = 3</CommandText>
+											* 
+										FROM
+											(
+											SELECT ROW_NUMBER
+												( ) OVER ( ORDER BY asu.ID ) AS num,
+												ap.application_no,
+												ag.full_name_kh,
+												Ci.id_number,
+												cc.phone_number,
+												CAR.NAME AS career,
+												cir.length_of_business||' ខែ' as length_of_bus,
+												'' AS other_income,
+												asu.customer_type,
+												CASE
+											  WHEN IT.ID_TYPE = 'F' THEN
+											  'សៀវភៅគ្រួសារ' 
+											  WHEN IT.ID_TYPE = 'CD' THEN
+											  'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+											  WHEN IT.ID_TYPE = 'N' THEN
+											  'អត្តសញ្ញាណប័ណ្ណ' 
+											  WHEN IT.ID_TYPE = 'P' THEN
+											  'លិខិតឆ្លងដែន' 
+											  WHEN IT.ID_TYPE = 'MI' THEN
+											  'ឆាយា' 
+											  WHEN IT.ID_TYPE = 'R' THEN
+											  'សៀវភៅស្នាក់នៅ' 
+											  WHEN IT.ID_TYPE = 'B' THEN
+											  'សំបុត្រកំណើត' 
+											END AS IDENTIFICATION_TYPE
+											FROM
+												app_application ap
+												INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
+												AND asu.status = 't' 
+												AND asu.customer_type IN ('PERSONAL_GUARANTOR','MORTGAGOR')
+												INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
+												ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
+												left JOIN app_customer_identification Ci ON Ci.customer_id = cc.ID 
+												AND Ci.application_id = ap.
+												ID left JOIN adm_identification_type it ON it.ID = Ci.identification_type_id
+												LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
+												AND cc.ID = cir.customer_id 
+												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
+											WHERE
+											ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 3</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -942,7 +954,7 @@ WHERE
         </Field>
         <Field Name="career">
           <DataField>career</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="length_of_bus">
           <DataField>length_of_bus</DataField>
@@ -966,53 +978,50 @@ WHERE
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
-	* 
-FROM
-	(
-	SELECT ROW_NUMBER
-		( ) OVER ( ORDER BY asu.ID ) AS num,
-		ap.application_no,
-		ag.full_name_kh,
-		Ci.id_number,
-		cc.phone_number,
-		cir.career,
-		cir.length_of_business||' ខែ' as length_of_bus,
-		'' AS other_income,
-		asu.customer_type,
-		CASE
-      WHEN IT.ID_TYPE = 'F' THEN
-      'សៀវភៅគ្រួសារ' 
-      WHEN IT.ID_TYPE = 'CD' THEN
-      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-      WHEN IT.ID_TYPE = 'N' THEN
-      'អត្តសញ្ញាណប័ណ្ណ' 
-      WHEN IT.ID_TYPE = 'P' THEN
-      'លិខិតឆ្លងដែន' 
-      WHEN IT.ID_TYPE = 'MI' THEN
-      'ឆាយា' 
-      WHEN IT.ID_TYPE = 'R' THEN
-      'សៀវភៅស្នាក់នៅ' 
-      WHEN IT.ID_TYPE = 'B' THEN
-      'សំបុត្រកំណើត' 
-    END AS IDENTIFICATION_TYPE
-	FROM
-		app_application ap
-		INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
-		AND asu.status = 't' 
-		AND asu.customer_type IN ('PERSONAL_GUARANTOR','MORTGAGOR')
-		INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
-		ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
-		left JOIN app_customer_identification Ci ON Ci.customer_id = cc.ID 
-		AND Ci.application_id = ap.
-		ID left JOIN adm_identification_type it ON it.ID = Ci.identification_type_id
-		LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
-		AND cc.ID = cir.customer_id 
-		
-	WHERE
-		ap.application_no = '012-A892128809' 
-	) A 
-WHERE
-	A.num = 4</CommandText>
+											* 
+										FROM
+											(
+											SELECT ROW_NUMBER
+												( ) OVER ( ORDER BY asu.ID ) AS num,
+												ap.application_no,
+												ag.full_name_kh,
+												Ci.id_number,
+												cc.phone_number,
+												CAR.NAME AS career,
+												cir.length_of_business||' ខែ' as length_of_bus,
+												'' AS other_income,
+												asu.customer_type,
+												CASE
+											  WHEN IT.ID_TYPE = 'F' THEN
+											  'សៀវភៅគ្រួសារ' 
+											  WHEN IT.ID_TYPE = 'CD' THEN
+											  'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+											  WHEN IT.ID_TYPE = 'N' THEN
+											  'អត្តសញ្ញាណប័ណ្ណ' 
+											  WHEN IT.ID_TYPE = 'P' THEN
+											  'លិខិតឆ្លងដែន' 
+											  WHEN IT.ID_TYPE = 'MI' THEN
+											  'ឆាយា' 
+											  WHEN IT.ID_TYPE = 'R' THEN
+											  'សៀវភៅស្នាក់នៅ' 
+											  WHEN IT.ID_TYPE = 'B' THEN
+											  'សំបុត្រកំណើត' 
+											END AS IDENTIFICATION_TYPE
+											FROM
+												app_application ap
+												INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
+												AND asu.status = 't' 
+												AND asu.customer_type IN ('PERSONAL_GUARANTOR','MORTGAGOR')
+												INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
+												ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
+												left JOIN app_customer_identification Ci ON Ci.customer_id = cc.ID 
+												AND Ci.application_id = ap.
+												ID left JOIN adm_identification_type it ON it.ID = Ci.identification_type_id
+												LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
+												AND cc.ID = cir.customer_id 
+												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
+											WHERE
+											ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 4</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -1037,7 +1046,7 @@ WHERE
         </Field>
         <Field Name="career">
           <DataField>career</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="length_of_bus">
           <DataField>length_of_bus</DataField>
@@ -1116,25 +1125,25 @@ FROM
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT 
 
-AP.APPLICATION_NO ,
+									AP.APPLICATION_NO ,
 
-COL.DOCUMENT_TITLE ,
+									COL.Collateral_TITLE as DOCUMENT_TITLE,
 
-COL.COLLATERAL_NO ,
+									COL.COLLATERAL_NO ,
 
-COL.OWNER_NAME ,
+									COL.OWNER_NAME ,
 
-SSU.NAME AS ISSUE_BY ,
+									SSU.NAME AS ISSUE_BY ,
 
-CCD.MARKET_VALUE
+									'' as MARKET_VALUE
 
-FROM APP_APPLICATION AP 
-INNER JOIN APP_COL_COLLATERAL_ASSET CCA ON CCA.APPLICATION_ID = AP.ID AND CCA.STATUS = 't'
-INNER JOIN APP_COL_COLLATERAL_SECURE CS ON CS.APP_COLLATERAL_ASSET_ID = CCA.ID AND CS.STATUS = 't'
-INNER JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID AND COL.STATUS = 't'
-INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID AND CCD.STATUS = 't'
-LEFT JOIN ADM_ISSUE_BY SSU ON SSU.ID = CCD.ISSUE_BY_ID
-WHERE AP.application_no = 'B-0002-A88322'</CommandText>
+									FROM APP_APPLICATION AP 
+									INNER JOIN APP_COL_COLLATERAL_ASSET CCA ON CCA.APPLICATION_ID = AP.ID AND CCA.STATUS = 't'
+									INNER JOIN APP_COL_COLLATERAL_SECURE CS ON CS.APP_COLLATERAL_ASSET_ID = CCA.ID AND CS.STATUS = 't'
+									INNER JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID AND COL.STATUS = 't'
+									INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID AND CCD.STATUS = 't'
+									LEFT JOIN ADM_ISSUE_BY SSU ON SSU.ID = CCD.ISSUE_BY_ID
+									WHERE AP.application_no = '" + applicationNo + "'</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -3368,7 +3377,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!company_name.Value, "employee_work")</Value>
+                                  <Value>=First(Fields!career.Value, "employee_work")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -3576,7 +3585,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!position.Value, "employee_work")</Value>
+                                  <Value>=First(Fields!career.Value, "employee_work")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -4151,12 +4160,13 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!base_salary.Value, "employee_work")</Value>
+                                  <Value>=First(Fields!primary_income.Value, "employee_work")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -4215,6 +4225,7 @@ WHERE
                                     <FontFamily>Khmer OS</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -4273,6 +4284,7 @@ WHERE
                                     <FontFamily>Khmer OS</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>f2</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -4331,6 +4343,7 @@ WHERE
                                     <FontFamily>Khmer OS</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>f2</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -4435,12 +4448,13 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!other_benefit.Value, "employee_work")</Value>
+                                  <Value>=First(Fields!other_income.Value, "employee_work")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -4499,6 +4513,7 @@ WHERE
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -4557,6 +4572,7 @@ WHERE
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -4615,6 +4631,7 @@ WHERE
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -5405,6 +5422,7 @@ WHERE
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -5458,12 +5476,13 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!business_income.Value, "sub_business1")</Value>
+                                  <Value>=First(Fields!primary_income.Value, "sub_business1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -5517,12 +5536,13 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!business_income.Value, "sub_business2")</Value>
+                                  <Value>=First(Fields!primary_income.Value, "sub_business2")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -5576,12 +5596,13 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!business_income.Value, "sub_business3")</Value>
+                                  <Value>=First(Fields!primary_income.Value, "sub_business3")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>

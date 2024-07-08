@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.9.34622.214</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-04-10T15:26:30.1629531Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-07-01T01:11:20.0468910Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -54,8 +54,51 @@ FROM
         <CommandText>SELECT
 	ap.application_no,
 	ACI.ID_NUMBER,
-	AIT.NAME AS TYPE_ID,
-	to_char( ACI.issued_date, 'DD/MM/YYYY' ) AS ISSUE_DATE,
+	CASE
+      WHEN IT.ID_TYPE = 'F' THEN
+      'សៀវភៅគ្រួសារ' 
+      WHEN IT.ID_TYPE = 'CD' THEN
+      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+      WHEN IT.ID_TYPE = 'N' THEN
+      'អត្តសញ្ញាណប័ណ្ណ' 
+      WHEN IT.ID_TYPE = 'P' THEN
+      'លិខិតឆ្លងដែន' 
+      WHEN IT.ID_TYPE = 'MI' THEN
+      'ឆាយា' 
+      WHEN IT.ID_TYPE = 'R' THEN
+      'សៀវភៅស្នាក់នៅ' 
+      WHEN IT.ID_TYPE = 'B' THEN
+      'សំបុត្រកំណើត' 
+    END AS type_id,
+		convert_to_khmer_number(CAST(EXTRACT(DAY FROM ACI.issued_date) AS int)) AS Day,
+CASE
+		
+		WHEN TO_CHAR( ACI.issued_date, 'MON' ) = 'JAN' THEN
+		'មករា' 
+		WHEN TO_CHAR( ACI.issued_date, 'MON' ) = 'FEB' THEN
+		'កុម្ភៈ' 
+		WHEN TO_CHAR( ACI.issued_date, 'MON' ) = 'MAR' THEN
+		'មីនា' 
+		WHEN TO_CHAR( ACI.issued_date, 'MON' ) = 'APR' THEN
+		'មេសា' 
+		WHEN TO_CHAR( ACI.issued_date, 'MON' ) = 'MAY' THEN
+		'ឧសភា' 
+		WHEN TO_CHAR( ACI.issued_date, 'MON' ) = 'JUN' THEN
+		'មិថុនា' 
+		WHEN TO_CHAR( ACI.issued_date, 'MON' ) = 'JUL' THEN
+		'កក្កដា' 
+		WHEN TO_CHAR( ACI.issued_date, 'MON' ) = 'AUG' THEN
+		'សីហា' 
+		WHEN TO_CHAR( ACI.issued_date, 'MON' ) = 'SEP' THEN
+		'កញ្ញា' 
+		WHEN TO_CHAR( ACI.issued_date, 'MON' ) = 'OCT' THEN
+		'តុលា' 
+		WHEN TO_CHAR( ACI.issued_date, 'MON' ) = 'NOV' THEN
+		'វិច្ឆិកា' 
+		WHEN TO_CHAR( ACI.issued_date, 'MON' ) = 'DEC' THEN
+		'ធ្នូ' 
+	END AS MONTH,
+	convert_to_khmer_number(CAST(EXTRACT(YEAR FROM ACI.issued_date) AS int)) AS YEAR,
 	cc.family_name_kh || ' ' || cc.given_name_kh AS col_full_name
 FROM
 	APP_APPLICATION AP
@@ -71,9 +114,8 @@ FROM
 	ID
 	LEFT JOIN app_customer_identification ACI ON ACI.CUSTOMER_ID = CC.
 	ID  AND ACI.APPLICATION_ID = AP.ID  
-	LEFT JOIN adm_identification_type AIT ON AIT.ID = ACI.identification_type_ID 
-WHERE
-	ap.application_no = '012-A41856'</CommandText>
+	LEFT JOIN adm_identification_type IT ON IT.ID = ACI.identification_type_ID 
+</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -88,12 +130,20 @@ WHERE
           <DataField>type_id</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="issue_date">
-          <DataField>issue_date</DataField>
+        <Field Name="day">
+          <DataField>day</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="month">
+          <DataField>month</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="col_full_name">
           <DataField>col_full_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="year">
+          <DataField>year</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -103,12 +153,52 @@ WHERE
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
 	ap.application_no,
-  CCD.collateral_name,
+	CCD.collateral_name,
 	COL.collateral_no,
-	to_char(CCD.issued_date, 'DD/MM/YYYY'),
-	CASE 
-	WHEN 
-	ACCI.NAME is NULL then '..............' else acci.name end as issue_by
+  convert_to_khmer_number(CAST(EXTRACT(DAY FROM CCD.issued_date) AS int)) AS Day,
+CASE
+		
+		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'JAN' THEN
+		'មករា' 
+		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'FEB' THEN
+		'កុម្ភៈ' 
+		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'MAR' THEN
+		'មីនា' 
+		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'APR' THEN
+		'មេសា' 
+		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'MAY' THEN
+		'ឧសភា' 
+		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'JUN' THEN
+		'មិថុនា' 
+		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'JUL' THEN
+		'កក្កដា' 
+		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'AUG' THEN
+		'សីហា' 
+		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'SEP' THEN
+		'កញ្ញា' 
+		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'OCT' THEN
+		'តុលា' 
+		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'NOV' THEN
+		'វិច្ឆិកា' 
+		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'DEC' THEN
+		'ធ្នូ' 
+	END AS MONTH,
+	convert_to_khmer_number(CAST(EXTRACT(YEAR FROM CCD.issued_date) AS int)) AS YEAR,
+CASE
+		
+		WHEN ACCI.NAME = 'VILLAGE' THEN
+		'ភូមិ' 
+		WHEN ACCI.NAME = 'COMMUNE/SANGKAT' THEN
+		'ឃុំសង្កាត់' 
+		WHEN ACCI.NAME = 'DISTRICT/KHAN' THEN
+		'ស្រុក/ខណ្ឌ' 
+		WHEN ACCI.NAME = 'PROVINCIAL' THEN
+		'ខេត្ត' 
+		WHEN ACCI.NAME = 'MINISTRY' THEN
+		'ក្រសួង' 
+		WHEN ACCI.NAME = 'OTHERS' THEN
+		' ផ្សេង' ELSE'.........' 
+	END AS issue_by 
 FROM
 	APP_APPLICATION AP
 	INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -120,10 +210,10 @@ FROM
 	INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID 
 	AND CCD.STATUS = 't'
 	INNER JOIN cus_customer cc ON col.customer_id = cc.
-	ID
-	LEFT JOIN adm_col_collateral_issued_by ACCI ON ACCI.ID = CCD.issue_by_id
+	ID LEFT JOIN adm_issue_by ACCI ON ACCI.ID = CCD.issue_by_id 
 WHERE
-	ap.application_no = '012-A41856'</CommandText>
+	AP.application_no = '015-A95364'
+	</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -138,12 +228,20 @@ WHERE
           <DataField>collateral_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="to_char">
-          <DataField>to_char</DataField>
+        <Field Name="day">
+          <DataField>day</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="month">
+          <DataField>month</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="issue_by">
           <DataField>issue_by</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="year">
+          <DataField>year</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -199,7 +297,7 @@ FROM
     END AS IDENTIFICATION_TYPE,
     CI.ID_NUMBER,
 
-TO_CHAR( CI.ISSUED_DATE, 'DD' ) AS ISSUE_DAY,
+convert_to_khmer_number(CAST(EXTRACT(DAY FROM CI.issued_date) AS int)) AS  ISSUE_DAY,
 CASE
     
     WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'JAN' THEN
@@ -227,7 +325,7 @@ CASE
     WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'DEC' THEN
     'ធ្នូ' 
   END AS ISSUE_MONTH,
-	TO_CHAR( CI.ISSUED_DATE, 'YYYY' ) AS ISSUE_YEAR
+	convert_to_khmer_number(CAST(EXTRACT(YEAR FROM CI.issued_date) AS int)) AS  ISSUE_YEAR
   FROM
     APP_CUSTOMER_IDENTIFICATION CI
     INNER JOIN ADM_IDENTIFICATION_TYPE IT ON IT.ID = CI.IDENTIFICATION_TYPE_ID
@@ -250,7 +348,7 @@ CASE
     CI.STATUS = 't' 
   ) A ON A.APPLICATION_ID = AP.ID 
   AND CC.ID = A.CUSTOMER_ID 
-WHERE AP.application_no='012-A892128809'</CommandText>
+</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -302,7 +400,8 @@ FROM
 		( ) OVER ( ORDER BY asd.ID ) AS num,
 		AP.APPLICATION_NO,
     concat(' និងឈ្មោះ  ',CC.FAMILY_NAME_KH,' ',CC.GIVEN_NAME_KH,' កាន់ ',
-    A.IDENTIFICATION_TYPE,' លេខ ',A.ID_NUMBER,' ចុះថ្ងៃទី ',A.ISSUE_DAY,' ខែ ',A.ISSUE_MONTH,' ឆ្នាំ ',A.ISSUE_YEAR) as sub
+    A.IDENTIFICATION_TYPE,' លេខ ',A.ID_NUMBER
+,' ចុះថ្ងៃទី ',A.ISSUE_DAY,' ខែ ',A.ISSUE_MONTH,' ឆ្នាំ ',A.ISSUE_YEAR) as sub
 FROM
   APP_APPLICATION AP
   INNER JOIN APP_SUPPLEMENTARY AST ON AST.APPLICATION_ID = AP.ID AND AST.STATUS='t' AND AST.CUSTOMER_TYPE = 'CO_BORROWER'
@@ -334,8 +433,7 @@ FROM
       'សំបុត្រកំណើត' 
     END AS IDENTIFICATION_TYPE,
     CI.ID_NUMBER,
-
-TO_CHAR( CI.ISSUED_DATE, 'DD' ) AS ISSUE_DAY,
+ convert_to_khmer_number(CAST(EXTRACT(DAY FROM CI.issued_date) AS int)) AS ISSUE_DAY,
 CASE
     
     WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'JAN' THEN
@@ -363,7 +461,7 @@ CASE
     WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'DEC' THEN
     'ធ្នូ' 
   END AS ISSUE_MONTH,
-	TO_CHAR( CI.ISSUED_DATE, 'YYYY' ) AS ISSUE_YEAR
+	convert_to_khmer_number(CAST(EXTRACT(YEAR FROM CI.issued_date) AS int)) AS ISSUE_YEAR
   FROM
     APP_CUSTOMER_IDENTIFICATION CI
     INNER JOIN ADM_IDENTIFICATION_TYPE IT ON IT.ID = CI.IDENTIFICATION_TYPE_ID
@@ -386,7 +484,7 @@ CASE
     CI.STATUS = 't' 
   ) A ON A.APPLICATION_ID = AP.ID 
   AND CC.ID = A.CUSTOMER_ID 
-	WHERE ap.application_no='012-A892128809'
+	WHERE AP.APPLICATION_NO=''
 	) A 
 WHERE
 	A.num = 1</CommandText>
@@ -417,7 +515,8 @@ FROM
 		( ) OVER ( ORDER BY asd.ID ) AS num,
 		AP.APPLICATION_NO,
     concat(' និងឈ្មោះ  ',CC.FAMILY_NAME_KH,' ',CC.GIVEN_NAME_KH,' កាន់ ',
-    A.IDENTIFICATION_TYPE,' លេខ ',A.ID_NUMBER,' ចុះថ្ងៃទី ',A.ISSUE_DAY,' ខែ ',A.ISSUE_MONTH,' ឆ្នាំ ',A.ISSUE_YEAR) as sub
+    A.IDENTIFICATION_TYPE,' លេខ ',A.ID_NUMBER
+,' ចុះថ្ងៃទី ',A.ISSUE_DAY,' ខែ ',A.ISSUE_MONTH,' ឆ្នាំ ',A.ISSUE_YEAR) as sub
 FROM
   APP_APPLICATION AP
   INNER JOIN APP_SUPPLEMENTARY AST ON AST.APPLICATION_ID = AP.ID AND AST.STATUS='t' AND AST.CUSTOMER_TYPE = 'CO_BORROWER'
@@ -449,8 +548,7 @@ FROM
       'សំបុត្រកំណើត' 
     END AS IDENTIFICATION_TYPE,
     CI.ID_NUMBER,
-
-TO_CHAR( CI.ISSUED_DATE, 'DD' ) AS ISSUE_DAY,
+ convert_to_khmer_number(CAST(EXTRACT(DAY FROM CI.issued_date) AS int)) AS ISSUE_DAY,
 CASE
     
     WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'JAN' THEN
@@ -478,7 +576,7 @@ CASE
     WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'DEC' THEN
     'ធ្នូ' 
   END AS ISSUE_MONTH,
-	TO_CHAR( CI.ISSUED_DATE, 'YYYY' ) AS ISSUE_YEAR
+	convert_to_khmer_number(CAST(EXTRACT(YEAR FROM CI.issued_date) AS int)) AS ISSUE_YEAR
   FROM
     APP_CUSTOMER_IDENTIFICATION CI
     INNER JOIN ADM_IDENTIFICATION_TYPE IT ON IT.ID = CI.IDENTIFICATION_TYPE_ID
@@ -501,7 +599,7 @@ CASE
     CI.STATUS = 't' 
   ) A ON A.APPLICATION_ID = AP.ID 
   AND CC.ID = A.CUSTOMER_ID 
-	WHERE ap.application_no='012-A892128809'
+	WHERE AP.APPLICATION_NO=''
 	) A 
 WHERE
 	A.num = 2</CommandText>
@@ -532,7 +630,8 @@ FROM
 		( ) OVER ( ORDER BY asd.ID ) AS num,
 		AP.APPLICATION_NO,
     concat(' និងឈ្មោះ  ',CC.FAMILY_NAME_KH,' ',CC.GIVEN_NAME_KH,' កាន់ ',
-    A.IDENTIFICATION_TYPE,' លេខ ',A.ID_NUMBER,' ចុះថ្ងៃទី ',A.ISSUE_DAY,' ខែ ',A.ISSUE_MONTH,' ឆ្នាំ ',A.ISSUE_YEAR) as sub
+    A.IDENTIFICATION_TYPE,' លេខ ',A.ID_NUMBER
+,' ចុះថ្ងៃទី ',A.ISSUE_DAY,' ខែ ',A.ISSUE_MONTH,' ឆ្នាំ ',A.ISSUE_YEAR) as sub
 FROM
   APP_APPLICATION AP
   INNER JOIN APP_SUPPLEMENTARY AST ON AST.APPLICATION_ID = AP.ID AND AST.STATUS='t' AND AST.CUSTOMER_TYPE = 'CO_BORROWER'
@@ -564,8 +663,7 @@ FROM
       'សំបុត្រកំណើត' 
     END AS IDENTIFICATION_TYPE,
     CI.ID_NUMBER,
-
-TO_CHAR( CI.ISSUED_DATE, 'DD' ) AS ISSUE_DAY,
+ convert_to_khmer_number(CAST(EXTRACT(DAY FROM CI.issued_date) AS int)) AS ISSUE_DAY,
 CASE
     
     WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'JAN' THEN
@@ -593,7 +691,7 @@ CASE
     WHEN TO_CHAR( CI.ISSUED_DATE, 'MON' ) = 'DEC' THEN
     'ធ្នូ' 
   END AS ISSUE_MONTH,
-	TO_CHAR( CI.ISSUED_DATE, 'YYYY' ) AS ISSUE_YEAR
+	convert_to_khmer_number(CAST(EXTRACT(YEAR FROM CI.issued_date) AS int)) AS ISSUE_YEAR
   FROM
     APP_CUSTOMER_IDENTIFICATION CI
     INNER JOIN ADM_IDENTIFICATION_TYPE IT ON IT.ID = CI.IDENTIFICATION_TYPE_ID
@@ -616,7 +714,7 @@ CASE
     CI.STATUS = 't' 
   ) A ON A.APPLICATION_ID = AP.ID 
   AND CC.ID = A.CUSTOMER_ID 
-	WHERE ap.application_no='012-A892128809'
+	WHERE AP.APPLICATION_NO=''
 	) A 
 WHERE
 	A.num = 3</CommandText>
@@ -1088,7 +1186,6 @@ WHERE
                                           <PaddingBottom>2pt</PaddingBottom>
                                         </Style>
                                       </Textbox>
-                                      <rd:Selected>true</rd:Selected>
                                     </CellContents>
                                   </TablixCell>
                                 </TablixCells>
@@ -1645,7 +1742,7 @@ WHERE
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value> ចុះថ្ងៃ </Value>
+                                                <Value> ចុះថ្ងៃទី​ </Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -1655,7 +1752,47 @@ WHERE
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value>=Fields!issue_date.Value</Value>
+                                                <Value>=Fields!day.Value</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value> ខែ </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>=Fields!month.Value</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value> ឆ្នាំ  </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>=Fields!year.Value</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -1892,7 +2029,7 @@ WHERE
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value>=Fields!collateral_name.Value</Value>
+                                                <Value>=iif((Fields!collateral_name.Value) is nothing,"..............",(Fields!collateral_name.Value))</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -1922,7 +2059,7 @@ WHERE
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value> ចុះថ្ងៃ </Value>
+                                                <Value> ចុះថ្ងៃទី​ </Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -1932,7 +2069,47 @@ WHERE
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value>=Fields!to_char.Value</Value>
+                                                <Value>=Fields!day.Value</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value> ខែ </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>=Fields!month.Value</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value> ឆ្នាំ </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>=Fields!year.Value</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>

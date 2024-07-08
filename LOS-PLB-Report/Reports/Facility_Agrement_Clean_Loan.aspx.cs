@@ -452,12 +452,14 @@ namespace LOS_PLB_Report.Reports
 	                                AP.APPLICATION_NO,
 	                                'ឥណទានមានកាលកំណត់' AS sub_product,
 	                                apd.applied_amount,
+	                                AC.currency,
 	                                apd.annual_interest_rate,
 	                                APD.tenor 
                                 FROM
 	                                APP_APPLICATION AP
 	                                INNER JOIN app_application_detail apd ON apd.application_id = ap.
 	                                ID INNER JOIN adm_repayment_type ART ON ART.ID = APD.repayment_type_id
+	                                INNER JOIN adm_currency AC ON AC.ID = APD.currency_id
                                 WHERE AP.APPLICATION_NO='" + applicationNo + "'";
                 var PURPOSEDT_1 = @"SELECT * FROM
                                     (
@@ -1242,11 +1244,11 @@ namespace LOS_PLB_Report.Reports
 	                                        A.ISSUE_DATE 
                                         FROM
 	                                        APP_APPLICATION AP
-	                                        LEFT JOIN APP_SUPPLEMENTARY AST ON AST.APPLICATION_ID = AP.ID 
+	                                        INNER JOIN APP_SUPPLEMENTARY AST ON AST.APPLICATION_ID = AP.ID 
 	                                        AND AST.STATUS = 't' 
 	                                        AND AST.CUSTOMER_TYPE = 'PERSONAL_GUARANTOR'
-	                                        LEFT JOIN APP_GUARANTOR GU ON GU.SUPPLEMENTARY_ID = AST.
-	                                        ID LEFT JOIN CUS_CUSTOMER CC ON GU.CUSTOMER_ID = CC.ID --IDENTIFICATION
+	                                        INNER JOIN APP_GUARANTOR GU ON GU.SUPPLEMENTARY_ID = AST.
+	                                        ID INNER JOIN CUS_CUSTOMER CC ON GU.CUSTOMER_ID = CC.ID --IDENTIFICATION
 	                                        LEFT JOIN (
 	                                        SELECT
 		                                        CI.CREATED,
@@ -1294,7 +1296,7 @@ namespace LOS_PLB_Report.Reports
 	                                        ) A ON A.APPLICATION_ID = AP.ID 
 	                                        AND CC.ID = A.CUSTOMER_ID 
                                         WHERE
-	                                        ap.application_no = '"+applicationNo+"'";
+	                                        ap.application_no = '" + applicationNo+"'";
 
 
 
@@ -1372,7 +1374,7 @@ namespace LOS_PLB_Report.Reports
 
 
 
-                conn.generateReport(ReportViewer1, @"Facility_Agrement_Clean_Loan_For_Normal_Customer", null, dsBORROWER_INFO, dsCO_BORO_1, dsC0_BORRO_2, dsPURPOSE, dsPURPOSEDT_1, dsPREFIX_NAME_BOR, dsPREFIX_SUB_NAME, dsREPATMENT, dsPURPOSEDT_2, dsPURPOSEDT_3, dsPURPOSEDT_4, dsTRANCE, dsBORROWER_INFO, dsCoL_1, dsCoL_2, dsCoL_3, dsCoL_4, dsCoL_5, dsCoL_6, dsCoL_7, dsCoL_8, dsCoL_9, dsCoL_10, dsCoL_11, dsCoL_12, dsCoL_13, dsCoL_14, dsCoL_15, dsCoL_16, dsCoL_17, dsCoL_18, dsCoL_19, dsCoL_20, dsCoL_21, dsGUARANTOR_LOAN);
+                conn.generateReport(ReportViewer1, @"Facility_Agrement_Clean_Loan", null, dsBORROWER_INFO, dsCO_BORO_1, dsC0_BORRO_2, dsPURPOSE, dsPURPOSEDT_1, dsPREFIX_NAME_BOR, dsPREFIX_SUB_NAME, dsREPATMENT, dsPURPOSEDT_2, dsPURPOSEDT_3, dsPURPOSEDT_4, dsTRANCE, dsBORROWER_INFO, dsCoL_1, dsCoL_2, dsCoL_3, dsCoL_4, dsCoL_5, dsCoL_6, dsCoL_7, dsCoL_8, dsCoL_9, dsCoL_10, dsCoL_11, dsCoL_12, dsCoL_13, dsCoL_14, dsCoL_15, dsCoL_16, dsCoL_17, dsCoL_18, dsCoL_19, dsCoL_20, dsCoL_21, dsGUARANTOR_LOAN);
 
             }
         }

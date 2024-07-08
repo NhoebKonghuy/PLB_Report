@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.9.34622.214</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-04-06T02:02:04.3732815Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-06-24T01:11:38.9603073Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -592,11 +592,13 @@ WHERE
 	'ឥណទានមានកាលកំណត់' AS sub_product,
 	apd.applied_amount,
 	apd.annual_interest_rate,
-	APD.tenor 
+	APD.tenor,
+	ac.currency 
 FROM
 	APP_APPLICATION AP
 	INNER JOIN app_application_detail apd ON apd.application_id = ap.
-	ID INNER JOIN adm_repayment_type ART ON ART.ID = APD.repayment_type_id</CommandText>
+	ID INNER JOIN adm_repayment_type ART ON ART.ID = APD.repayment_type_id
+	INNER JOIN adm_currency AC ON AC.ID = APD.currency_id</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -618,6 +620,10 @@ FROM
         <Field Name="tenor">
           <DataField>tenor</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="currency">
+          <DataField>currency</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -1188,8 +1194,7 @@ FROM
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value> ជាក្រុមហ៊ុនមហាជនទទួលខុសត្រូវមានកម្រិត (ចុះបញ្ជីពាណិជ្ជកម្មលេខ ០០០០០២៩២ ចុះថ្ងៃទី១៩ ខែមិថុនា ឆ្នាំ២០០៩) និងទទួលបានអាជ្ញាប័ណ្ណធ្វើប្រតិបត្តិការធនាគារ ស្របតាមច្បាប់នៃព្រះរាជាណាចក្រកម្ពុជា និងមានទី​ស្នាក់ការចុះបញ្ជីស្ថិតនៅផ្ទះលេខ ផ្លូវ ភូមិ ឃុំ-សង្កាត់​
-(តទៅហៅថា </Value>
+                                  <Value> ជាក្រុមហ៊ុនមហាជនទទួលខុសត្រូវមានកម្រិត (ចុះបញ្ជីពាណិជ្ជកម្មលេខ ០០០០០២៩២ ចុះថ្ងៃទី១៩ ខែមិថុនា ឆ្នាំ២០០៩) និងទទួលបានអាជ្ញាប័ណ្ណធ្វើប្រតិបត្តិការធនាគារ ស្របតាមច្បាប់នៃព្រះរាជាណាចក្រកម្ពុជា និងមានទី​ស្នាក់ការចុះបញ្ជីស្ថិតនៅផ្ទះលេខ............ ផ្លូវ............ ភូមិ............ ឃុំ-សង្កាត់​............ ក្រុង-ស្រុក-ខណ្ឌ ............ ខេត្ត-រាជធានី............ព្រះរាជាណាចក្រកម្ពុជា តំណាងដោយឈ្មោះ .................. មានតួនាទីជា ..................(តទៅហៅថា </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -1249,7 +1254,7 @@ FROM
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>”) និង</Value>
+                                  <Value>”) និង </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -1258,13 +1263,6 @@ FROM
                                     <Color>#000000</Color>
                                   </Style>
                                 </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Left</TextAlign>
-                              </Style>
-                            </Paragraph>
-                            <Paragraph>
-                              <TextRuns>
                                 <TextRun>
                                   <Value>ឈ្មោះ </Value>
                                   <Style>
@@ -1646,7 +1644,7 @@ FROM
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value> (</Value>
+                                  <Value> ព្រះរាជាណាចក្រកម្ពុជា(</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -2388,6 +2386,7 @@ FROM
                                           <PaddingBottom>2pt</PaddingBottom>
                                         </Style>
                                       </Textbox>
+                                      <rd:Selected>true</rd:Selected>
                                     </CellContents>
                                   </TablixCell>
                                 </TablixCells>
@@ -4365,6 +4364,120 @@ FROM
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
+                        <Tablix Name="Tablix52">
+                          <TablixBody>
+                            <TablixColumns>
+                              <TablixColumn>
+                                <Width>0.35358in</Width>
+                              </TablixColumn>
+                              <TablixColumn>
+                                <Width>6.80576in</Width>
+                              </TablixColumn>
+                            </TablixColumns>
+                            <TablixRows>
+                              <TablixRow>
+                                <Height>0.25in</Height>
+                                <TablixCells>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox112">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>៥.៥.</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox113">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>ក្នុងករណីដែលមានករណីបំពានកាតព្វកិច្ចណាមួយដូចមានរៀបរាប់ខាងលើកើតឡើងនោះគូភាគីយល់ព្រម និងទទួលស្គាល់ថា នៅគ្រប់ពេលវេលាទាំងអស់ ភាគី “ក”   មានសិទ្ធិចាត់ចែងភ្លាមៗក្នុងការបង្កក  ឬកាត់យកប្រាក់ពីគណនីណាមួយ ឬច្រើនរបស់ ភាគី “ខ” ដែលមានជាមួយ ភាគី “ក” (ឧ. គណនីចរន្ត និង/ឬគណនីសន្សំ និង/ឬគណនីសន្សំមានកាលកំណត់ជាដើម)ដើម្បី ធ្វើការទូទាត់​សង​បំណុល។</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                </TablixCells>
+                              </TablixRow>
+                            </TablixRows>
+                          </TablixBody>
+                          <TablixColumnHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixColumnHierarchy>
+                          <TablixRowHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixRowHierarchy>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                          </Style>
+                        </Tablix>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="Textbox143">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -6037,7 +6150,24 @@ FROM
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>ភាគី “ខ”</Value>
+                                                <Value>ភាគី “ក”</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Center</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>ក្នុងនាម និងតំណាងស្របច្បាប់អោយ</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -6048,7 +6178,24 @@ FROM
                                               </TextRun>
                                             </TextRuns>
                                             <Style>
-                                              <TextAlign>Center</TextAlign>
+                                              <TextAlign>Left</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>ធនាគារ ហ្វីលីព ភីអិលស៊ី សាខា .....</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
@@ -6074,7 +6221,7 @@ FROM
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>                   ភាគី “ក”     </Value>
+                                                <Value xml:space="preserve">                  </Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -6083,15 +6230,8 @@ FROM
                                                   <Color>#000000</Color>
                                                 </Style>
                                               </TextRun>
-                                            </TextRuns>
-                                            <Style>
-                                              <TextAlign>Center</TextAlign>
-                                            </Style>
-                                          </Paragraph>
-                                          <Paragraph>
-                                            <TextRuns>
                                               <TextRun>
-                                                <Value>ធនាគារ ហ្វីលីព ភីអិលស៊ី សាខា</Value>
+                                                <Value>ភាគី “ខ”</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -6196,11 +6336,12 @@ FROM
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
+                <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>TRANCE</DataSetName>
             <Top>2.57492in</Top>
-            <Height>10.75in</Height>
+            <Height>11in</Height>
             <Width>7.15934in</Width>
             <ZIndex>2</ZIndex>
             <Style>
@@ -6273,10 +6414,11 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ស្នាមមេដៃស្តាំ</Value>
+                                  <Value>ត្រាក្រុមហ៊ុន</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
+                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -6345,10 +6487,21 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value> ស្នាមមេដៃស្តាំ</Value>
+                                  <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                    <Color>#000000</Color>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ស្នាមមេដៃស្តាំ</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Siemreap</FontFamily>
+                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -6382,7 +6535,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>តំណាងស្របច្បាប់</Value>
+                                  <Value />
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -6419,7 +6572,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ត្រាក្រុមហ៊ុន</Value>
+                                  <Value>ស្នាមមេដៃស្តាំ</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -6592,7 +6745,9 @@ FROM
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                             <Paragraph>
                               <TextRuns>
@@ -6797,7 +6952,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>............</Value>
+                                  <Value>.......................</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                   </Style>
@@ -6868,11 +7023,13 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>............</Value>
+                                  <Value>.................................</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox252</rd:DefaultName>
@@ -6939,11 +7096,13 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>............</Value>
+                                  <Value>.................................</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox254</rd:DefaultName>
@@ -7015,10 +7174,11 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!full_name.Value, "PREFIX_NAME_BOR")</Value>
+                                  <Value>ឈ្មោះ៖........................</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
+                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -7041,37 +7201,10 @@ FROM
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <ColSpan>2</ColSpan>
                       </CellContents>
                     </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox237">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value />
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox233</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>None</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
+                    <TablixCell />
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox233">
@@ -7081,7 +7214,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!full_name.Value, "PREFIX_SUB_NAME")</Value>
+                                  <Value>ឈ្មោះ៖...............................</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -7093,34 +7226,23 @@ FROM
                               </TextRuns>
                               <Style />
                             </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox233</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>None</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox238">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
-                                  <Style />
+                                  <Value>អត្តសញ្ញាណប័ណ្ណលេខ៖ ............</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Siemreap</FontFamily>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                    <Color>#000000</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <HangingIndent>-5.65pt</HangingIndent>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox233</rd:DefaultName>
@@ -7134,8 +7256,10 @@ FROM
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <ColSpan>2</ColSpan>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell />
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="Textbox232">
@@ -7145,7 +7269,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>លោក........</Value>
+                                  <Value>ឈ្មោះ៖...............................</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -7155,6 +7279,24 @@ FROM
                                   </Style>
                                 </TextRun>
                               </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>អត្តសញ្ញាណប័ណ្ណលេខ៖ ............</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Siemreap</FontFamily>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                    <Color>#000000</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <HangingIndent>-5.65pt</HangingIndent>
                               <Style>
                                 <TextAlign>Left</TextAlign>
                               </Style>
@@ -7171,37 +7313,10 @@ FROM
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <ColSpan>2</ColSpan>
                       </CellContents>
                     </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox234">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value />
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox233</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>None</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
+                    <TablixCell />
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
@@ -8207,13 +8322,12 @@ FROM
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=Iif(First(Fields!customer_type.Value, "PREFIX_SUB_NAME") = "MORTGAGOR", chr(254), chr(168))</Value>
+                                  <Value>□</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>wingdings</FontFamily>
+                                    <FontSize>15pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>#000000</Color>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
@@ -8227,10 +8341,10 @@ FROM
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=iif (First(Fields!customer_type.Value, "PREFIX_SUB_NAME") = "MORTGAGOR", chr(168),chr(254))</Value>
+                                  <Value>R</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>wingdings</FontFamily>
+                                    <FontFamily>Wingdings 2</FontFamily>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
@@ -14172,7 +14286,7 @@ FROM
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>BORROWER_INFO</DataSetName>
-            <Top>25.82062in</Top>
+            <Top>25.57062in</Top>
             <Height>0.25in</Height>
             <Width>7.15932in</Width>
             <ZIndex>8</ZIndex>
@@ -14202,38 +14316,20 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ប្រការ ១.</Value>
+                                  <Value>លក្ខខណ្ឌបន្ថែម</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontSize>12pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                    <Color>#000000</Color>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value xml:space="preserve"> </Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                    <Color>#000000</Color>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value>កំឡុងពេលអាចបញ្ចេញឥណទាន</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
+                                    <TextDecoration>Underline</TextDecoration>
                                     <Color>#000000</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox4</rd:DefaultName>
@@ -14256,128 +14352,14 @@ FROM
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Tablix Name="Tablix75">
-                          <TablixBody>
-                            <TablixColumns>
-                              <TablixColumn>
-                                <Width>0.35358in</Width>
-                              </TablixColumn>
-                              <TablixColumn>
-                                <Width>6.80576in</Width>
-                              </TablixColumn>
-                            </TablixColumns>
-                            <TablixRows>
-                              <TablixRow>
-                                <Height>0.25in</Height>
-                                <TablixCells>
-                                  <TablixCell>
-                                    <CellContents>
-                                      <Textbox Name="Textbox226">
-                                        <CanGrow>true</CanGrow>
-                                        <KeepTogether>true</KeepTogether>
-                                        <Paragraphs>
-                                          <Paragraph>
-                                            <TextRuns>
-                                              <TextRun>
-                                                <Value />
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                            </TextRuns>
-                                            <Style />
-                                          </Paragraph>
-                                        </Paragraphs>
-                                        <rd:DefaultName>Textbox71</rd:DefaultName>
-                                        <Style>
-                                          <Border>
-                                            <Style>None</Style>
-                                          </Border>
-                                          <PaddingLeft>2pt</PaddingLeft>
-                                          <PaddingRight>2pt</PaddingRight>
-                                          <PaddingTop>2pt</PaddingTop>
-                                          <PaddingBottom>2pt</PaddingBottom>
-                                        </Style>
-                                      </Textbox>
-                                    </CellContents>
-                                  </TablixCell>
-                                  <TablixCell>
-                                    <CellContents>
-                                      <Textbox Name="Textbox227">
-                                        <CanGrow>true</CanGrow>
-                                        <KeepTogether>true</KeepTogether>
-                                        <Paragraphs>
-                                          <Paragraph>
-                                            <TextRuns>
-                                              <TextRun>
-                                                <Value>ឥណទាននឹងត្រូវបានបញ្ចេញទាំងស្រុង ក្នុងកំឡុងពេល ខែ គិតចាប់ពីថ្ងៃយល់ព្រមលើកិច្ចសន្យាខ្ចីបរិភោគ បើពុំដូចនោះឥណ ទានដែលនៅសល់នឹងត្រូវលុបចោល។ចំណែកឯឥណទានដែលបានបញ្ចេញរួចរាល់នឹងត្រូវគណនាដើម្បីទូទាត់សងប្រចាំខែឬ ប្រចាំគ្រា ស្របតាមរបៀបបង់សងនីមួយៗ។</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                            </TextRuns>
-                                            <Style />
-                                          </Paragraph>
-                                        </Paragraphs>
-                                        <rd:DefaultName>Textbox71</rd:DefaultName>
-                                        <Style>
-                                          <Border>
-                                            <Style>None</Style>
-                                          </Border>
-                                          <PaddingLeft>2pt</PaddingLeft>
-                                          <PaddingRight>2pt</PaddingRight>
-                                          <PaddingTop>2pt</PaddingTop>
-                                          <PaddingBottom>2pt</PaddingBottom>
-                                        </Style>
-                                      </Textbox>
-                                    </CellContents>
-                                  </TablixCell>
-                                </TablixCells>
-                              </TablixRow>
-                            </TablixRows>
-                          </TablixBody>
-                          <TablixColumnHierarchy>
-                            <TablixMembers>
-                              <TablixMember />
-                              <TablixMember />
-                            </TablixMembers>
-                          </TablixColumnHierarchy>
-                          <TablixRowHierarchy>
-                            <TablixMembers>
-                              <TablixMember />
-                            </TablixMembers>
-                          </TablixRowHierarchy>
-                          <Style>
-                            <Border>
-                              <Style>None</Style>
-                            </Border>
-                          </Style>
-                        </Tablix>
-                      </CellContents>
-                    </TablixCell>
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.25in</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox20">
+                        <Textbox Name="Textbox5">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ប្រការ ២. លក្ខខណ្ឌមុនពេលបញ្ចេញឥណទាន</Value>
+                                  <Value>ប្រការ ១. កំឡុងពេលអាចបញ្ចេញឥណទាន</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -14390,7 +14372,7 @@ FROM
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox20</rd:DefaultName>
+                          <rd:DefaultName>Textbox5</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -14414,10 +14396,10 @@ FROM
                           <TablixBody>
                             <TablixColumns>
                               <TablixColumn>
-                                <Width>0.62073in</Width>
+                                <Width>0.35358in</Width>
                               </TablixColumn>
                               <TablixColumn>
-                                <Width>6.53861in</Width>
+                                <Width>6.80576in</Width>
                               </TablixColumn>
                             </TablixColumns>
                             <TablixRows>
@@ -14433,21 +14415,11 @@ FROM
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value xml:space="preserve">       </Value>
+                                                <Value />
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Siemreap</FontFamily>
                                                   <FontWeight>Bold</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value>ក.</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
                                                   <TextDecoration>None</TextDecoration>
                                                   <Color>#000000</Color>
                                                 </Style>
@@ -14478,131 +14450,7 @@ FROM
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>អ្នកខ្ចីត្រូវបំពេញលក្ខខណ្ឌមុនពេលបញ្ចេញឥណទាន ដូចដែលមានចែងនៅក្នុងកិច្ចសន្យាខ្ចីបរិភោគ និង/ឬកិច្ចសន្យាបង្កើតហ៊ីប៉ូតែក និង/ឬបង្កើតសិទ្ធិលើការបញ្ចាំ និង/ឬកិច្ចសន្យាធានា និង/ឬឯកសារប្រាតិភោគផ្សេងទៀត ក្នុងលក្ខខណ្ឌដែលអាចទទួលយកបានដោយធនាគារ។</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                            </TextRuns>
-                                            <Style />
-                                          </Paragraph>
-                                        </Paragraphs>
-                                        <rd:DefaultName>Textbox71</rd:DefaultName>
-                                        <Style>
-                                          <Border>
-                                            <Style>None</Style>
-                                          </Border>
-                                          <PaddingLeft>2pt</PaddingLeft>
-                                          <PaddingRight>2pt</PaddingRight>
-                                          <PaddingTop>2pt</PaddingTop>
-                                          <PaddingBottom>2pt</PaddingBottom>
-                                        </Style>
-                                      </Textbox>
-                                    </CellContents>
-                                  </TablixCell>
-                                </TablixCells>
-                              </TablixRow>
-                            </TablixRows>
-                          </TablixBody>
-                          <TablixColumnHierarchy>
-                            <TablixMembers>
-                              <TablixMember />
-                              <TablixMember />
-                            </TablixMembers>
-                          </TablixColumnHierarchy>
-                          <TablixRowHierarchy>
-                            <TablixMembers>
-                              <TablixMember />
-                            </TablixMembers>
-                          </TablixRowHierarchy>
-                          <Style>
-                            <Border>
-                              <Style>None</Style>
-                            </Border>
-                          </Style>
-                        </Tablix>
-                      </CellContents>
-                    </TablixCell>
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.25in</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Tablix Name="Tablix78">
-                          <TablixBody>
-                            <TablixColumns>
-                              <TablixColumn>
-                                <Width>0.62073in</Width>
-                              </TablixColumn>
-                              <TablixColumn>
-                                <Width>6.53861in</Width>
-                              </TablixColumn>
-                            </TablixColumns>
-                            <TablixRows>
-                              <TablixRow>
-                                <Height>0.25in</Height>
-                                <TablixCells>
-                                  <TablixCell>
-                                    <CellContents>
-                                      <Textbox Name="Textbox230">
-                                        <CanGrow>true</CanGrow>
-                                        <KeepTogether>true</KeepTogether>
-                                        <Paragraphs>
-                                          <Paragraph>
-                                            <TextRuns>
-                                              <TextRun>
-                                                <Value xml:space="preserve">       </Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
-                                                  <FontWeight>Bold</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value>ខ.</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                            </TextRuns>
-                                            <Style />
-                                          </Paragraph>
-                                        </Paragraphs>
-                                        <rd:DefaultName>Textbox71</rd:DefaultName>
-                                        <Style>
-                                          <Border>
-                                            <Style>None</Style>
-                                          </Border>
-                                          <PaddingLeft>2pt</PaddingLeft>
-                                          <PaddingRight>2pt</PaddingRight>
-                                          <PaddingTop>2pt</PaddingTop>
-                                          <PaddingBottom>2pt</PaddingBottom>
-                                        </Style>
-                                      </Textbox>
-                                    </CellContents>
-                                  </TablixCell>
-                                  <TablixCell>
-                                    <CellContents>
-                                      <Textbox Name="Textbox235">
-                                        <CanGrow>true</CanGrow>
-                                        <KeepTogether>true</KeepTogether>
-                                        <Paragraphs>
-                                          <Paragraph>
-                                            <TextRuns>
-                                              <TextRun>
-                                                <Value>អ្នកខ្ចីត្រូវ.............</Value>
+                                                <Value>ឥណទាននឹងត្រូវបានបញ្ចេញទាំងស្រុង ក្នុងកំឡុងពេល .....ខែ គិតចាប់ពីថ្ងៃយល់ព្រមលើកិច្ចសន្យាខ្ចីបរិភោគ បើពុំដូចនោះ ឥណទានដែលនៅសល់នឹងត្រូវលុបចោល។ ចំណែកឯឥណទានដែលបានបញ្ចេញរួចរាល់នឹងត្រូវគណនាដើម្បីទូទាត់សងប្រចាំខែ ឬប្រចាំគ្រា ស្របតាមរបៀបបង់សងនីមួយៗ។</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -14665,11 +14513,11 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>២.១. លក្ខខណ្ឌមុនពេលបញ្ចេញឥណទានលើកទី១</Value>
+                                  <Value>ប្រការ ២. លក្ខខណ្ឌមុនពេលបញ្ចេញឥណទាន</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Siemreap</FontFamily>
-                                    <FontWeight>Bold</FontWeight>
+                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                     <Color>#000000</Color>
                                   </Style>
@@ -14766,7 +14614,7 @@ FROM
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>អ្នកខ្ចីត្រូវ.............</Value>
+                                                <Value>អ្នកខ្ចីត្រូវបំពេញឯកសារនានាពាក់ព័ន្ធនឹងឥណទាន និងបំពេញលក្ខខណ្ឌមុនពេលបញ្ចេញឥណទានអោយបានរួចរាល់ដូចដែលមានចែងនៅក្នុងកិច្ចសន្យាខ្ចីបរិភោគ និង/ឬកិច្ចសន្យាបង្កើតហ៊ីប៉ូតែក និង/ឬបង្កើតសិទ្ធិលើការបញ្ចាំ និង/ឬកិច្ចសន្យាធានា និង/ឬឯកសារប្រាតិភោគផ្សេងទៀត ក្នុងលក្ខខណ្ឌដែលអាចទទួលយកបានដោយធនាគារ។</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -14946,37 +14794,111 @@ FROM
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox62">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>២.២. លក្ខខណ្ឌមុនពេលបញ្ចេញឥណទានលើកទី២</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Siemreap</FontFamily>
-                                    <FontWeight>Bold</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                    <Color>#000000</Color>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox62</rd:DefaultName>
+                        <Tablix Name="Tablix78">
+                          <TablixBody>
+                            <TablixColumns>
+                              <TablixColumn>
+                                <Width>0.35358in</Width>
+                              </TablixColumn>
+                              <TablixColumn>
+                                <Width>6.80576in</Width>
+                              </TablixColumn>
+                            </TablixColumns>
+                            <TablixRows>
+                              <TablixRow>
+                                <Height>0.25in</Height>
+                                <TablixCells>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox230">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox234">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>២.១. លក្ខខណ្ឌមុនពេលបញ្ចេញឥណទានលើកទី១</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                </TablixCells>
+                              </TablixRow>
+                            </TablixRows>
+                          </TablixBody>
+                          <TablixColumnHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixColumnHierarchy>
+                          <TablixRowHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixRowHierarchy>
                           <Style>
                             <Border>
                               <Style>None</Style>
                             </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
                           </Style>
-                        </Textbox>
+                        </Tablix>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -15234,54 +15156,14 @@ FROM
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox248">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>ប្រការ ៣. លក្ខខណ្ឌក្រោយបញ្ចេញឥណទាន</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Moul Light</FontFamily>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                    <Color>#000000</Color>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox248</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>None</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                  </TablixCells>
-                </TablixRow>
-                <TablixRow>
-                  <Height>0.25in</Height>
-                  <TablixCells>
-                    <TablixCell>
-                      <CellContents>
-                        <Tablix Name="Tablix82">
+                        <Tablix Name="Tablix88">
                           <TablixBody>
                             <TablixColumns>
                               <TablixColumn>
-                                <Width>0.62073in</Width>
+                                <Width>0.35358in</Width>
                               </TablixColumn>
                               <TablixColumn>
-                                <Width>6.53861in</Width>
+                                <Width>6.80576in</Width>
                               </TablixColumn>
                             </TablixColumns>
                             <TablixRows>
@@ -15290,28 +15172,18 @@ FROM
                                 <TablixCells>
                                   <TablixCell>
                                     <CellContents>
-                                      <Textbox Name="Textbox259">
+                                      <Textbox Name="Textbox235">
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value xml:space="preserve">       </Value>
+                                                <Value />
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Siemreap</FontFamily>
                                                   <FontWeight>Bold</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value>ក.</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
                                                   <TextDecoration>None</TextDecoration>
                                                   <Color>#000000</Color>
                                                 </Style>
@@ -15335,48 +15207,18 @@ FROM
                                   </TablixCell>
                                   <TablixCell>
                                     <CellContents>
-                                      <Textbox Name="Textbox261">
+                                      <Textbox Name="Textbox237">
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>ក្នុងករណីដែលឥណទានត្រូវបានប្រើប្រាស់ក្នុងគោលបំណងធ្វើបុនហិរញ្ញប្បទានដើម្បីដកទ្រព្យធានាពីស្ថាប័នហិរញ្ញវត្ថុដ៏</Value>
+                                                <Value>២.២. លក្ខខណ្ឌមុនពេលបញ្ចេញឥណទានលើកទី២</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Siemreap</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                            </TextRuns>
-                                            <Style />
-                                          </Paragraph>
-                                          <Paragraph>
-                                            <TextRuns>
-                                              <TextRun>
-                                                <Value>ទៃអ្នកខ្ចី​​​ និង/ឬម្ចាស់ទ្រព្យធានាត្រូវប្រគល់ប័ណ្ណកម្មសិទ្ធិច្បាប់ដើមជូនធនាគារឱ្យភាគី “ខ”យ៉ាងយូរបំផុត។ប្រសិនបើអ្នក</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                            </TextRuns>
-                                            <Style />
-                                          </Paragraph>
-                                          <Paragraph>
-                                            <TextRuns>
-                                              <TextRun>
-                                                <Value>​ខ្ចីនិង/ឬម្ចាស់ទ្រព្យធានាមិនអាចបំពេញលក្ខខណ្ឌនេះបានទេ  ធនាគាររក្សាសិទ្ធិក្នុងការទាមទារអោយអ្នកខ្ចីទូទាត់សងឥ ណទានទាំងមូលក្នុងរយៈពេលកំណត់ណាមួយ តាមឆន្ទានុសិទ្ធិរបស់ធនាគារ។</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
+                                                  <FontWeight>Bold</FontWeight>
                                                   <TextDecoration>None</TextDecoration>
                                                   <Color>#000000</Color>
                                                 </Style>
@@ -15428,7 +15270,7 @@ FROM
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Tablix Name="Tablix84">
+                        <Tablix Name="Tablix89">
                           <TablixBody>
                             <TablixColumns>
                               <TablixColumn>
@@ -15444,7 +15286,7 @@ FROM
                                 <TablixCells>
                                   <TablixCell>
                                     <CellContents>
-                                      <Textbox Name="Textbox263">
+                                      <Textbox Name="Textbox262">
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -15461,7 +15303,7 @@ FROM
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value>ខ.</Value>
+                                                <Value>ក.</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -15489,7 +15331,7 @@ FROM
                                   </TablixCell>
                                   <TablixCell>
                                     <CellContents>
-                                      <Textbox Name="Textbox264">
+                                      <Textbox Name="Textbox266">
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
@@ -15547,6 +15389,1402 @@ FROM
                     </TablixCell>
                   </TablixCells>
                 </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Tablix Name="Tablix90">
+                          <TablixBody>
+                            <TablixColumns>
+                              <TablixColumn>
+                                <Width>0.62073in</Width>
+                              </TablixColumn>
+                              <TablixColumn>
+                                <Width>6.53861in</Width>
+                              </TablixColumn>
+                            </TablixColumns>
+                            <TablixRows>
+                              <TablixRow>
+                                <Height>0.25in</Height>
+                                <TablixCells>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox267">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value xml:space="preserve">       </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>ខ.</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox268">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>អ្នកខ្ចីត្រូវ.............</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                </TablixCells>
+                              </TablixRow>
+                            </TablixRows>
+                          </TablixBody>
+                          <TablixColumnHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixColumnHierarchy>
+                          <TablixRowHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixRowHierarchy>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                          </Style>
+                        </Tablix>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox248">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>ប្រការ​ ៣. ការបញ្ចេញឥណទាន</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                    <Color>#000000</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox248</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Tablix Name="Tablix91">
+                          <TablixBody>
+                            <TablixColumns>
+                              <TablixColumn>
+                                <Width>0.35358in</Width>
+                              </TablixColumn>
+                              <TablixColumn>
+                                <Width>6.80576in</Width>
+                              </TablixColumn>
+                            </TablixColumns>
+                            <TablixRows>
+                              <TablixRow>
+                                <Height>0.25in</Height>
+                                <TablixCells>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox238">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox259">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>ការបញ្ចេញឥណទានទាំងអស់ ឬដោយផ្នែកនឹងត្រូវបញ្ចេញដោយផ្ទាល់ទៅអោយអ្នកខ្ចី ឬបុគ្គលផ្សេងទៀត តាមការព្រមព្រៀងរបស់គូភាគីស្របតាមលក្ខខណ្ឌដូចខាងក្រោម៖</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                </TablixCells>
+                              </TablixRow>
+                            </TablixRows>
+                          </TablixBody>
+                          <TablixColumnHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixColumnHierarchy>
+                          <TablixRowHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixRowHierarchy>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                          </Style>
+                        </Tablix>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Tablix Name="Tablix92">
+                          <TablixBody>
+                            <TablixColumns>
+                              <TablixColumn>
+                                <Width>0.35358in</Width>
+                              </TablixColumn>
+                              <TablixColumn>
+                                <Width>6.80576in</Width>
+                              </TablixColumn>
+                            </TablixColumns>
+                            <TablixRows>
+                              <TablixRow>
+                                <Height>0.25in</Height>
+                                <TablixCells>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox261">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox263">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>៣.១. ការបញ្ចេញឥណទានទាំងស្រុង</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>ឥណទានចំនួន................ (.................) ដុល្លារអាមេរិក/រៀល នឹងត្រូវបញ្ចេញដោយផ្ទាល់ចូលទៅក្នុងគណនីរបស់អ្នកខ្ចីសម្រាប់........................។</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                </TablixCells>
+                              </TablixRow>
+                            </TablixRows>
+                          </TablixBody>
+                          <TablixColumnHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixColumnHierarchy>
+                          <TablixRowHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixRowHierarchy>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                          </Style>
+                        </Tablix>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Tablix Name="Tablix93">
+                          <TablixBody>
+                            <TablixColumns>
+                              <TablixColumn>
+                                <Width>0.35358in</Width>
+                              </TablixColumn>
+                              <TablixColumn>
+                                <Width>6.80576in</Width>
+                              </TablixColumn>
+                            </TablixColumns>
+                            <TablixRows>
+                              <TablixRow>
+                                <Height>0.25in</Height>
+                                <TablixCells>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox264">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox269">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>៣.១. ការបញ្ចេញឥណទានលើកទី១</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                </TablixCells>
+                              </TablixRow>
+                            </TablixRows>
+                          </TablixBody>
+                          <TablixColumnHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixColumnHierarchy>
+                          <TablixRowHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixRowHierarchy>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                          </Style>
+                        </Tablix>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Tablix Name="Tablix94">
+                          <TablixBody>
+                            <TablixColumns>
+                              <TablixColumn>
+                                <Width>0.62073in</Width>
+                              </TablixColumn>
+                              <TablixColumn>
+                                <Width>6.53861in</Width>
+                              </TablixColumn>
+                            </TablixColumns>
+                            <TablixRows>
+                              <TablixRow>
+                                <Height>0.25in</Height>
+                                <TablixCells>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox270">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value xml:space="preserve">       </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>ក.</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox271">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>បន្ទាប់ពី..........................ឥណទានចំនួន................ (.................) ដុល្លារអាមេរិក/រៀល នឹងត្រូវបញ្ចេញទៅអោយអ្នកខ្ចីដោយចេញជាមូលប្បទានប័ត្រដើម្បីទូទាត់ដោយផ្ទាល់ទៅអោយ..........................។</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                </TablixCells>
+                              </TablixRow>
+                            </TablixRows>
+                          </TablixBody>
+                          <TablixColumnHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixColumnHierarchy>
+                          <TablixRowHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixRowHierarchy>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                          </Style>
+                        </Tablix>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Tablix Name="Tablix95">
+                          <TablixBody>
+                            <TablixColumns>
+                              <TablixColumn>
+                                <Width>0.62073in</Width>
+                              </TablixColumn>
+                              <TablixColumn>
+                                <Width>6.53861in</Width>
+                              </TablixColumn>
+                            </TablixColumns>
+                            <TablixRows>
+                              <TablixRow>
+                                <Height>0.25in</Height>
+                                <TablixCells>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox272">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value xml:space="preserve">       </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>ខ.</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox273">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>ឥណទានចំនួន................ (.................) ដុល្លារអាមេរិក/រៀល នឹងត្រូវបញ្ចេញដោយផ្ទាល់ចូលទៅក្នុងគណនីរបស់អ្នកខ្ចីសម្រាប់........................។</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                </TablixCells>
+                              </TablixRow>
+                            </TablixRows>
+                          </TablixBody>
+                          <TablixColumnHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixColumnHierarchy>
+                          <TablixRowHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixRowHierarchy>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                          </Style>
+                        </Tablix>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Tablix Name="Tablix96">
+                          <TablixBody>
+                            <TablixColumns>
+                              <TablixColumn>
+                                <Width>0.35358in</Width>
+                              </TablixColumn>
+                              <TablixColumn>
+                                <Width>6.80576in</Width>
+                              </TablixColumn>
+                            </TablixColumns>
+                            <TablixRows>
+                              <TablixRow>
+                                <Height>0.25in</Height>
+                                <TablixCells>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox274">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox275">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>៣.២. ការបញ្ចេញឥណទានលើកទី២</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                </TablixCells>
+                              </TablixRow>
+                            </TablixRows>
+                          </TablixBody>
+                          <TablixColumnHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixColumnHierarchy>
+                          <TablixRowHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixRowHierarchy>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                          </Style>
+                        </Tablix>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Tablix Name="Tablix97">
+                          <TablixBody>
+                            <TablixColumns>
+                              <TablixColumn>
+                                <Width>0.62073in</Width>
+                              </TablixColumn>
+                              <TablixColumn>
+                                <Width>6.53861in</Width>
+                              </TablixColumn>
+                            </TablixColumns>
+                            <TablixRows>
+                              <TablixRow>
+                                <Height>0.25in</Height>
+                                <TablixCells>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox276">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value xml:space="preserve">       </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>ក.</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox279">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>បន្ទាប់ពី..........................ឥណទានចំនួន................ (.................) ដុល្លារអាមេរិក/រៀល នឹងត្រូវបញ្ចេញទៅក្នុងគណនីរបស់អ្នកខ្ចីដោយចេញជាមូលប្បទានប័ត្រដើម្បីទូទាត់ដោយផ្ទាល់ទៅអោយ..........................។</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                </TablixCells>
+                              </TablixRow>
+                            </TablixRows>
+                          </TablixBody>
+                          <TablixColumnHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixColumnHierarchy>
+                          <TablixRowHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixRowHierarchy>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                          </Style>
+                        </Tablix>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox53">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>ប្រការ ៤. លក្ខខណ្ឌក្រោយបញ្ចេញឥណទាន</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                    <Color>#000000</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox53</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Tablix Name="Tablix98">
+                          <TablixBody>
+                            <TablixColumns>
+                              <TablixColumn>
+                                <Width>0.62073in</Width>
+                              </TablixColumn>
+                              <TablixColumn>
+                                <Width>6.53861in</Width>
+                              </TablixColumn>
+                            </TablixColumns>
+                            <TablixRows>
+                              <TablixRow>
+                                <Height>0.25in</Height>
+                                <TablixCells>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox280">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value xml:space="preserve">       </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>ក.</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox282">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>ក្នុងករណីដែលឥណទានត្រូវបានប្រើប្រាស់ក្នុងគោលបំណងធ្វើបុនហិរញ្ញប្បទានដើម្បីដកទ្រព្យធានាពីស្ថាប័នហិរញ្ញវត្ថុដ៏ទៃ អ្នកខ្ចី និង/ឬម្ចាស់ទ្រព្យធានាត្រូវប្រគល់ប័ណ្ណកម្មសិទ្ធិច្បាប់ដើមជូនធនាគារយ៉ាងយូរបំផុត.............. គិតចាប់ពីកាលបរិច្ឆេទបញ្ចេញឥណទានដើម្បីធ្វើបុនហិរញ្ញប្បទាន។</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value xml:space="preserve"> </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>DaunPenh</FontFamily>
+                                                  <FontSize>12pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>ប្រសិនបើអ្នកខ្ចី និង/ឬម្ចាស់ទ្រព្យធានាមិនអាចបំពេញលក្ខខណ្ឌនេះបានទេ ធនាគាររក្សាសិទ្ធិក្នុងការទាមទារអោយអ្នកខ្ចីទូទាត់សងឥណទានទាំងមូលក្នុងរយៈពេលកំណត់ណាមួយ តាមឆន្ទានុសិទ្ធិរបស់ធនាគារ។</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                </TablixCells>
+                              </TablixRow>
+                            </TablixRows>
+                          </TablixBody>
+                          <TablixColumnHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixColumnHierarchy>
+                          <TablixRowHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixRowHierarchy>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                          </Style>
+                        </Tablix>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Tablix Name="Tablix99">
+                          <TablixBody>
+                            <TablixColumns>
+                              <TablixColumn>
+                                <Width>0.62073in</Width>
+                              </TablixColumn>
+                              <TablixColumn>
+                                <Width>6.53861in</Width>
+                              </TablixColumn>
+                            </TablixColumns>
+                            <TablixRows>
+                              <TablixRow>
+                                <Height>0.25in</Height>
+                                <TablixCells>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox295">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value xml:space="preserve">       </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>ខ.</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox297">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>អ្នកខ្ចីត្រូវ.............</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox71</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                </TablixCells>
+                              </TablixRow>
+                            </TablixRows>
+                          </TablixBody>
+                          <TablixColumnHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixColumnHierarchy>
+                          <TablixRowHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixRowHierarchy>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                          </Style>
+                        </Tablix>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox60">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>ប្រការ ៥. គណនីសម្រាប់បញ្ចេញឥណទាន ទូទាត់ឥណទាន និងចំណាយជាប់ពាក់ព័ន្ធផ្សេងៗ</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                    <Color>#000000</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox60</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox62">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>អ្នកខ្ចីយល់ព្រម និងអនុញ្ញាតអោយធនាគារបញ្ចេញឥណទាន និង/ឬទូទាត់ឥណទានដោយធ្វើការកាត់ប្រាក់ចេញពីគណនីសន្សំ និង/ឬគណនីចរន្ត ស្ថិតក្រោមគណនីលេខ .............................. ស្ថិតក្រោមគណនីឈ្មោះ .............................. ​នូវចំនួនទឹកប្រាក់ ឬ ចំនួនស្មើនឹងចំនួនទឹកប្រាក់ រួមមានការទូទាត់ឥណទានដោយយោងតាមតារាងបង់ប្រាក់ និង/ឬថ្លៃសេវាផ្សេងៗដែលពាក់ព័ន្ធជាមួយនឹងឥណទាន និង/ឬ បុព្វលាភធានារ៉ាប់រងផ្សេងៗ (ប្រសិនបើមាន)។</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Siemreap</FontFamily>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                    <Color>#000000</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox62</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
               </TablixRows>
             </TablixBody>
             <TablixColumnHierarchy>
@@ -15570,11 +16808,22 @@ FROM
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>BORROWER_INFO</DataSetName>
             <Top>26.0984in</Top>
-            <Height>3.5in</Height>
+            <Height>6.25in</Height>
             <Width>7.15935in</Width>
             <ZIndex>9</ZIndex>
             <Style>
@@ -15694,9 +16943,6 @@ FROM
                           <Border>
                             <Style>Solid</Style>
                           </Border>
-                          <BottomBorder>
-                            <Style>None</Style>
-                          </BottomBorder>
                           <PaddingLeft>2pt</PaddingLeft>
                           <PaddingRight>2pt</PaddingRight>
                           <PaddingTop>2pt</PaddingTop>
@@ -15719,7 +16965,7 @@ FROM
                                   <TextRun>
                                     <Value>=First(Fields!sub_product.Value, "PURPOSE")</Value>
                                     <Style>
-                                      <FontFamily>Arial</FontFamily>
+                                      <FontFamily>Khmer OS Siemreap</FontFamily>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
@@ -15780,9 +17026,6 @@ FROM
                           <Border>
                             <Style>Solid</Style>
                           </Border>
-                          <BottomBorder>
-                            <Style>None</Style>
-                          </BottomBorder>
                           <PaddingLeft>2pt</PaddingLeft>
                           <PaddingRight>2pt</PaddingRight>
                           <PaddingTop>2pt</PaddingTop>
@@ -15803,9 +17046,22 @@ FROM
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value>=Sum(Fields!applied_amount.Value, "PURPOSE")</Value>
+                                    <Value>=First(Fields!currency.Value, "PURPOSE")</Value>
+                                    <Style>
+                                      <FontFamily>Khmer OS Siemreap</FontFamily>
+                                    </Style>
+                                  </TextRun>
+                                  <TextRun>
+                                    <Value xml:space="preserve"> </Value>
                                     <Style>
                                       <FontFamily>Arial</FontFamily>
+                                    </Style>
+                                  </TextRun>
+                                  <TextRun>
+                                    <Value>=Sum(Fields!applied_amount.Value, "PURPOSE")</Value>
+                                    <Style>
+                                      <FontFamily>Khmer OS Siemreap</FontFamily>
+                                      <Format>#,0.00;(#,0.00)</Format>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
@@ -16365,43 +17621,43 @@ FROM
                                   <TextRun>
                                     <Value>=First(Fields!purposedt.Value, "PURPOSEDT_1")</Value>
                                     <Style>
-                                      <FontFamily>Arial</FontFamily>
+                                      <FontFamily>Khmer OS Siemreap</FontFamily>
                                     </Style>
                                   </TextRun>
                                   <TextRun>
                                     <Value xml:space="preserve"> </Value>
                                     <Style>
-                                      <FontFamily>Arial</FontFamily>
+                                      <FontFamily>Khmer OS Siemreap</FontFamily>
                                     </Style>
                                   </TextRun>
                                   <TextRun>
                                     <Value>=First(Fields!purposedt.Value, "PURPOSEDT_2")</Value>
                                     <Style>
-                                      <FontFamily>Arial</FontFamily>
+                                      <FontFamily>Khmer OS Siemreap</FontFamily>
                                     </Style>
                                   </TextRun>
                                   <TextRun>
                                     <Value xml:space="preserve"> </Value>
                                     <Style>
-                                      <FontFamily>Arial</FontFamily>
+                                      <FontFamily>Khmer OS Siemreap</FontFamily>
                                     </Style>
                                   </TextRun>
                                   <TextRun>
                                     <Value>=First(Fields!purposedt.Value, "PURPOSEDT_3")</Value>
                                     <Style>
-                                      <FontFamily>Arial</FontFamily>
+                                      <FontFamily>Khmer OS Siemreap</FontFamily>
                                     </Style>
                                   </TextRun>
                                   <TextRun>
                                     <Value xml:space="preserve"> </Value>
                                     <Style>
-                                      <FontFamily>Arial</FontFamily>
+                                      <FontFamily>Khmer OS Siemreap</FontFamily>
                                     </Style>
                                   </TextRun>
                                   <TextRun>
                                     <Value>=First(Fields!purposedt.Value, "PURPOSEDT_4")</Value>
                                     <Style>
-                                      <FontFamily>Arial</FontFamily>
+                                      <FontFamily>Khmer OS Siemreap</FontFamily>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
@@ -16433,9 +17689,15 @@ FROM
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value>=Sum(Fields!applied_amount.Value, "PURPOSE")</Value>
+                                        <Value>=first(Fields!annual_interest_rate.Value, "PURPOSE")</Value>
                                         <Style>
-                                          <FontFamily>Arial</FontFamily>
+                                          <FontFamily>Khmer OS Siemreap</FontFamily>
+                                        </Style>
+                                      </TextRun>
+                                      <TextRun>
+                                        <Value> %ក្នុងឆ្នាំ</Value>
+                                        <Style>
+                                          <FontFamily>Khmer OS Siemreap</FontFamily>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
@@ -16469,7 +17731,13 @@ FROM
                                           <TextRun>
                                             <Value>=Sum(Fields!tenor.Value, "PURPOSE")</Value>
                                             <Style>
-                                              <FontFamily>Arial</FontFamily>
+                                              <FontFamily>Khmer OS Siemreap</FontFamily>
+                                            </Style>
+                                          </TextRun>
+                                          <TextRun>
+                                            <Value>ខែ</Value>
+                                            <Style>
+                                              <FontFamily>Khmer OS Siemreap</FontFamily>
                                             </Style>
                                           </TextRun>
                                         </TextRuns>
@@ -16571,7 +17839,7 @@ FROM
                                                       <TextRun>
                                                         <Value>=First(Fields!repayment_type.Value, "REPATMENT")</Value>
                                                         <Style>
-                                                          <FontFamily>Arial</FontFamily>
+                                                          <FontFamily>Khmer OS Siemreap</FontFamily>
                                                         </Style>
                                                       </TextRun>
                                                     </TextRuns>
@@ -16957,11 +18225,53 @@ FROM
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>30.36466in</Height>
+        <Height>32.3484in</Height>
         <Style />
       </Body>
       <Width>7.15936in</Width>
       <Page>
+        <PageFooter>
+          <Height>0.25833in</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="Textbox7">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>="ទំព័រទី " &amp; Globals!PageNumber &amp; " នៃ " &amp; Globals!TotalPages</Value>
+                      <Style />
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox7</rd:DefaultName>
+              <Left>3.01333in</Left>
+              <Height>0.25in</Height>
+              <Width>1in</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageFooter>
         <PageHeight>9in</PageHeight>
         <PageWidth>8.27in</PageWidth>
         <LeftMargin>0.56in</LeftMargin>

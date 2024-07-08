@@ -103,13 +103,12 @@ namespace LOS_PLB_Report.Reports
 											inner join adm_identification_type ait on ait.id = ci.identification_type_id
 											where cc.ref_no='" + RefNo + "'";
                 var DS_MARITAL_STATUS = @"SELECT ams.name,
-											cie.company_name,
-											 to_char(cie.start_date, 'DD/MM/YYYY') as start_date,
-											 cie.position,
-											cc.ref_no
-											 from cus_customer cc 
-											inner join adm_marital_status ams on ams.id = cc.marital_status_id
-											inner join cus_income_employee cie on cie.customer_id = cc.id
+										cie.company_name,
+										 to_char(cie.start_date, 'DD/MM/YYYY') as start_date,
+										 cie.position
+										 from cus_customer cc 
+										inner join adm_marital_status ams on ams.id = cc.marital_status_id
+										LEFT join cus_income_employee cie on cie.customer_id = cc.id
 											Where cc.ref_no ='" + RefNo + "'";
                 var DS_FOR_BANK = @"SELECT
 										acc.NAME CLASSTI,

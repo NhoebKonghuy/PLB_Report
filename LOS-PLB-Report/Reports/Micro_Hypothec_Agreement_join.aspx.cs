@@ -1260,14 +1260,20 @@ CASE
               AND CC.ID = A.CUSTOMER_ID 
 	            WHERE
 		            ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 4";
-				            var APPROVE_AMOUNT = @"SELECT ap.application_no,
-            apd.approved_amount,
-            kh_function(cast(apd.approved_amount as integer)) as approved_amount_kh,
-            NUM_TO_WORDS(CAST(annual_interest_rate AS numeric)) as annual_interest_rate_kh,
-            apd.annual_interest_rate
-            from app_application ap 
-            inner join app_application_detail apd on apd.application_id = ap.id 
-            where ap.application_no='"+applicationNo+"'";
+				var APPROVE_AMOUNT = @"SELECT ap.application_no,
+                                        apd.approved_amount,
+                                        kh_function(cast(apd.approved_amount as integer)) as approved_amount_kh,
+                                        NUM_TO_WORDS(CAST(annual_interest_rate AS numeric)) as annual_interest_rate_kh,
+                                        apd.annual_interest_rate,
+                                        ac.currency,
+                                        case when ac.currency = 'USD' then 'ដុល្លារ'
+                                        when ac.currency = 'THB' then 'បាត'
+                                        when ac.currency = 'KHR' then 'រៀល'
+                                        end as currncy_kh
+                                        from app_application ap 
+                                        inner join app_application_detail apd on apd.application_id = ap.id 
+                                        inner join adm_currency ac on ac.id = apd.currency_id  
+                                     where ap.application_no='" + applicationNo+"'";
 
 
 
@@ -1349,573 +1355,161 @@ CASE
             string villageCode = e.Parameters["VillageCode"].Values[0].ToString();
 
             var DS_OWNER_INFORMATION = @"SELECT DISTINCT
-                                        A.APPLICATION_NO ,
-                                        A.VILLAGE_CODE ,
-                                        A.COL_NAME ,
-                                        A.GENDER ,
-                                        A.NATIONALITY,
-                                        A.DOB_DAY ,
-                                        A.DOB_MONTH ,
-                                        A.DOB_YEAR ,
-                                        A.ID_NUMBER ,
-                                        A.IDENTIFICATION_TYPE,
-                                        A.ISSUE_DATE ,
-                                        A.COMMUNE_KH ,
-                                        A.VILLAGE_KH,
-                                        A.DISTRICT_KH ,
-                                        A.PROVINCE_KH ,
-                                        A.STEET_NO ,
-                                        A.HOUSE_NO ,
-                                        A.GROUP_NO
-                                        FROM 
-                                        (
-                                        SELECT ROW_NUMBER
-                                          ( ) OVER ( ORDER BY COL.ID ) AS NUM,
-                                          AP.APPLICATION_NO,
-	                                        COL.ID ,
-	                                        'MAIN' AS LAND,
-	                                        AV.VILLAGE_CODE ,
-                                          CC.FAMILY_NAME_KH|| ' ' || CC.GIVEN_NAME_KH AS COL_NAME,
-                                        CASE
+            A.APPLICATION_NO ,
+            A.VILLAGE_CODE ,
+            A.COL_NAME ,
+            A.GENDER ,
+            A.NATIONALITY,
+            A.DOB_DAY ,
+            A.DOB_MONTH ,
+            A.DOB_YEAR ,
+            A.ID_NUMBER ,
+            A.IDENTIFICATION_TYPE,
+            A.ISSUE_DATE ,
+            A.COMMUNE_KH ,
+            A.VILLAGE_KH,
+            A.DISTRICT_KH ,
+            A.PROVINCE_KH ,
+            A.STEET_NO ,
+            A.HOUSE_NO ,
+            A.GROUP_NO
+            FROM 
+            ( 
+	            SELECT ROW_NUMBER
+              ( ) OVER ( ORDER BY COL.ID , COO.ID) AS NUM,
+              AP.APPLICATION_NO,
+	            COL.ID ,
+	            '' AS LAND,
+	            AV.VILLAGE_CODE ,
+              CC.FAMILY_NAME_KH|| ' ' || CC.GIVEN_NAME_KH AS COL_NAME,
+            CASE
     
-                                            WHEN CC.GENDER = 'MALE' THEN
-                                            'ប្រុស' ELSE'ស្រី' 
-                                          END AS GENDER,
-                                        CASE
+                WHEN CC.GENDER = 'MALE' THEN
+                'ប្រុស' ELSE'ស្រី' 
+              END AS GENDER,
+            CASE
     
-                                            WHEN ANN.NAME = 'Cambodian' THEN
-                                            'ខ្មែរ' 
-                                          END AS NATIONALITY,
-                                          TO_CHAR( CC.DATE_OF_BIRTH, 'DD' ) AS DOB_DAY,
-                                        CASE
+                WHEN ANN.NAME = 'Cambodian' THEN
+                'ខ្មែរ' 
+              END AS NATIONALITY,
+              TO_CHAR( CC.DATE_OF_BIRTH, 'DD' ) AS DOB_DAY,
+            CASE
     
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JAN' THEN
-                                            'មករា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'FEB' THEN
-                                            'កុម្ភៈ' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAR' THEN
-                                            'មីនា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'APR' THEN
-                                            'មេសា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAY' THEN
-                                            'ឧសភា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUN' THEN
-                                            'មិថុនា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUL' THEN
-                                            'កក្កដា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'AUG' THEN
-                                            'សីហា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'SEP' THEN
-                                            'កញ្ញា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'OCT' THEN
-                                            'តុលា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'NOV' THEN
-                                            'វិច្ឆិកា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'DEC' THEN
-                                            'ធ្នូ' 
-                                          END AS DOB_MONTH,
-                                          TO_CHAR( CC.DATE_OF_BIRTH, 'YYYY' ) AS DOB_YEAR,
-                                          A.ID_NUMBER,
-                                          A.IDENTIFICATION_TYPE,
-                                          A.ISSUE_DATE,
-                                          ACC.COMMUNE_KH,
-                                          APC.PROVINCE_KH,
-                                          AVC.VILLAGE_KH,
-                                          ADC.DISTRICT_KH,
-                                        CASE
+                WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JAN' THEN
+                'មករា' 
+                WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'FEB' THEN
+                'កុម្ភៈ' 
+                WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAR' THEN
+                'មីនា' 
+                WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'APR' THEN
+                'មេសា' 
+                WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAY' THEN
+                'ឧសភា' 
+                WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUN' THEN
+                'មិថុនា' 
+                WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUL' THEN
+                'កក្កដា' 
+                WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'AUG' THEN
+                'សីហា' 
+                WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'SEP' THEN
+                'កញ្ញា' 
+                WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'OCT' THEN
+                'តុលា' 
+                WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'NOV' THEN
+                'វិច្ឆិកា' 
+                WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'DEC' THEN
+                'ធ្នូ' 
+              END AS DOB_MONTH,
+              TO_CHAR( CC.DATE_OF_BIRTH, 'YYYY' ) AS DOB_YEAR,
+              A.ID_NUMBER,
+              A.IDENTIFICATION_TYPE,
+              A.ISSUE_DATE,
+              ACC.COMMUNE_KH,
+              APC.PROVINCE_KH,
+              AVC.VILLAGE_KH,
+              ADC.DISTRICT_KH,
+            CASE
     
-                                            WHEN CCA.STREET_NO = '' THEN
-                                            '..........' ELSE CCA.STREET_NO 
-                                          END AS STEET_NO,
-                                        CASE
+                WHEN CCA.STREET_NO = '' THEN
+                '..........' ELSE CCA.STREET_NO 
+              END AS STEET_NO,
+            CASE
     
-                                            WHEN CCA.HOUSE_NO = '' THEN
-                                            '..........' ELSE CCA.HOUSE_NO 
-                                          END AS HOUSE_NO,
-                                        CASE
+                WHEN CCA.HOUSE_NO = '' THEN
+                '..........' ELSE CCA.HOUSE_NO 
+              END AS HOUSE_NO,
+            CASE
     
-                                            WHEN CCA.GROUP_NO = '' THEN
-                                            '.........' ELSE CCA.GROUP_NO 
-                                          END AS GROUP_NO 
-                                        FROM
-                                          APP_APPLICATION AP
-                                          INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
-                                          AND ACCA.STATUS = 't'
-                                          INNER JOIN APP_COL_COLLATERAL_SECURE CS ON CS.APP_COLLATERAL_ASSET_ID = ACCA.ID 
-                                          AND CS.STATUS = 't'
-                                          INNER JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID 
-                                          AND COL.STATUS = 't'
-                                          INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID 
-                                          AND CCD.STATUS = 't'
-	                                        LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
-                                          INNER JOIN CUS_CUSTOMER_JOINT CJ ON CJ.ID = COL.CUSTOMER_JOINT_ID AND CJ.STATUS = 't'
-                                          INNER JOIN CUS_CUSTOMER_JOINT_DETAIL CCJ ON CCJ.CUSTOMER_JOINT_ID = CJ.ID AND CCJ.STATUS = 't'
-                                          INNER JOIN CUS_CUSTOMER CC ON CJ.CUSTOMER_ID = CC.
-                                          ID LEFT JOIN CUS_PERMANENT_ADDRESS CCA ON CCA.CUSTOMER_ID = CC.
-                                          ID AND CCA.STATUS = 't' LEFT JOIN ADM_PROVINCE_CBC APC ON APC.ID = CCA.PROVINCE_ID
-                                          LEFT JOIN ADM_VILLAGE_CBC AVC ON AVC.ID = CCA.VILLAGE_ID
-                                          LEFT JOIN ADM_COMMUNE_CBC ACC ON ACC.ID = CCA.COMMUNE_ID
-                                          LEFT JOIN ADM_DISTRICT_CBC ADC ON ADC.ID = CCA.DISTRICT_ID
-                                          LEFT JOIN ADM_NATIONALITY ANN ON ANN.ID = CC.NATIONALITY_ID 
-                                          --IDENTIFICATION
-                                          LEFT JOIN (
-                                          SELECT
-                                            CI.CREATED,
-                                            CI.APPLICATION_ID,
-                                            CI.CUSTOMER_ID,
-                                          CASE
+                WHEN CCA.GROUP_NO = '' THEN
+                '.........' ELSE CCA.GROUP_NO 
+              END AS GROUP_NO 
+            FROM
+              APP_APPLICATION AP
+              INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
+              AND ACCA.STATUS = 't'
+              INNER JOIN APP_COL_COLLATERAL_SECURE CS ON CS.APP_COLLATERAL_ASSET_ID = ACCA.ID 
+              AND CS.STATUS = 't'
+              INNER JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID 
+              AND COL.STATUS = 't'
+              INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID 
+              AND CCD.STATUS = 't'
+	            LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
+	            INNER JOIN APP_COL_COLLATERAL_CO_OWNER COO ON COO.APPLICATION_COLLATERAL_ID = COL.ID AND COO.STATUS = 't'
+              INNER JOIN CUS_CUSTOMER CC ON COO.CUSTOMER_ID = CC.
+              ID LEFT JOIN CUS_PERMANENT_ADDRESS CCA ON CCA.CUSTOMER_ID = CC.
+              ID AND CCA.STATUS = 't' LEFT JOIN ADM_PROVINCE_CBC APC ON APC.ID = CCA.PROVINCE_ID
+              LEFT JOIN ADM_VILLAGE_CBC AVC ON AVC.ID = CCA.VILLAGE_ID
+              LEFT JOIN ADM_COMMUNE_CBC ACC ON ACC.ID = CCA.COMMUNE_ID
+              LEFT JOIN ADM_DISTRICT_CBC ADC ON ADC.ID = CCA.DISTRICT_ID
+              LEFT JOIN ADM_NATIONALITY ANN ON ANN.ID = CC.NATIONALITY_ID 
+              --IDENTIFICATION
+              LEFT JOIN (
+              SELECT
+                CI.CREATED,
+                CI.APPLICATION_ID,
+                CI.CUSTOMER_ID,
+              CASE
       
-                                              WHEN IT.ID_TYPE = 'F' THEN
-                                              'សៀវភៅគ្រួសារ' 
-                                              WHEN IT.ID_TYPE = 'CD' THEN
-                                              'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-                                              WHEN IT.ID_TYPE = 'N' THEN
-                                              'អត្តសញ្ញាណប័ណ្ណ' 
-                                              WHEN IT.ID_TYPE = 'P' THEN
-                                              'លិខិតឆ្លងដែន' 
-                                              WHEN IT.ID_TYPE = 'MI' THEN
-                                              'ឆាយា' 
-                                              WHEN IT.ID_TYPE = 'R' THEN
-                                              'សៀវភៅស្នាក់នៅ' 
-                                              WHEN IT.ID_TYPE = 'B' THEN
-                                              'សំបុត្រកំណើត' 
-                                            END AS IDENTIFICATION_TYPE,
-                                            CI.ID_NUMBER,
-                                            TO_CHAR( ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUE_DATE 
-                                          FROM
-                                            APP_CUSTOMER_IDENTIFICATION CI
-                                            INNER JOIN ADM_IDENTIFICATION_TYPE IT ON IT.ID = CI.IDENTIFICATION_TYPE_ID
-                                            INNER JOIN (
-                                            SELECT MIN
-                                              ( CI.ID ) AS CREATED,
-                                              CI.APPLICATION_ID,
-                                              CI.CUSTOMER_ID 
-                                            FROM
-                                              APP_CUSTOMER_IDENTIFICATION CI 
-                                            WHERE
-                                              CI.STATUS = 't' 
-                                            GROUP BY
-                                              CI.APPLICATION_ID,
-                                              CI.CUSTOMER_ID 
-                                            ) A ON A.CREATED = CI.ID 
-                                            AND A.APPLICATION_ID = CI.APPLICATION_ID 
-                                            AND A.CUSTOMER_ID = CI.CUSTOMER_ID 
-                                          WHERE
-                                            CI.STATUS = 't' 
-                                          ) A ON A.APPLICATION_ID = AP.ID 
-                                          AND CC.ID = A.CUSTOMER_ID 
-	
-	                                        UNION ALL
-	
-	                                        SELECT ROW_NUMBER
-                                          ( ) OVER ( ORDER BY COL.ID ) AS NUM,
-                                          AP.APPLICATION_NO,
-	                                        COL.ID ,
-	                                        'MAIN' AS LAND,
-	                                        AV.VILLAGE_CODE ,
-                                          CC.FAMILY_NAME_KH|| ' ' || CC.GIVEN_NAME_KH AS COL_NAME,
-                                        CASE
-    
-                                            WHEN CC.GENDER = 'MALE' THEN
-                                            'ប្រុស' ELSE'ស្រី' 
-                                          END AS GENDER,
-                                        CASE
-    
-                                            WHEN ANN.NAME = 'Cambodian' THEN
-                                            'ខ្មែរ' 
-                                          END AS NATIONALITY,
-                                          TO_CHAR( CC.DATE_OF_BIRTH, 'DD' ) AS DOB_DAY,
-                                        CASE
-    
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JAN' THEN
-                                            'មករា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'FEB' THEN
-                                            'កុម្ភៈ' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAR' THEN
-                                            'មីនា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'APR' THEN
-                                            'មេសា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAY' THEN
-                                            'ឧសភា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUN' THEN
-                                            'មិថុនា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUL' THEN
-                                            'កក្កដា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'AUG' THEN
-                                            'សីហា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'SEP' THEN
-                                            'កញ្ញា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'OCT' THEN
-                                            'តុលា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'NOV' THEN
-                                            'វិច្ឆិកា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'DEC' THEN
-                                            'ធ្នូ' 
-                                          END AS DOB_MONTH,
-                                          TO_CHAR( CC.DATE_OF_BIRTH, 'YYYY' ) AS DOB_YEAR,
-                                          A.ID_NUMBER,
-                                          A.IDENTIFICATION_TYPE,
-                                          A.ISSUE_DATE,
-                                          ACC.COMMUNE_KH,
-                                          APC.PROVINCE_KH,
-                                          AVC.VILLAGE_KH,
-                                          ADC.DISTRICT_KH,
-                                        CASE
-    
-                                            WHEN CCA.STREET_NO = '' THEN
-                                            '..........' ELSE CCA.STREET_NO 
-                                          END AS STEET_NO,
-                                        CASE
-    
-                                            WHEN CCA.HOUSE_NO = '' THEN
-                                            '..........' ELSE CCA.HOUSE_NO 
-                                          END AS HOUSE_NO,
-                                        CASE
-    
-                                            WHEN CCA.GROUP_NO = '' THEN
-                                            '.........' ELSE CCA.GROUP_NO 
-                                          END AS GROUP_NO 
-                                        FROM
-                                          APP_APPLICATION AP
-                                          INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
-                                          AND ACCA.STATUS = 't'
-                                          INNER JOIN APP_COL_COLLATERAL_SECURE CS ON CS.APP_COLLATERAL_ASSET_ID = ACCA.ID 
-                                          AND CS.STATUS = 't'
-                                          INNER JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID 
-                                          AND COL.STATUS = 't'
-                                          INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID 
-                                          AND CCD.STATUS = 't'
-	                                        LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
-                                          INNER JOIN CUS_CUSTOMER CC ON COL.CUSTOMER_ID = CC.
-                                          ID LEFT JOIN CUS_PERMANENT_ADDRESS CCA ON CCA.CUSTOMER_ID = CC.
-                                          ID AND CCA.STATUS = 't' LEFT JOIN ADM_PROVINCE_CBC APC ON APC.ID = CCA.PROVINCE_ID
-                                          LEFT JOIN ADM_VILLAGE_CBC AVC ON AVC.ID = CCA.VILLAGE_ID
-                                          LEFT JOIN ADM_COMMUNE_CBC ACC ON ACC.ID = CCA.COMMUNE_ID
-                                          LEFT JOIN ADM_DISTRICT_CBC ADC ON ADC.ID = CCA.DISTRICT_ID
-                                          LEFT JOIN ADM_NATIONALITY ANN ON ANN.ID = CC.NATIONALITY_ID 
-                                          --IDENTIFICATION
-                                          LEFT JOIN (
-                                          SELECT
-                                            CI.CREATED,
-                                            CI.APPLICATION_ID,
-                                            CI.CUSTOMER_ID,
-                                          CASE
-      
-                                              WHEN IT.ID_TYPE = 'F' THEN
-                                              'សៀវភៅគ្រួសារ' 
-                                              WHEN IT.ID_TYPE = 'CD' THEN
-                                              'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-                                              WHEN IT.ID_TYPE = 'N' THEN
-                                              'អត្តសញ្ញាណប័ណ្ណ' 
-                                              WHEN IT.ID_TYPE = 'P' THEN
-                                              'លិខិតឆ្លងដែន' 
-                                              WHEN IT.ID_TYPE = 'MI' THEN
-                                              'ឆាយា' 
-                                              WHEN IT.ID_TYPE = 'R' THEN
-                                              'សៀវភៅស្នាក់នៅ' 
-                                              WHEN IT.ID_TYPE = 'B' THEN
-                                              'សំបុត្រកំណើត' 
-                                            END AS IDENTIFICATION_TYPE,
-                                            CI.ID_NUMBER,
-                                            TO_CHAR( ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUE_DATE 
-                                          FROM
-                                            APP_CUSTOMER_IDENTIFICATION CI
-                                            INNER JOIN ADM_IDENTIFICATION_TYPE IT ON IT.ID = CI.IDENTIFICATION_TYPE_ID
-                                            INNER JOIN (
-                                            SELECT MIN
-                                              ( CI.ID ) AS CREATED,
-                                              CI.APPLICATION_ID,
-                                              CI.CUSTOMER_ID 
-                                            FROM
-                                              APP_CUSTOMER_IDENTIFICATION CI 
-                                            WHERE
-                                              CI.STATUS = 't' 
-                                            GROUP BY
-                                              CI.APPLICATION_ID,
-                                              CI.CUSTOMER_ID 
-                                            ) A ON A.CREATED = CI.ID 
-                                            AND A.APPLICATION_ID = CI.APPLICATION_ID 
-                                            AND A.CUSTOMER_ID = CI.CUSTOMER_ID 
-                                          WHERE
-                                            CI.STATUS = 't' 
-                                          ) A ON A.APPLICATION_ID = AP.ID 
-                                          AND CC.ID = A.CUSTOMER_ID 
-	
-	                                        UNION ALL
-	
-	                                        SELECT ROW_NUMBER
-                                          ( ) OVER ( ORDER BY COL.ID ) AS NUM,
-                                          AP.APPLICATION_NO,
-	                                        COL.ID ,
-	                                        '' AS LAND,
-	                                        AV.VILLAGE_CODE ,
-                                          CC.FAMILY_NAME_KH|| ' ' || CC.GIVEN_NAME_KH AS COL_NAME,
-                                        CASE
-    
-                                            WHEN CC.GENDER = 'MALE' THEN
-                                            'ប្រុស' ELSE'ស្រី' 
-                                          END AS GENDER,
-                                        CASE
-    
-                                            WHEN ANN.NAME = 'Cambodian' THEN
-                                            'ខ្មែរ' 
-                                          END AS NATIONALITY,
-                                          TO_CHAR( CC.DATE_OF_BIRTH, 'DD' ) AS DOB_DAY,
-                                        CASE
-    
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JAN' THEN
-                                            'មករា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'FEB' THEN
-                                            'កុម្ភៈ' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAR' THEN
-                                            'មីនា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'APR' THEN
-                                            'មេសា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAY' THEN
-                                            'ឧសភា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUN' THEN
-                                            'មិថុនា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUL' THEN
-                                            'កក្កដា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'AUG' THEN
-                                            'សីហា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'SEP' THEN
-                                            'កញ្ញា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'OCT' THEN
-                                            'តុលា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'NOV' THEN
-                                            'វិច្ឆិកា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'DEC' THEN
-                                            'ធ្នូ' 
-                                          END AS DOB_MONTH,
-                                          TO_CHAR( CC.DATE_OF_BIRTH, 'YYYY' ) AS DOB_YEAR,
-                                          A.ID_NUMBER,
-                                          A.IDENTIFICATION_TYPE,
-                                          A.ISSUE_DATE,
-                                          ACC.COMMUNE_KH,
-                                          APC.PROVINCE_KH,
-                                          AVC.VILLAGE_KH,
-                                          ADC.DISTRICT_KH,
-                                        CASE
-    
-                                            WHEN CCA.STREET_NO = '' THEN
-                                            '..........' ELSE CCA.STREET_NO 
-                                          END AS STEET_NO,
-                                        CASE
-    
-                                            WHEN CCA.HOUSE_NO = '' THEN
-                                            '..........' ELSE CCA.HOUSE_NO 
-                                          END AS HOUSE_NO,
-                                        CASE
-    
-                                            WHEN CCA.GROUP_NO = '' THEN
-                                            '.........' ELSE CCA.GROUP_NO 
-                                          END AS GROUP_NO 
-                                        FROM
-                                          APP_APPLICATION AP
-                                          INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
-                                          AND ACCA.STATUS = 't'
-                                          INNER JOIN APP_COL_COLLATERAL_SECURE CS ON CS.APP_COLLATERAL_ASSET_ID = ACCA.ID 
-                                          AND CS.STATUS = 't'
-                                          INNER JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID 
-                                          AND COL.STATUS = 't'
-                                          INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID 
-                                          AND CCD.STATUS = 't'
-	                                        LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
-                                          INNER JOIN CUS_CUSTOMER_JOINT CJ ON CJ.ID = COL.CUSTOMER_JOINT_ID AND CJ.STATUS = 't'
-                                          INNER JOIN CUS_CUSTOMER_JOINT_DETAIL CCJ ON CCJ.CUSTOMER_JOINT_ID = CJ.ID AND CCJ.STATUS = 't'
-                                          INNER JOIN CUS_CUSTOMER CC ON CCJ.CUSTOMER_ID = CC.
-                                          ID LEFT JOIN CUS_PERMANENT_ADDRESS CCA ON CCA.CUSTOMER_ID = CC.
-                                          ID AND CCA.STATUS = 't' LEFT JOIN ADM_PROVINCE_CBC APC ON APC.ID = CCA.PROVINCE_ID
-                                          LEFT JOIN ADM_VILLAGE_CBC AVC ON AVC.ID = CCA.VILLAGE_ID
-                                          LEFT JOIN ADM_COMMUNE_CBC ACC ON ACC.ID = CCA.COMMUNE_ID
-                                          LEFT JOIN ADM_DISTRICT_CBC ADC ON ADC.ID = CCA.DISTRICT_ID
-                                          LEFT JOIN ADM_NATIONALITY ANN ON ANN.ID = CC.NATIONALITY_ID 
-                                          --IDENTIFICATION
-                                          LEFT JOIN (
-                                          SELECT
-                                            CI.CREATED,
-                                            CI.APPLICATION_ID,
-                                            CI.CUSTOMER_ID,
-                                          CASE
-      
-                                              WHEN IT.ID_TYPE = 'F' THEN
-                                              'សៀវភៅគ្រួសារ' 
-                                              WHEN IT.ID_TYPE = 'CD' THEN
-                                              'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-                                              WHEN IT.ID_TYPE = 'N' THEN
-                                              'អត្តសញ្ញាណប័ណ្ណ' 
-                                              WHEN IT.ID_TYPE = 'P' THEN
-                                              'លិខិតឆ្លងដែន' 
-                                              WHEN IT.ID_TYPE = 'MI' THEN
-                                              'ឆាយា' 
-                                              WHEN IT.ID_TYPE = 'R' THEN
-                                              'សៀវភៅស្នាក់នៅ' 
-                                              WHEN IT.ID_TYPE = 'B' THEN
-                                              'សំបុត្រកំណើត' 
-                                            END AS IDENTIFICATION_TYPE,
-                                            CI.ID_NUMBER,
-                                            TO_CHAR( ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUE_DATE 
-                                          FROM
-                                            APP_CUSTOMER_IDENTIFICATION CI
-                                            INNER JOIN ADM_IDENTIFICATION_TYPE IT ON IT.ID = CI.IDENTIFICATION_TYPE_ID
-                                            INNER JOIN (
-                                            SELECT MIN
-                                              ( CI.ID ) AS CREATED,
-                                              CI.APPLICATION_ID,
-                                              CI.CUSTOMER_ID 
-                                            FROM
-                                              APP_CUSTOMER_IDENTIFICATION CI 
-                                            WHERE
-                                              CI.STATUS = 't' 
-                                            GROUP BY
-                                              CI.APPLICATION_ID,
-                                              CI.CUSTOMER_ID 
-                                            ) A ON A.CREATED = CI.ID 
-                                            AND A.APPLICATION_ID = CI.APPLICATION_ID 
-                                            AND A.CUSTOMER_ID = CI.CUSTOMER_ID 
-                                          WHERE
-                                            CI.STATUS = 't' 
-                                          ) A ON A.APPLICATION_ID = AP.ID 
-                                          AND CC.ID = A.CUSTOMER_ID
-	
-	                                        UNION ALL 
-	
-	                                        SELECT ROW_NUMBER
-                                          ( ) OVER ( ORDER BY COL.ID ) AS NUM,
-                                          AP.APPLICATION_NO,
-	                                        COL.ID ,
-	                                        '' AS LAND,
-	                                        AV.VILLAGE_CODE ,
-                                          CC.FAMILY_NAME_KH|| ' ' || CC.GIVEN_NAME_KH AS COL_NAME,
-                                        CASE
-    
-                                            WHEN CC.GENDER = 'MALE' THEN
-                                            'ប្រុស' ELSE'ស្រី' 
-                                          END AS GENDER,
-                                        CASE
-    
-                                            WHEN ANN.NAME = 'Cambodian' THEN
-                                            'ខ្មែរ' 
-                                          END AS NATIONALITY,
-                                          TO_CHAR( CC.DATE_OF_BIRTH, 'DD' ) AS DOB_DAY,
-                                        CASE
-    
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JAN' THEN
-                                            'មករា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'FEB' THEN
-                                            'កុម្ភៈ' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAR' THEN
-                                            'មីនា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'APR' THEN
-                                            'មេសា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'MAY' THEN
-                                            'ឧសភា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUN' THEN
-                                            'មិថុនា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JUL' THEN
-                                            'កក្កដា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'AUG' THEN
-                                            'សីហា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'SEP' THEN
-                                            'កញ្ញា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'OCT' THEN
-                                            'តុលា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'NOV' THEN
-                                            'វិច្ឆិកា' 
-                                            WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'DEC' THEN
-                                            'ធ្នូ' 
-                                          END AS DOB_MONTH,
-                                          TO_CHAR( CC.DATE_OF_BIRTH, 'YYYY' ) AS DOB_YEAR,
-                                          A.ID_NUMBER,
-                                          A.IDENTIFICATION_TYPE,
-                                          A.ISSUE_DATE,
-                                          ACC.COMMUNE_KH,
-                                          APC.PROVINCE_KH,
-                                          AVC.VILLAGE_KH,
-                                          ADC.DISTRICT_KH,
-                                        CASE
-    
-                                            WHEN CCA.STREET_NO = '' THEN
-                                            '..........' ELSE CCA.STREET_NO 
-                                          END AS STEET_NO,
-                                        CASE
-    
-                                            WHEN CCA.HOUSE_NO = '' THEN
-                                            '..........' ELSE CCA.HOUSE_NO 
-                                          END AS HOUSE_NO,
-                                        CASE
-    
-                                            WHEN CCA.GROUP_NO = '' THEN
-                                            '.........' ELSE CCA.GROUP_NO 
-                                          END AS GROUP_NO 
-                                        FROM
-                                          APP_APPLICATION AP
-                                          INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
-                                          AND ACCA.STATUS = 't'
-                                          INNER JOIN APP_COL_COLLATERAL_SECURE CS ON CS.APP_COLLATERAL_ASSET_ID = ACCA.ID 
-                                          AND CS.STATUS = 't'
-                                          INNER JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID 
-                                          AND COL.STATUS = 't'
-                                          INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID 
-                                          AND CCD.STATUS = 't'
-	                                        LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
-	                                        INNER JOIN APP_COL_COLLATERAL_CO_OWNER COO ON COO.APPLICATION_COLLATERAL_ID = COL.ID AND COO.STATUS = 't'
-                                          INNER JOIN CUS_CUSTOMER CC ON COO.CUSTOMER_ID = CC.
-                                          ID LEFT JOIN CUS_PERMANENT_ADDRESS CCA ON CCA.CUSTOMER_ID = CC.
-                                          ID AND CCA.STATUS = 't' LEFT JOIN ADM_PROVINCE_CBC APC ON APC.ID = CCA.PROVINCE_ID
-                                          LEFT JOIN ADM_VILLAGE_CBC AVC ON AVC.ID = CCA.VILLAGE_ID
-                                          LEFT JOIN ADM_COMMUNE_CBC ACC ON ACC.ID = CCA.COMMUNE_ID
-                                          LEFT JOIN ADM_DISTRICT_CBC ADC ON ADC.ID = CCA.DISTRICT_ID
-                                          LEFT JOIN ADM_NATIONALITY ANN ON ANN.ID = CC.NATIONALITY_ID 
-                                          --IDENTIFICATION
-                                          LEFT JOIN (
-                                          SELECT
-                                            CI.CREATED,
-                                            CI.APPLICATION_ID,
-                                            CI.CUSTOMER_ID,
-                                          CASE
-      
-                                              WHEN IT.ID_TYPE = 'F' THEN
-                                              'សៀវភៅគ្រួសារ' 
-                                              WHEN IT.ID_TYPE = 'CD' THEN
-                                              'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-                                              WHEN IT.ID_TYPE = 'N' THEN
-                                              'អត្តសញ្ញាណប័ណ្ណ' 
-                                              WHEN IT.ID_TYPE = 'P' THEN
-                                              'លិខិតឆ្លងដែន' 
-                                              WHEN IT.ID_TYPE = 'MI' THEN
-                                              'ឆាយា' 
-                                              WHEN IT.ID_TYPE = 'R' THEN
-                                              'សៀវភៅស្នាក់នៅ' 
-                                              WHEN IT.ID_TYPE = 'B' THEN
-                                              'សំបុត្រកំណើត' 
-                                            END AS IDENTIFICATION_TYPE,
-                                            CI.ID_NUMBER,
-                                            TO_CHAR( ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUE_DATE 
-                                          FROM
-                                            APP_CUSTOMER_IDENTIFICATION CI
-                                            INNER JOIN ADM_IDENTIFICATION_TYPE IT ON IT.ID = CI.IDENTIFICATION_TYPE_ID
-                                            INNER JOIN (
-                                            SELECT MIN
-                                              ( CI.ID ) AS CREATED,
-                                              CI.APPLICATION_ID,
-                                              CI.CUSTOMER_ID 
-                                            FROM
-                                              APP_CUSTOMER_IDENTIFICATION CI 
-                                            WHERE
-                                              CI.STATUS = 't' 
-                                            GROUP BY
-                                              CI.APPLICATION_ID,
-                                              CI.CUSTOMER_ID 
-                                            ) A ON A.CREATED = CI.ID 
-                                            AND A.APPLICATION_ID = CI.APPLICATION_ID 
-                                            AND A.CUSTOMER_ID = CI.CUSTOMER_ID 
-                                          WHERE
-                                            CI.STATUS = 't' 
-                                          ) A ON A.APPLICATION_ID = AP.ID 
-                                          AND CC.ID = A.CUSTOMER_ID
-	                                        ) A WHERE A.APPLICATION_NO = '" + applicationNo+"' AND A.VILLAGE_CODE = '"+ villageCode +"'";
+                  WHEN IT.ID_TYPE = 'F' THEN
+                  'សៀវភៅគ្រួសារ' 
+                  WHEN IT.ID_TYPE = 'CD' THEN
+                  'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+                  WHEN IT.ID_TYPE = 'N' THEN
+                  'អត្តសញ្ញាណប័ណ្ណ' 
+                  WHEN IT.ID_TYPE = 'P' THEN
+                  'លិខិតឆ្លងដែន' 
+                  WHEN IT.ID_TYPE = 'MI' THEN
+                  'ឆាយា' 
+                  WHEN IT.ID_TYPE = 'R' THEN
+                  'សៀវភៅស្នាក់នៅ' 
+                  WHEN IT.ID_TYPE = 'B' THEN
+                  'សំបុត្រកំណើត' 
+                END AS IDENTIFICATION_TYPE,
+                CI.ID_NUMBER,
+                TO_CHAR( ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUE_DATE 
+              FROM
+                APP_CUSTOMER_IDENTIFICATION CI
+                INNER JOIN ADM_IDENTIFICATION_TYPE IT ON IT.ID = CI.IDENTIFICATION_TYPE_ID
+                INNER JOIN (
+                SELECT MIN
+                  ( CI.ID ) AS CREATED,
+                  CI.APPLICATION_ID,
+                  CI.CUSTOMER_ID 
+                FROM
+                  APP_CUSTOMER_IDENTIFICATION CI 
+                WHERE
+                  CI.STATUS = 't' 
+                GROUP BY
+                  CI.APPLICATION_ID,
+                  CI.CUSTOMER_ID 
+                ) A ON A.CREATED = CI.ID 
+                AND A.APPLICATION_ID = CI.APPLICATION_ID 
+                AND A.CUSTOMER_ID = CI.CUSTOMER_ID 
+              WHERE
+                CI.STATUS = 't' 
+              ) A ON A.APPLICATION_ID = AP.ID 
+              AND CC.ID = A.CUSTOMER_ID
+	            ) A WHERE A.APPLICATION_NO = '"+applicationNo+"' AND A.VILLAGE_CODE = '" + villageCode + "'";
             var DS_CollateralInformation = @"SELECT ROW_NUMBER
                                             ( ) OVER ( ORDER BY COL.ID ) AS NUM,
                                             AV.VILLAGE_CODE ,

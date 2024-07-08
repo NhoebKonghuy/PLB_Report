@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
-  <am:AuthoringMetadata>
-    <am:CreatedBy>
-      <am:Name>SSDTRS</am:Name>
-      <am:Version>17.9.34622.214</am:Version>
-    </am:CreatedBy>
-    <am:UpdatedBy>
-      <am:Name>SSDTRS</am:Name>
-      <am:Version>17.9.34622.214</am:Version>
-    </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-04-18T02:18:00.0117010Z</am:LastModifiedTimestamp>
-  </am:AuthoringMetadata>
+<Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily">
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource1">
       <DataSourceReference>DataSource1</DataSourceReference>
-      <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>628ed805-f6f5-4361-880c-f2e3ea514cf3</rd:DataSourceID>
     </DataSource>
   </DataSources>
@@ -1057,7 +1045,28 @@ FROM
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value> ។</Value>
+                                  <Value xml:space="preserve"> </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>ព្រះរាជាណាចក្រកម្ពុជា</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                    <Color>#000000</Color>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>។</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>

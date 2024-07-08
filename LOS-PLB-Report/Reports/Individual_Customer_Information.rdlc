@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily">
+<Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.6.33723.286</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.9.34622.214</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2024-06-24T02:57:43.2749060Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource1">
       <DataSourceReference>DataSource1</DataSourceReference>
+      <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>c8b8b81e-c56f-46a4-a7f2-0c6bcc0f4605</rd:DataSourceID>
     </DataSource>
   </DataSources>
@@ -279,8 +291,7 @@ cie.company_name,
  cie.position
  from cus_customer cc 
 inner join adm_marital_status ams on ams.id = cc.marital_status_id
-inner join cus_income_employee cie on cie.customer_id = cc.id
-where cc.ref_no='C1708747258902'</CommandText>
+LEFT join cus_income_employee cie on cie.customer_id = cc.id</CommandText>
       </Query>
       <Fields>
         <Field Name="name">
@@ -4350,12 +4361,12 @@ FROM
                                       <TextRun>
                                         <Value>=First(Fields!position.Value, "DS_MARITAL_STATUS")</Value>
                                         <Style>
-                                          <FontFamily>Arial</FontFamily>
+                                          <FontFamily>khmer os content</FontFamily>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
                                     <Style>
-                                      <TextAlign>Left</TextAlign>
+                                      <TextAlign>Center</TextAlign>
                                     </Style>
                                   </Paragraph>
                                 </Paragraphs>
@@ -4385,11 +4396,13 @@ FROM
                                         <TextRuns>
                                           <TextRun>
                                             <Value>=First(Fields!start_date.Value, "DS_MARITAL_STATUS")</Value>
-                                            <Style />
+                                            <Style>
+                                              <FontFamily>khmer os content</FontFamily>
+                                            </Style>
                                           </TextRun>
                                         </TextRuns>
                                         <Style>
-                                          <TextAlign>Left</TextAlign>
+                                          <TextAlign>Center</TextAlign>
                                         </Style>
                                       </Paragraph>
                                     </Paragraphs>
@@ -4467,12 +4480,12 @@ FROM
                                       <TextRun>
                                         <Value>=First(Fields!company_name.Value, "DS_MARITAL_STATUS")</Value>
                                         <Style>
-                                          <FontFamily>Arial</FontFamily>
+                                          <FontFamily>khmer os content</FontFamily>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
                                     <Style>
-                                      <TextAlign>Left</TextAlign>
+                                      <TextAlign>Center</TextAlign>
                                     </Style>
                                   </Paragraph>
                                 </Paragraphs>
@@ -4488,7 +4501,6 @@ FROM
                                   <PaddingBottom>2pt</PaddingBottom>
                                 </Style>
                               </Textbox>
-                              <rd:Selected>true</rd:Selected>
                             </CellContents>
                           </TablixHeader>
                           <TablixMembers>

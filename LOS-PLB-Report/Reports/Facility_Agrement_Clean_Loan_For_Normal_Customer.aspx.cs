@@ -452,11 +452,13 @@ namespace LOS_PLB_Report.Reports
 	                                'ឥណទានមានកាលកំណត់' AS sub_product,
 	                                apd.applied_amount,
 	                                apd.annual_interest_rate,
-	                                APD.tenor 
+	                                APD.tenor,
+                                    AC.CURRENCY
                                 FROM
 	                                APP_APPLICATION AP
 	                                INNER JOIN app_application_detail apd ON apd.application_id = ap.
 	                                ID INNER JOIN adm_repayment_type ART ON ART.ID = APD.repayment_type_id
+                                    INNER JOIN ADM_CURRENCY AC ON AC.ID = APD.CURRENCY_ID
                                 WHERE AP.APPLICATION_NO='" + applicationNo + "'";
                 var PURPOSEDT_1 = @"SELECT * FROM
                                     (
