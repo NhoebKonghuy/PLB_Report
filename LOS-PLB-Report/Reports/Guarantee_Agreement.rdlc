@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily">
+<Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.9.34622.214</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.9.34622.214</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2024-07-15T04:26:36.0330752Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -9,6 +20,7 @@
         <ConnectString>Dsn=PostgreSQL35W</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
+      <rd:SecurityType>Integrated</rd:SecurityType>
       <rd:DataSourceID>f28e268b-636c-4464-b4d8-f0ff018f0a10</rd:DataSourceID>
     </DataSource>
   </DataSources>
@@ -3861,7 +3873,7 @@ WHERE AP.APPLICATION_NO ='012-A765380218'</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!identification_type.Value, "GUANRANTEE1")</Value>
+                                  <Value>=iif(First(Fields!identification_type.Value, "GUANRANTEE1") is nothing,"អត្តសញ្ញាណប័ណ្ណ",(First(Fields!identification_type.Value, "GUANRANTEE1")))</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -3883,7 +3895,7 @@ WHERE AP.APPLICATION_NO ='012-A765380218'</CommandText>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!id_number.Value, "GUANRANTEE1")</Value>
+                                  <Value>=iif(First(Fields!id_number.Value, "GUANRANTEE1") is nothing ,"................",(First(Fields!id_number.Value, "GUANRANTEE1")))</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -3941,7 +3953,7 @@ WHERE AP.APPLICATION_NO ='012-A765380218'</CommandText>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!full_name.Value, "GUANRANTEE2")</Value>
+                                  <Value>=iif(First(Fields!full_name.Value, "GUANRANTEE2")  is nothing,"................",(First(Fields!full_name.Value, "GUANRANTEE2")))</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -3957,7 +3969,7 @@ WHERE AP.APPLICATION_NO ='012-A765380218'</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!identification_type.Value, "GUANRANTEE2")</Value>
+                                  <Value>=iif(First(Fields!identification_type.Value, "GUANRANTEE2") is nothing ,"អត្តសញ្ញាណប័ណ្ណ",(First(Fields!identification_type.Value, "GUANRANTEE2")))</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -3979,7 +3991,7 @@ WHERE AP.APPLICATION_NO ='012-A765380218'</CommandText>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!id_number.Value, "GUANRANTEE2")</Value>
+                                  <Value>=iif(First(Fields!id_number.Value, "GUANRANTEE2") is nothing ,"...................",(First(Fields!id_number.Value, "GUANRANTEE2")))</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -4380,7 +4392,7 @@ WHERE AP.APPLICATION_NO ='012-A765380218'</CommandText>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.25in</Height>
+                  <Height>0.31759in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -4463,7 +4475,7 @@ WHERE AP.APPLICATION_NO ='012-A765380218'</CommandText>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.95in</Height>
+                  <Height>1.08519in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -4535,7 +4547,7 @@ WHERE AP.APPLICATION_NO ='012-A765380218'</CommandText>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.25in</Height>
+                  <Height>0.31759in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -4693,7 +4705,7 @@ WHERE AP.APPLICATION_NO ='012-A765380218'</CommandText>
             <DataSetName>GUARANTEE4</DataSetName>
             <Top>3.72941in</Top>
             <Left>2.32318in</Left>
-            <Height>1.45in</Height>
+            <Height>1.72037in</Height>
             <Width>2.29676in</Width>
             <ZIndex>5</ZIndex>
             <Style>
@@ -4703,13 +4715,13 @@ WHERE AP.APPLICATION_NO ='012-A765380218'</CommandText>
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>5.38219in</Height>
+        <Height>5.44978in</Height>
         <Style />
       </Body>
       <Width>7.25834in</Width>
       <Page>
         <PageFooter>
-          <Height>0.25in</Height>
+          <Height>0.25002in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -4736,6 +4748,7 @@ WHERE AP.APPLICATION_NO ='012-A765380218'</CommandText>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
+              <Top>0.00001in</Top>
               <Left>0.0852in</Left>
               <Height>0.25in</Height>
               <Width>1in</Width>

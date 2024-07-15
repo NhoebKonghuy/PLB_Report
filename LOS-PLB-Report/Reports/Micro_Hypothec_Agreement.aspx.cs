@@ -1487,8 +1487,8 @@ CASE
                 APP_CUSTOMER_IDENTIFICATION CI
                 INNER JOIN ADM_IDENTIFICATION_TYPE IT ON IT.ID = CI.IDENTIFICATION_TYPE_ID
                 INNER JOIN (
-                SELECT MIN
                   ( CI.ID ) AS CREATED,
+                SELECT MIN
                   CI.APPLICATION_ID,
                   CI.CUSTOMER_ID 
                 FROM

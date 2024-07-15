@@ -175,12 +175,7 @@ namespace LOS_PLB_Report.Reports
                                           ) A ON A.APPLICATION_ID = AP.ID 
                                           AND CC.ID = A.CUSTOMER_ID 
 	                                    WHERE ap.application_no = '" + applicationNo+"' ) A  WHERE  A.num = 1";
-				var BRANCH_NAME = @"SELECT ap.application_no,
-                                     translate(mb.name, '0123456789', '០១២៣៤៥៦៧៨៩')
-                                     FROM
-                                    app_application ap 
-                                    inner join app_application_detail apd on apd.application_id = ap.id
-                                    inner join mas_branch mb on mb.id = apd.branch_id
+				var BRANCH_NAME = @"SELECT AP.BRANCH_KH AS translate FROM BRANCH_PLB AP
                                     WHERE AP.APPLICATION_NO='" + applicationNo+"'";
 				var APPROVAL_DATE = @"SELECT ap.application_no,
                                     to_char(aas.complete_date, 'DD/MM/YYYY')

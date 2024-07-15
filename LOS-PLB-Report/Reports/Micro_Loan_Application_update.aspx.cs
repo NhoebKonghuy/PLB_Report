@@ -19,83 +19,116 @@ namespace LOS_PLB_Report.Reports
 
                 var applicationNo = Request.QueryString["application_no"];
                 var sqlsub1 = @"SELECT
-								* 
-							FROM
-								(
-								SELECT ROW_NUMBER
-									( ) OVER ( ORDER BY asd.ID ) AS num,
+									* 
+								FROM
+									(
+									SELECT ROW_NUMBER
+										( ) OVER ( ORDER BY asd.ID ) AS num,
 									ap.application_no,
-									asd.full_name_kh,
-									ait.name,
-									ai.id_number,
+									  cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
+									  ci.id_number,
+									  CASE
+									  WHEN IT.ID_TYPE = 'F' THEN
+									  'សៀវភៅគ្រួសារ' 
+									  WHEN IT.ID_TYPE = 'CD' THEN
+									  'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+									  WHEN IT.ID_TYPE = 'N' THEN
+									  'អត្តសញ្ញាណប័ណ្ណ' 
+									  WHEN IT.ID_TYPE = 'P' THEN
+									  'លិខិតឆ្លងដែន' 
+									  WHEN IT.ID_TYPE = 'MI' THEN
+									  'ឆាយា' 
+									  WHEN IT.ID_TYPE = 'R' THEN
+									  'សៀវភៅស្នាក់នៅ' 
+									  WHEN IT.ID_TYPE = 'B' THEN
+									  'សំបុត្រកំណើត' 
+									END AS IDENTIFICATION_TYPE,
 									cc.phone_number
-		
-		
 								FROM
 									app_application ap
-									 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-									AND asu.status = 't' 
-									AND asu.customer_type = 'CO_BORROWER'
-									inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-									AND asd.status = 't'
-									inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-									inner join app_customer_identification ai on ai.customer_id = cc.id and ai.application_id = ap.id
-									INNER JOIN adm_identification_type ait on ait.id = ai.identification_type_id
-		
-								WHERE
-									ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 1";
+									inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
+										AND asu.status = 't' 
+										AND asu.customer_type = 'CO_BORROWER'
+										inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
+										AND asd.status = 't'
+										inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
+										left join app_customer_identification ci on ci.customer_id = cc.id and ci.application_id = ap.id
+										left JOIN adm_identification_type it on it.id = ci.identification_type_id
+								WHERE AP.APPLICATION_NO='"+applicationNo+"') A WHERE A.num = 1";
                 var sqlsub2 = @"SELECT
 									* 
 								FROM
 									(
 									SELECT ROW_NUMBER
 										( ) OVER ( ORDER BY asd.ID ) AS num,
-										ap.application_no,
-										asd.full_name_kh,
-										ait.name,
-										ai.id_number,
-										cc.phone_number
-		
-		
-									FROM
-										app_application ap
-										 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
+									ap.application_no,
+									  cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
+									  ci.id_number,
+									  CASE
+									  WHEN IT.ID_TYPE = 'F' THEN
+									  'សៀវភៅគ្រួសារ' 
+									  WHEN IT.ID_TYPE = 'CD' THEN
+									  'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+									  WHEN IT.ID_TYPE = 'N' THEN
+									  'អត្តសញ្ញាណប័ណ្ណ' 
+									  WHEN IT.ID_TYPE = 'P' THEN
+									  'លិខិតឆ្លងដែន' 
+									  WHEN IT.ID_TYPE = 'MI' THEN
+									  'ឆាយា' 
+									  WHEN IT.ID_TYPE = 'R' THEN
+									  'សៀវភៅស្នាក់នៅ' 
+									  WHEN IT.ID_TYPE = 'B' THEN
+									  'សំបុត្រកំណើត' 
+									END AS IDENTIFICATION_TYPE,
+									cc.phone_number
+								FROM
+									app_application ap
+									inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
 										AND asu.status = 't' 
 										AND asu.customer_type = 'CO_BORROWER'
 										inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
 										AND asd.status = 't'
 										inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-										inner join app_customer_identification ai on ai.customer_id = cc.id and ai.application_id = ap.id
-										INNER JOIN adm_identification_type ait on ait.id = ai.identification_type_id
-		
-									WHERE 
-										ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 2";
+										left join app_customer_identification ci on ci.customer_id = cc.id and ci.application_id = ap.id
+										left JOIN adm_identification_type it on it.id = ci.identification_type_id
+								WHERE AP.APPLICATION_NO='" + applicationNo + "') A WHERE A.num = 2";
                 var sqlsub3 = @"SELECT
 									* 
 								FROM
 									(
 									SELECT ROW_NUMBER
 										( ) OVER ( ORDER BY asd.ID ) AS num,
-										ap.application_no,
-										asd.full_name_kh,
-										ait.name,
-										ai.id_number,
-										cc.phone_number
-		
-		
-									FROM
-										app_application ap
-										 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
+									ap.application_no,
+									  cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
+									  ci.id_number,
+									  CASE
+									  WHEN IT.ID_TYPE = 'F' THEN
+									  'សៀវភៅគ្រួសារ' 
+									  WHEN IT.ID_TYPE = 'CD' THEN
+									  'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+									  WHEN IT.ID_TYPE = 'N' THEN
+									  'អត្តសញ្ញាណប័ណ្ណ' 
+									  WHEN IT.ID_TYPE = 'P' THEN
+									  'លិខិតឆ្លងដែន' 
+									  WHEN IT.ID_TYPE = 'MI' THEN
+									  'ឆាយា' 
+									  WHEN IT.ID_TYPE = 'R' THEN
+									  'សៀវភៅស្នាក់នៅ' 
+									  WHEN IT.ID_TYPE = 'B' THEN
+									  'សំបុត្រកំណើត' 
+									END AS IDENTIFICATION_TYPE,
+									cc.phone_number
+								FROM
+									app_application ap
+									inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
 										AND asu.status = 't' 
 										AND asu.customer_type = 'CO_BORROWER'
 										inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
 										AND asd.status = 't'
 										inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-										inner join app_customer_identification ai on ai.customer_id = cc.id and ai.application_id = ap.id
-										INNER JOIN adm_identification_type ait on ait.id = ai.identification_type_id
-		
-									WHERE 
-										ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 1";
+										left join app_customer_identification ci on ci.customer_id = cc.id and ci.application_id = ap.id
+										left JOIN adm_identification_type it on it.id = ci.identification_type_id
+								WHERE AP.APPLICATION_NO='" + applicationNo + "') A WHERE A.num = 3";
                 var sqlcustomer = @"SELECT
 										app.application_no,
 										cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,

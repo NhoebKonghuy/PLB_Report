@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.9.34622.214</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-07-01T01:11:20.0468910Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-07-08T07:59:06.0764653Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -53,7 +53,7 @@ FROM
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
 	ap.application_no,
-	ACI.ID_NUMBER,
+	TRANSLATE(ACI.ID_NUMBER, '1234567890', '១២៣៤៥៦៧៨៩០')as ID_NUMBER,
 	CASE
       WHEN IT.ID_TYPE = 'F' THEN
       'សៀវភៅគ្រួសារ' 
@@ -108,14 +108,11 @@ FROM
 	AND CS.STATUS = 't'
 	INNER JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID 
 	AND COL.STATUS = 't'
-	INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID 
-	AND CCD.STATUS = 't'
 	INNER JOIN cus_customer cc ON col.customer_id = cc.
 	ID
 	LEFT JOIN app_customer_identification ACI ON ACI.CUSTOMER_ID = CC.
 	ID  AND ACI.APPLICATION_ID = AP.ID  
-	LEFT JOIN adm_identification_type IT ON IT.ID = ACI.identification_type_ID 
-</CommandText>
+	LEFT JOIN adm_identification_type IT ON IT.ID = ACI.identification_type_ID </CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -152,76 +149,74 @@ FROM
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
-	ap.application_no,
-	CCD.collateral_name,
-	COL.collateral_no,
-  convert_to_khmer_number(CAST(EXTRACT(DAY FROM CCD.issued_date) AS int)) AS Day,
-CASE
+								ap.application_no,
+								Col.collateral_title,
+								TRANSLATE(CCD.collateral_name, '1234567890', '១២៣៤៥៦៧៨៩០') AS collateral_no,
+							  convert_to_khmer_number(CAST(EXTRACT(DAY FROM CCD.issued_date) AS int)) AS Day,
+							CASE
 		
-		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'JAN' THEN
-		'មករា' 
-		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'FEB' THEN
-		'កុម្ភៈ' 
-		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'MAR' THEN
-		'មីនា' 
-		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'APR' THEN
-		'មេសា' 
-		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'MAY' THEN
-		'ឧសភា' 
-		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'JUN' THEN
-		'មិថុនា' 
-		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'JUL' THEN
-		'កក្កដា' 
-		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'AUG' THEN
-		'សីហា' 
-		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'SEP' THEN
-		'កញ្ញា' 
-		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'OCT' THEN
-		'តុលា' 
-		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'NOV' THEN
-		'វិច្ឆិកា' 
-		WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'DEC' THEN
-		'ធ្នូ' 
-	END AS MONTH,
-	convert_to_khmer_number(CAST(EXTRACT(YEAR FROM CCD.issued_date) AS int)) AS YEAR,
-CASE
+									WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'JAN' THEN
+									'មករា' 
+									WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'FEB' THEN
+									'កុម្ភៈ' 
+									WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'MAR' THEN
+									'មីនា' 
+									WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'APR' THEN
+									'មេសា' 
+									WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'MAY' THEN
+									'ឧសភា' 
+									WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'JUN' THEN
+									'មិថុនា' 
+									WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'JUL' THEN
+									'កក្កដា' 
+									WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'AUG' THEN
+									'សីហា' 
+									WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'SEP' THEN
+									'កញ្ញា' 
+									WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'OCT' THEN
+									'តុលា' 
+									WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'NOV' THEN
+									'វិច្ឆិកា' 
+									WHEN TO_CHAR( CCD.issued_date, 'MON' ) = 'DEC' THEN
+									'ធ្នូ' 
+								END AS MONTH,
+								convert_to_khmer_number(CAST(EXTRACT(YEAR FROM CCD.issued_date) AS int)) AS YEAR,
+							CASE
 		
-		WHEN ACCI.NAME = 'VILLAGE' THEN
-		'ភូមិ' 
-		WHEN ACCI.NAME = 'COMMUNE/SANGKAT' THEN
-		'ឃុំសង្កាត់' 
-		WHEN ACCI.NAME = 'DISTRICT/KHAN' THEN
-		'ស្រុក/ខណ្ឌ' 
-		WHEN ACCI.NAME = 'PROVINCIAL' THEN
-		'ខេត្ត' 
-		WHEN ACCI.NAME = 'MINISTRY' THEN
-		'ក្រសួង' 
-		WHEN ACCI.NAME = 'OTHERS' THEN
-		' ផ្សេង' ELSE'.........' 
-	END AS issue_by 
-FROM
-	APP_APPLICATION AP
-	INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
-	AND ACCA.STATUS = 't'
-	INNER JOIN APP_COL_COLLATERAL_SECURE CS ON CS.APP_COLLATERAL_ASSET_ID = ACCA.ID 
-	AND CS.STATUS = 't'
-	INNER JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID 
-	AND COL.STATUS = 't'
-	INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID 
-	AND CCD.STATUS = 't'
-	INNER JOIN cus_customer cc ON col.customer_id = cc.
-	ID LEFT JOIN adm_issue_by ACCI ON ACCI.ID = CCD.issue_by_id 
-WHERE
-	AP.application_no = '015-A95364'
-	</CommandText>
+									WHEN ACCI.NAME = 'VILLAGE' THEN
+									'ភូមិ' 
+									WHEN ACCI.NAME = 'COMMUNE/SANGKAT' THEN
+									'ឃុំសង្កាត់' 
+									WHEN ACCI.NAME = 'DISTRICT/KHAN' THEN
+									'ស្រុក/ខណ្ឌ' 
+									WHEN ACCI.NAME = 'PROVINCIAL' THEN
+									'ខេត្ត' 
+									WHEN ACCI.NAME = 'MINISTRY' THEN
+									'ក្រសួង' 
+									WHEN ACCI.NAME = 'OTHERS' THEN
+									' ផ្សេង' ELSE'.........' 
+								END AS issue_by 
+							FROM
+								APP_APPLICATION AP
+								INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
+								AND ACCA.STATUS = 't'
+								INNER JOIN APP_COL_COLLATERAL_SECURE CS ON CS.APP_COLLATERAL_ASSET_ID = ACCA.ID 
+								AND CS.STATUS = 't'
+								INNER JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID 
+								AND COL.STATUS = 't'
+								INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID 
+								AND CCD.STATUS = 't'
+								INNER JOIN cus_customer cc ON col.customer_id = cc.
+								ID LEFT JOIN adm_issue_by ACCI ON ACCI.ID = CCD.issue_by_id
+							WHERE ap.application_no = '" + applicationNo + "'</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
           <DataField>application_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="collateral_name">
-          <DataField>collateral_name</DataField>
+        <Field Name="collateral_title">
+          <DataField>collateral_title</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="collateral_no">
@@ -262,7 +257,7 @@ CASE
     WHEN ANN.NAME = 'Cambodian' THEN
     'ខ្មែរ' 
   END AS NATIONALITY,
-  A.ID_NUMBER,
+  TRANSLATE(A.ID_NUMBER, '1234567890', '១២៣៤៥៦៧៨៩០') AS ID_NUMBER,
   A.IDENTIFICATION_TYPE,
   A.ISSUE_DAY,
 	A.ISSUE_MONTH ,
@@ -347,8 +342,7 @@ CASE
   WHERE
     CI.STATUS = 't' 
   ) A ON A.APPLICATION_ID = AP.ID 
-  AND CC.ID = A.CUSTOMER_ID 
-</CommandText>
+  AND CC.ID = A.CUSTOMER_ID </CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -400,7 +394,7 @@ FROM
 		( ) OVER ( ORDER BY asd.ID ) AS num,
 		AP.APPLICATION_NO,
     concat(' និងឈ្មោះ  ',CC.FAMILY_NAME_KH,' ',CC.GIVEN_NAME_KH,' កាន់ ',
-    A.IDENTIFICATION_TYPE,' លេខ ',A.ID_NUMBER
+    A.IDENTIFICATION_TYPE,' លេខ ',translate(A.ID_NUMBER,'1234567890','១២៣៤៥៦៧៨៩០')
 ,' ចុះថ្ងៃទី ',A.ISSUE_DAY,' ខែ ',A.ISSUE_MONTH,' ឆ្នាំ ',A.ISSUE_YEAR) as sub
 FROM
   APP_APPLICATION AP
@@ -483,7 +477,7 @@ CASE
   WHERE
     CI.STATUS = 't' 
   ) A ON A.APPLICATION_ID = AP.ID 
-  AND CC.ID = A.CUSTOMER_ID 
+  AND CC.ID = A.CUSTOMER_ID  
 	WHERE AP.APPLICATION_NO=''
 	) A 
 WHERE
@@ -2019,7 +2013,7 @@ WHERE
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>ឈ្មោះប័ណ្ណ​៖ </Value>
+                                                <Value>ឈ្មោះប័ណ្ណ​៖  </Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -2029,7 +2023,7 @@ WHERE
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value>=iif((Fields!collateral_name.Value) is nothing,"..............",(Fields!collateral_name.Value))</Value>
+                                                <Value>=Fields!collateral_title.Value</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>

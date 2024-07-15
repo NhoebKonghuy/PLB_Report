@@ -31,7 +31,7 @@ namespace LOS_PLB_Report.Reports
 									INNER JOIN ADM_OWNERSHIP AO ON AO.ID = COL.ownership_id WHERE application_no = '" + applicationNo + "'";
                 var OWNER_COL_INFO = @"SELECT
 								ap.application_no,
-								ACI.ID_NUMBER,
+								translate(ACI.ID_NUMBER, '1234567890', '១២៣៤៥៦៧៨៩០') as ID_NUMBER,
 								CASE
 								  WHEN IT.ID_TYPE = 'F' THEN
 								  'សៀវភៅគ្រួសារ' 
@@ -96,8 +96,8 @@ namespace LOS_PLB_Report.Reports
 							WHERE ap.application_no ='" + applicationNo + "'";
                 var COL_INFO = @"SELECT
 								ap.application_no,
-								CCD.collateral_name,
-								TRANSLATE(COL.collateral_no, '1234567890', '១២៣៤៥៦៧៨៩០') AS collateral_no,
+								Col.collateral_title,
+								TRANSLATE(CCD.collateral_name, '1234567890', '១២៣៤៥៦៧៨៩០') AS collateral_no,
 							  convert_to_khmer_number(CAST(EXTRACT(DAY FROM CCD.issued_date) AS int)) AS Day,
 							CASE
 		
@@ -132,7 +132,7 @@ namespace LOS_PLB_Report.Reports
 									WHEN ACCI.NAME = 'VILLAGE' THEN
 									'ភូមិ' 
 									WHEN ACCI.NAME = 'COMMUNE/SANGKAT' THEN
-									'ឃុំសង្កាត់' 
+									'ឃុំ/សង្កាត់' 
 									WHEN ACCI.NAME = 'DISTRICT/KHAN' THEN
 									'ស្រុក/ខណ្ឌ' 
 									WHEN ACCI.NAME = 'PROVINCIAL' THEN
@@ -159,7 +159,7 @@ namespace LOS_PLB_Report.Reports
 							  AP.APPLICATION_NO,
 							  CC.FAMILY_NAME_KH|| ' ' || CC.GIVEN_NAME_KH AS COL_NAME,
 							CASE
-    
+
 								WHEN CC.GENDER = 'MALE' THEN
 								'ប្រុស' ELSE'ស្រី' 
 							  END AS GENDER,
@@ -534,6 +534,7 @@ CASE
   ) A ON A.APPLICATION_ID = AP.ID 
   AND CC.ID = A.CUSTOMER_ID  
 										WHERE AP.APPLICATION_NO='" + applicationNo+"') A WHERE A.num = 3";
+
 
                 var dtOWNERSHIP = conn.getPostgreSQLDataTable(OWNERSHIP);
                 var dtOWNER_COL_INFO = conn.getPostgreSQLDataTable(OWNER_COL_INFO);
