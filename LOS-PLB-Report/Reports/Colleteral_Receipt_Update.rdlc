@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.9.34622.214</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-07-08T07:59:06.0764653Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-07-15T04:42:40.6202350Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -208,7 +208,7 @@ FROM
 								AND CCD.STATUS = 't'
 								INNER JOIN cus_customer cc ON col.customer_id = cc.
 								ID LEFT JOIN adm_issue_by ACCI ON ACCI.ID = CCD.issue_by_id
-							WHERE ap.application_no = '" + applicationNo + "'</CommandText>
+							</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -1616,7 +1616,7 @@ WHERE
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Tablix Name="Tablix9">
+                        <Tablix Name="Tablix14">
                           <TablixBody>
                             <TablixColumns>
                               <TablixColumn>
@@ -1632,14 +1632,14 @@ WHERE
                                 <TablixCells>
                                   <TablixCell>
                                     <CellContents>
-                                      <Textbox Name="Textbox30">
+                                      <Textbox Name="Textbox34">
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value />
+                                                <Value>_</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -1669,134 +1669,14 @@ WHERE
                                   </TablixCell>
                                   <TablixCell>
                                     <CellContents>
-                                      <Textbox Name="Textbox31">
+                                      <Textbox Name="Textbox35">
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>ឈ្មោះ </Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value>=Fields!col_full_name.Value</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value> កាន់ </Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value>=Fields!type_id.Value</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value> លេខ </Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value>=Fields!id_number.Value</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value> ចុះថ្ងៃទី​ </Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value>=Fields!day.Value</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value> ខែ </Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value>=Fields!month.Value</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value> ឆ្នាំ  </Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value>=Fields!year.Value</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value xml:space="preserve"> </Value>
+                                                <Value>ឈ្មោះ..............................កាន់............................លេខ ....................ចុះថ្ងៃទី..............ខែ............... ឆ្នាំ.....................និងឈ្មោះ..............................កាន់............................លេខ ..................... ចុះថ្ងៃទី.............​.ខែ..............ឆ្នាំ.....................</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -1966,20 +1846,20 @@ WHERE
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>=RowNumber(Nothing)</Value>
+                                                <Value>=iif(RowNumber(nothing)=1,"១",
+(iif(RowNumber(nothing)=2,"២",
+(iif(RowNumber(nothing)=3,"៣",
+(iif(RowNumber(nothing)=4,"៤",
+(iif(RowNumber(nothing)=5,"៥",
+(iif(RowNumber(nothing)=6,"៦",
+(iif(RowNumber(nothing)=7,"៧",
+(iif(RowNumber(nothing)=8,"៨",
+(iif(RowNumber(nothing)=9,"៩",
+(iif(RowNumber(nothing)=10,"១០",""
+)))))))))))))))))))</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value>.</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontFamily>khmer OS</FontFamily>
                                                   <FontWeight>Normal</FontWeight>
                                                   <TextDecoration>None</TextDecoration>
                                                   <Color>#000000</Color>
@@ -1987,7 +1867,7 @@ WHERE
                                               </TextRun>
                                             </TextRuns>
                                             <Style>
-                                              <TextAlign>Right</TextAlign>
+                                              <TextAlign>Center</TextAlign>
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
@@ -2149,6 +2029,7 @@ WHERE
                                           <PaddingBottom>2pt</PaddingBottom>
                                         </Style>
                                       </Textbox>
+                                      <rd:Selected>true</rd:Selected>
                                     </CellContents>
                                   </TablixCell>
                                 </TablixCells>
