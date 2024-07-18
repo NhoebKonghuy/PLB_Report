@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.9.34622.214</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-07-15T01:25:57.2271193Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-07-18T01:36:27.4133235Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -2563,9 +2563,7 @@ FROM
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
     AP.application_no,
-		CASE WHEN CBC.CBC_FEE IS NULL THEN '............'
-		ELSE 
-    translate(to_char(CBC.cbc_fee, '9999999999.99'), '0123456789', '០១២៣៤៥៦៧៨៩') END as cbc_fee,
+    translate(to_char(CBC.cbc_fee, '9999999999.99'), '0123456789', '០១២៣៤៥៦៧៨៩') as cbc_fee,
 		CBC.currency
 FROM
     APP_APPLICATION AP
@@ -7861,7 +7859,6 @@ WHERE
                           </Style>
                         </Textbox>
                         <ColSpan>2</ColSpan>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell />
@@ -15721,7 +15718,7 @@ WHERE
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value>=IIF(FIRST(Fields!cbc_fee.Value, "CBC_FEE") ="............",CHR(168),CHR(254))</Value>
+                                                <Value>=IIF(FIRST(Fields!cbc_fee.Value, "CBC_FEE") is nothing,CHR(168),CHR(254))</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>WINGdings</FontFamily>
@@ -15740,7 +15737,7 @@ WHERE
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value>=IIF(First(Fields!cbc_fee.Value, "CBC_FEE")="............","",First(Fields!currency.Value, "CBC_FEE"))</Value>
+                                                <Value>=IIF(First(Fields!cbc_fee.Value, "CBC_FEE") is nothing,"",First(Fields!currency.Value, "CBC_FEE"))</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -15758,7 +15755,7 @@ WHERE
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value>=First(Fields!cbc_fee.Value, "CBC_FEE")</Value>
+                                                <Value>=iif(First(Fields!cbc_fee.Value, "CBC_FEE") is nothing,"................",First(Fields!cbc_fee.Value, "CBC_FEE"))</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Siemreap</FontFamily>

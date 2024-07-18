@@ -18,552 +18,1168 @@ namespace LOS_PLB_Report.Reports
             {
 
                 var applicationNo = Request.QueryString["application_no"];
-                var sqlsub1 = @"SELECT
-									* 
-								FROM
-									(
-									SELECT ROW_NUMBER
-										( ) OVER ( ORDER BY asd.ID ) AS num,
-									ap.application_no,
-									  cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
-									  ci.id_number,
-									  CASE
-									  WHEN IT.ID_TYPE = 'F' THEN
-									  'សៀវភៅគ្រួសារ' 
-									  WHEN IT.ID_TYPE = 'CD' THEN
-									  'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-									  WHEN IT.ID_TYPE = 'N' THEN
-									  'អត្តសញ្ញាណប័ណ្ណ' 
-									  WHEN IT.ID_TYPE = 'P' THEN
-									  'លិខិតឆ្លងដែន' 
-									  WHEN IT.ID_TYPE = 'MI' THEN
-									  'ឆាយា' 
-									  WHEN IT.ID_TYPE = 'R' THEN
-									  'សៀវភៅស្នាក់នៅ' 
-									  WHEN IT.ID_TYPE = 'B' THEN
-									  'សំបុត្រកំណើត' 
-									END AS IDENTIFICATION_TYPE,
-									cc.phone_number
-								FROM
-									app_application ap
-									inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-										AND asu.status = 't' 
-										AND asu.customer_type = 'CO_BORROWER'
-										inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-										AND asd.status = 't'
-										inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-										left join app_customer_identification ci on ci.customer_id = cc.id and ci.application_id = ap.id
-										left JOIN adm_identification_type it on it.id = ci.identification_type_id
-								WHERE AP.APPLICATION_NO='"+applicationNo+"') A WHERE A.num = 1";
-                var sqlsub2 = @"SELECT
-									* 
-								FROM
-									(
-									SELECT ROW_NUMBER
-										( ) OVER ( ORDER BY asd.ID ) AS num,
-									ap.application_no,
-									  cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
-									  ci.id_number,
-									  CASE
-									  WHEN IT.ID_TYPE = 'F' THEN
-									  'សៀវភៅគ្រួសារ' 
-									  WHEN IT.ID_TYPE = 'CD' THEN
-									  'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-									  WHEN IT.ID_TYPE = 'N' THEN
-									  'អត្តសញ្ញាណប័ណ្ណ' 
-									  WHEN IT.ID_TYPE = 'P' THEN
-									  'លិខិតឆ្លងដែន' 
-									  WHEN IT.ID_TYPE = 'MI' THEN
-									  'ឆាយា' 
-									  WHEN IT.ID_TYPE = 'R' THEN
-									  'សៀវភៅស្នាក់នៅ' 
-									  WHEN IT.ID_TYPE = 'B' THEN
-									  'សំបុត្រកំណើត' 
-									END AS IDENTIFICATION_TYPE,
-									cc.phone_number
-								FROM
-									app_application ap
-									inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-										AND asu.status = 't' 
-										AND asu.customer_type = 'CO_BORROWER'
-										inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-										AND asd.status = 't'
-										inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-										left join app_customer_identification ci on ci.customer_id = cc.id and ci.application_id = ap.id
-										left JOIN adm_identification_type it on it.id = ci.identification_type_id
-								WHERE AP.APPLICATION_NO='" + applicationNo + "') A WHERE A.num = 2";
-                var sqlsub3 = @"SELECT
-									* 
-								FROM
-									(
-									SELECT ROW_NUMBER
-										( ) OVER ( ORDER BY asd.ID ) AS num,
-									ap.application_no,
-									  cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
-									  ci.id_number,
-									  CASE
-									  WHEN IT.ID_TYPE = 'F' THEN
-									  'សៀវភៅគ្រួសារ' 
-									  WHEN IT.ID_TYPE = 'CD' THEN
-									  'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-									  WHEN IT.ID_TYPE = 'N' THEN
-									  'អត្តសញ្ញាណប័ណ្ណ' 
-									  WHEN IT.ID_TYPE = 'P' THEN
-									  'លិខិតឆ្លងដែន' 
-									  WHEN IT.ID_TYPE = 'MI' THEN
-									  'ឆាយា' 
-									  WHEN IT.ID_TYPE = 'R' THEN
-									  'សៀវភៅស្នាក់នៅ' 
-									  WHEN IT.ID_TYPE = 'B' THEN
-									  'សំបុត្រកំណើត' 
-									END AS IDENTIFICATION_TYPE,
-									cc.phone_number
-								FROM
-									app_application ap
-									inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-										AND asu.status = 't' 
-										AND asu.customer_type = 'CO_BORROWER'
-										inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-										AND asd.status = 't'
-										inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-										left join app_customer_identification ci on ci.customer_id = cc.id and ci.application_id = ap.id
-										left JOIN adm_identification_type it on it.id = ci.identification_type_id
-								WHERE AP.APPLICATION_NO='" + applicationNo + "') A WHERE A.num = 3";
-                var sqlcustomer = @"SELECT
-										app.application_no,
-										cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
-										aci.id_number,
-										ait.name,
-										cc.phone_number 
-									FROM
-										app_application app
-										INNER JOIN app_application_detail apd ON apd.application_id = app.ID 
-										INNER JOIN cus_customer cc ON cc.ID = apd.customer_id
-										INNER JOIN app_customer_identification aci ON aci.customer_id = cc.ID 
-										AND aci.application_id = app.ID
-										INNER JOIN adm_identification_type ait ON ait.ID = aci.identification_type_id
-									WHERE app.application_no= '" + applicationNo + "'";
-                var sqlemployee_work = @"SELECT
-										ap.application_no,
-										cir.company_name,
-										cir.length_of_business,
-										cir.base_salary,
-										cir.position,
-										cir.other_benefit,
-										ac.currency
-									FROM
-										app_application ap
-										INNER JOIN app_application_detail apd ON apd.application_id = ap.
-										ID INNER JOIN cus_customer cc ON apd.customer_id = cc.
-										ID INNER JOIN app_customer_income_employee cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
-										inner join adm_currency ac on ac.id = apd.currency_id 
+				var sqlsub1 = @"select * from (
+SELECT ROW_NUMBER
+	( ) OVER ( ORDER BY asd.ID ) AS num,
+	ap.application_no,
+	cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
+	ci.id_number,
+	cir.company_name AS em_copany_name,
+	cir.length_of_business AS em_length_of_service,
+	cir.base_salary AS em_base_salary,
+	cir.POSITION em_position,
+	cir.other_benefit AS em_other_benifit,
+	CAR.NAME AS bis_career,
+	B.BIS_LENGTH_OF_BUSINESS,
+	B.business_income AS bis_primary_income,
+	( Z.NET_PROFIT - B.business_income ) AS other_income,
+CASE
+		
+		WHEN IT.ID_TYPE = 'F' THEN
+		'សៀវភៅគ្រួសារ' 
+		WHEN IT.ID_TYPE = 'CD' THEN
+		'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+		WHEN IT.ID_TYPE = 'N' THEN
+		'អត្តសញ្ញាណប័ណ្ណ' 
+		WHEN IT.ID_TYPE = 'P' THEN
+		'លិខិតឆ្លងដែន' 
+		WHEN IT.ID_TYPE = 'MI' THEN
+		'ឆាយា' 
+		WHEN IT.ID_TYPE = 'R' THEN
+		'សៀវភៅស្នាក់នៅ' 
+		WHEN IT.ID_TYPE = 'B' THEN
+		'សំបុត្រកំណើត' 
+	END AS IDENTIFICATION_TYPE,
+	cc.phone_number 
+FROM
+	app_application ap
+	INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
+	AND asu.status = 't' AND asu.customer_type = 'CO_BORROWER'
+	INNER JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
+	AND asd.status = 't'
+	INNER JOIN cus_customer cc ON cc.ID = asd.customer_id
+	LEFT JOIN app_customer_identification ci ON ci.customer_id = cc.ID 
+	AND ci.application_id = ap.
+	ID LEFT JOIN adm_identification_type it ON it.ID = ci.identification_type_id
+	LEFT JOIN app_customer_income_employee cir ON cir.application_id = ap.ID 
+	AND cc.ID = cir.customer_id
+	LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID 
+	--IDENTIFICATION
+	INNER JOIN (
+	SELECT MIN
+		( CI.ID ) ID,
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	FROM
+		APP_CUSTOMER_IDENTIFICATION CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) A ON A.CUSTOMER_ID = CI.CUSTOMER_ID 
+	AND A.APPLICATION_ID = AP.ID 
+	AND A.ID = CI.
+	ID 
+	--IDENTIFICATION
+	--BUSINESS_INCOME
+	LEFT JOIN (
+	SELECT
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID,
+		CI.LENGTH_OF_BUSINESS AS BIS_LENGTH_OF_BUSINESS,
+		CI.NET_INCOME AS BUSINESS_INCOME 
+	FROM
+		APP_CUSTOMER_INCOME_BUSINESS CI
+		INNER JOIN (
+		SELECT MAX
+			( CIB.NET_INCOME ) AMOUNT,
+			CIB.application_id,
+			CIb.CUSTOMER_ID 
+		FROM
+			app_customer_income_business CIB 
+		WHERE
+			CIB.STATUS = 't' 
+		GROUP BY
+			CIB.applicatioN_ID,
+			CIb.CUSTOMER_ID 
+		) A ON A.CUSTOMER_ID = CI.CUSTOMER_ID 
+		AND A.APPLICATION_ID = CI.APPLICATION_ID 
+		AND A.AMOUNT = CI.NET_INCOME 
+	) B ON B.application_id = AP.ID 
+	AND b.customer_id = CC.ID 
+--BUSINESS_INCOME
+--OTHER INCOME
+	LEFT JOIN (
+	SELECT
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID,
+		SUM ( CI.NET_INCOME ) AS NET_PROFIT 
+	FROM
+		APP_CUSTOMER_INCOME_BUSINESS CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) Z ON Z.APPLICATION_ID = AP.ID 
+	AND Z.CUSTOMER_ID = Cc.ID 
+	--OTHER_INCOME
+WHERE
+	ap.application_no = '"+applicationNo+"')a where a.num = 1";
+                var sqlsub2 = @"select * from (
+SELECT ROW_NUMBER
+	( ) OVER ( ORDER BY asd.ID ) AS num,
+	ap.application_no,
+	cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
+	ci.id_number,
+	cir.company_name AS em_copany_name,
+	cir.length_of_business AS em_length_of_service,
+	cir.base_salary AS em_base_salary,
+	cir.POSITION em_position,
+	cir.other_benefit AS em_other_benifit,
+	CAR.NAME AS bis_career,
+	B.BIS_LENGTH_OF_BUSINESS,
+	B.business_income AS bis_primary_income,
+	( Z.NET_PROFIT - B.business_income ) AS other_income,
+CASE
+		
+		WHEN IT.ID_TYPE = 'F' THEN
+		'សៀវភៅគ្រួសារ' 
+		WHEN IT.ID_TYPE = 'CD' THEN
+		'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+		WHEN IT.ID_TYPE = 'N' THEN
+		'អត្តសញ្ញាណប័ណ្ណ' 
+		WHEN IT.ID_TYPE = 'P' THEN
+		'លិខិតឆ្លងដែន' 
+		WHEN IT.ID_TYPE = 'MI' THEN
+		'ឆាយា' 
+		WHEN IT.ID_TYPE = 'R' THEN
+		'សៀវភៅស្នាក់នៅ' 
+		WHEN IT.ID_TYPE = 'B' THEN
+		'សំបុត្រកំណើត' 
+	END AS IDENTIFICATION_TYPE,
+	cc.phone_number 
+FROM
+	app_application ap
+	INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
+	AND asu.status = 't' AND asu.customer_type = 'CO_BORROWER'
+	INNER JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
+	AND asd.status = 't'
+	INNER JOIN cus_customer cc ON cc.ID = asd.customer_id
+	LEFT JOIN app_customer_identification ci ON ci.customer_id = cc.ID 
+	AND ci.application_id = ap.
+	ID LEFT JOIN adm_identification_type it ON it.ID = ci.identification_type_id
+	LEFT JOIN app_customer_income_employee cir ON cir.application_id = ap.ID 
+	AND cc.ID = cir.customer_id
+	LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID 
+	--IDENTIFICATION
+	INNER JOIN (
+	SELECT MIN
+		( CI.ID ) ID,
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	FROM
+		APP_CUSTOMER_IDENTIFICATION CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) A ON A.CUSTOMER_ID = CI.CUSTOMER_ID 
+	AND A.APPLICATION_ID = AP.ID 
+	AND A.ID = CI.
+	ID 
+	--IDENTIFICATION
+	--BUSINESS_INCOME
+	LEFT JOIN (
+	SELECT
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID,
+		CI.LENGTH_OF_BUSINESS AS BIS_LENGTH_OF_BUSINESS,
+		CI.NET_INCOME AS BUSINESS_INCOME 
+	FROM
+		APP_CUSTOMER_INCOME_BUSINESS CI
+		INNER JOIN (
+		SELECT MAX
+			( CIB.NET_INCOME ) AMOUNT,
+			CIB.application_id,
+			CIb.CUSTOMER_ID 
+		FROM
+			app_customer_income_business CIB 
+		WHERE
+			CIB.STATUS = 't' 
+		GROUP BY
+			CIB.applicatioN_ID,
+			CIb.CUSTOMER_ID 
+		) A ON A.CUSTOMER_ID = CI.CUSTOMER_ID 
+		AND A.APPLICATION_ID = CI.APPLICATION_ID 
+		AND A.AMOUNT = CI.NET_INCOME 
+	) B ON B.application_id = AP.ID 
+	AND b.customer_id = CC.ID 
+--BUSINESS_INCOME
+--OTHER INCOME
+	LEFT JOIN (
+	SELECT
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID,
+		SUM ( CI.NET_INCOME ) AS NET_PROFIT 
+	FROM
+		APP_CUSTOMER_INCOME_BUSINESS CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) Z ON Z.APPLICATION_ID = AP.ID 
+	AND Z.CUSTOMER_ID = Cc.ID 
+	--OTHER_INCOME
+WHERE
+	ap.application_no = '" + applicationNo + "')a where a.num = 2";
+                var sqlsub3 = @"select * from (
+SELECT ROW_NUMBER
+	( ) OVER ( ORDER BY asd.ID ) AS num,
+	ap.application_no,
+	cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
+	ci.id_number,
+	cir.company_name AS em_copany_name,
+	cir.length_of_business AS em_length_of_service,
+	cir.base_salary AS em_base_salary,
+	cir.POSITION em_position,
+	cir.other_benefit AS em_other_benifit,
+	CAR.NAME AS bis_career,
+	B.BIS_LENGTH_OF_BUSINESS,
+	B.business_income AS bis_primary_income,
+	( Z.NET_PROFIT - B.business_income ) AS other_income,
+CASE
+		
+		WHEN IT.ID_TYPE = 'F' THEN
+		'សៀវភៅគ្រួសារ' 
+		WHEN IT.ID_TYPE = 'CD' THEN
+		'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+		WHEN IT.ID_TYPE = 'N' THEN
+		'អត្តសញ្ញាណប័ណ្ណ' 
+		WHEN IT.ID_TYPE = 'P' THEN
+		'លិខិតឆ្លងដែន' 
+		WHEN IT.ID_TYPE = 'MI' THEN
+		'ឆាយា' 
+		WHEN IT.ID_TYPE = 'R' THEN
+		'សៀវភៅស្នាក់នៅ' 
+		WHEN IT.ID_TYPE = 'B' THEN
+		'សំបុត្រកំណើត' 
+	END AS IDENTIFICATION_TYPE,
+	cc.phone_number 
+FROM
+	app_application ap
+	INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
+	AND asu.status = 't' AND asu.customer_type = 'CO_BORROWER'
+	INNER JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
+	AND asd.status = 't'
+	INNER JOIN cus_customer cc ON cc.ID = asd.customer_id
+	LEFT JOIN app_customer_identification ci ON ci.customer_id = cc.ID 
+	AND ci.application_id = ap.
+	ID LEFT JOIN adm_identification_type it ON it.ID = ci.identification_type_id
+	LEFT JOIN app_customer_income_employee cir ON cir.application_id = ap.ID 
+	AND cc.ID = cir.customer_id
+	LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID 
+	--IDENTIFICATION
+	INNER JOIN (
+	SELECT MIN
+		( CI.ID ) ID,
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	FROM
+		APP_CUSTOMER_IDENTIFICATION CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) A ON A.CUSTOMER_ID = CI.CUSTOMER_ID 
+	AND A.APPLICATION_ID = AP.ID 
+	AND A.ID = CI.
+	ID 
+	--IDENTIFICATION
+	--BUSINESS_INCOME
+	LEFT JOIN (
+	SELECT
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID,
+		CI.LENGTH_OF_BUSINESS AS BIS_LENGTH_OF_BUSINESS,
+		CI.NET_INCOME AS BUSINESS_INCOME 
+	FROM
+		APP_CUSTOMER_INCOME_BUSINESS CI
+		INNER JOIN (
+		SELECT MAX
+			( CIB.NET_INCOME ) AMOUNT,
+			CIB.application_id,
+			CIb.CUSTOMER_ID 
+		FROM
+			app_customer_income_business CIB 
+		WHERE
+			CIB.STATUS = 't' 
+		GROUP BY
+			CIB.applicatioN_ID,
+			CIb.CUSTOMER_ID 
+		) A ON A.CUSTOMER_ID = CI.CUSTOMER_ID 
+		AND A.APPLICATION_ID = CI.APPLICATION_ID 
+		AND A.AMOUNT = CI.NET_INCOME 
+	) B ON B.application_id = AP.ID 
+	AND b.customer_id = CC.ID 
+--BUSINESS_INCOME
+--OTHER INCOME
+	LEFT JOIN (
+	SELECT
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID,
+		SUM ( CI.NET_INCOME ) AS NET_PROFIT 
+	FROM
+		APP_CUSTOMER_INCOME_BUSINESS CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) Z ON Z.APPLICATION_ID = AP.ID 
+	AND Z.CUSTOMER_ID = Cc.ID 
+	--OTHER_INCOME
+WHERE
+	ap.application_no = '" + applicationNo + "')a where a.num = 3";
+                var sqlcustomer = @"SELECT ROW_NUMBER
+	( ) OVER ( ORDER BY CC.ID ) AS num,
+	ap.application_no,
+	cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
+	ci.id_number,
+	cir.company_name AS em_copany_name,
+	cir.length_of_business AS em_length_of_service,
+	cir.base_salary AS em_base_salary,
+	cir.POSITION em_position,
+	cir.other_benefit AS em_other_benifit,
+	CAR.NAME AS bis_career,
+	B.BIS_LENGTH_OF_BUSINESS,
+	B.business_income AS bis_primary_income,
+	( Z.NET_PROFIT - B.business_income ) AS other_income,
+CASE
+		
+		WHEN IT.ID_TYPE = 'F' THEN
+		'សៀវភៅគ្រួសារ' 
+		WHEN IT.ID_TYPE = 'CD' THEN
+		'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+		WHEN IT.ID_TYPE = 'N' THEN
+		'អត្តសញ្ញាណប័ណ្ណ' 
+		WHEN IT.ID_TYPE = 'P' THEN
+		'លិខិតឆ្លងដែន' 
+		WHEN IT.ID_TYPE = 'MI' THEN
+		'ឆាយា' 
+		WHEN IT.ID_TYPE = 'R' THEN
+		'សៀវភៅស្នាក់នៅ' 
+		WHEN IT.ID_TYPE = 'B' THEN
+		'សំបុត្រកំណើត' 
+	END AS IDENTIFICATION_TYPE,
+	cc.phone_number 
+FROM
+	app_application ap
+	INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID 
+	INNER JOIN cus_customer cc ON cc.ID = aad.customer_id
+	LEFT JOIN app_customer_identification ci ON ci.customer_id = cc.ID 
+	AND ci.application_id = ap.
+	ID LEFT JOIN adm_identification_type it ON it.ID = ci.identification_type_id
+	LEFT JOIN app_customer_income_employee cir ON cir.application_id = ap.ID 
+	AND cc.ID = cir.customer_id
+	LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID 
+	--IDENTIFICATION
+	INNER JOIN (
+	SELECT MIN
+		( CI.ID ) ID,
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	FROM
+		APP_CUSTOMER_IDENTIFICATION CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) A ON A.CUSTOMER_ID = CI.CUSTOMER_ID 
+	AND A.APPLICATION_ID = AP.ID 
+	AND A.ID = CI.
+	ID 
+	--IDENTIFICATION
+	--BUSINESS_INCOME
+	LEFT JOIN (
+	SELECT
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID,
+		CI.LENGTH_OF_BUSINESS AS BIS_LENGTH_OF_BUSINESS,
+		CI.NET_INCOME AS BUSINESS_INCOME 
+	FROM
+		APP_CUSTOMER_INCOME_BUSINESS CI
+		INNER JOIN (
+		SELECT MAX
+			( CIB.NET_INCOME ) AMOUNT,
+			CIB.application_id,
+			CIb.CUSTOMER_ID 
+		FROM
+			app_customer_income_business CIB 
+		WHERE
+			CIB.STATUS = 't' 
+		GROUP BY
+			CIB.applicatioN_ID,
+			CIb.CUSTOMER_ID 
+		) A ON A.CUSTOMER_ID = CI.CUSTOMER_ID 
+		AND A.APPLICATION_ID = CI.APPLICATION_ID 
+		AND A.AMOUNT = CI.NET_INCOME 
+	) B ON B.application_id = AP.ID 
+	AND b.customer_id = CC.ID 
+--BUSINESS_INCOME
+--OTHER INCOME
+	LEFT JOIN (
+	SELECT
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID,
+		SUM ( CI.NET_INCOME ) AS NET_PROFIT 
+	FROM
+		APP_CUSTOMER_INCOME_BUSINESS CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) Z ON Z.APPLICATION_ID = AP.ID 
+	AND Z.CUSTOMER_ID = Cc.ID 
+	--OTHER_INCOME
 									WHERE ap.application_no= '" + applicationNo + "'";
-                var sqlsub_employee1 = @"SELECT
-								* 
-							FROM
-								(
-								SELECT ROW_NUMBER
-									( ) OVER ( ORDER BY asd.ID ) AS num,
-									ap.application_no,
-									cir.company_name,
-									cir.length_of_business,
-									cir.primary_income,
-									cir.position,
-									cir.other_benefit 
-								FROM
-									app_application ap
-									 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-									AND asu.status = 't' 
-									AND asu.customer_type = 'CO_BORROWER'
-									inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-									AND asd.status = 't'
-									inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-									INNER JOIN app_customer_income_employee cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
-		
-								WHERE
-									ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 1";
-                var sqlsub_employee2 = @"SELECT
-											* 
-										FROM
-											(
-											SELECT ROW_NUMBER
-												( ) OVER ( ORDER BY asd.ID ) AS num,
-												ap.application_no,
-												cir.company_name,
-												cir.length_of_business,
-												cir.primary_income,
-												cir.position,
-												cir.other_benefit 
-											FROM
-												app_application ap
-												 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-												AND asu.status = 't' 
-												AND asu.customer_type = 'CO_BORROWER'
-												inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-												AND asd.status = 't'
-												inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-												INNER JOIN app_customer_income_employee cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
-		
-											WHERE
-												ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 2";
-                var sqlsub_employee3 = @"SELECT
-											* 
-										FROM
-											(
-											SELECT ROW_NUMBER
-												( ) OVER ( ORDER BY asd.ID ) AS num,
-												ap.application_no,
-												cir.company_name,
-												cir.length_of_business,
-												cir.primary_income,
-												cir.position,
-												cir.other_benefit 
-											FROM
-												app_application ap
-												 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-												AND asu.status = 't' 
-												AND asu.customer_type = 'CO_BORROWER'
-												inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-												AND asd.status = 't'
-												inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-												INNER JOIN app_customer_income_employee cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
-		
-											WHERE
-												ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 3";
-                var sqlsub_business1 = @"SELECT
-											* 
-										FROM
-											(
-											SELECT ROW_NUMBER
-												( ) OVER ( ORDER BY asd.ID ) AS num,
-												ap.application_no,
-												CAR.NAME AS career,
-												cir.length_of_business,
-												cir.primary_income,
-												'' as other_income
-											FROM
-												app_application ap
-												 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-												AND asu.status = 't' 
-												AND asu.customer_type = 'CO_BORROWER'
-												inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-												AND asd.status = 't'
-												inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-												INNER JOIN app_customer_income_business cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
-												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
-		
-											WHERE
-												ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 1";
-                var sqlsub_business2 = @"SELECT
-											* 
-										FROM
-											(
-											SELECT ROW_NUMBER
-												( ) OVER ( ORDER BY asd.ID ) AS num,
-												ap.application_no,
-												CAR.NAME AS career,
-												cir.length_of_business,
-												cir.primary_income,
-												'' as other_income
-											FROM
-												app_application ap
-												 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-												AND asu.status = 't' 
-												AND asu.customer_type = 'CO_BORROWER'
-												inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-												AND asd.status = 't'
-												inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-												INNER JOIN app_customer_income_business cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
-												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
-											WHERE
-												ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 2";
-                var sqlsub_business3 = @"SELECT
-											* 
-										FROM
-											(
-											SELECT ROW_NUMBER
-												( ) OVER ( ORDER BY asd.ID ) AS num,
-												ap.application_no,
-												CAR.NAME AS career,
-												cir.length_of_business,
-												cir.primary_income,
-												'' as other_income
-											FROM
-												app_application ap
-												 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-												AND asu.status = 't' 
-												AND asu.customer_type = 'CO_BORROWER'
-												inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-												AND asd.status = 't'
-												inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-												INNER JOIN app_customer_income_business cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
-												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
-											WHERE
-												ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 3";
-                var sqlownbusiness = @"SELECT
-								* 
-							FROM
-								(
-								SELECT ROW_NUMBER
-									( ) OVER ( ORDER BY asu.ID ) AS num,
-									ap.application_no,
-									ag.full_name_kh,
-									ait.NAME,
-									ai.id_number,
-									cc.phone_number,
-									CAR.NAME AS career,
-									cir.length_of_business,
-									cir.primary_income,
-									'' AS other_income 
-								FROM
-									app_application ap
-									INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
-									AND asu.status = 't' 
-									AND asu.customer_type = 'PERSONAL_GUARANTOR'
-									INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
-									ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
-									INNER JOIN app_customer_identification ai ON ai.customer_id = cc.ID 
-									AND ai.application_id = ap.
-									ID INNER JOIN adm_identification_type ait ON ait.ID = ai.identification_type_id
-									LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
-									AND cc.ID = cir.customer_id 
-									LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
-								   WHERE ap.application_no = '" + applicationNo + "') A WHERE A.num = 2";
-                var sqlguarantor_1 = @"SELECT
-											* 
-										FROM
-											(
-											SELECT ROW_NUMBER
-												( ) OVER ( ORDER BY asu.ID ) AS num,
-												ap.application_no,
-												ag.full_name_kh,
-												Ci.id_number,
-												cc.phone_number,
-												CAR.NAME AS career,
-												cir.length_of_business||' ខែ' as length_of_bus,
-												'' AS other_income,
-												asu.customer_type,
-												CASE
-											  WHEN IT.ID_TYPE = 'F' THEN
-											  'សៀវភៅគ្រួសារ' 
-											  WHEN IT.ID_TYPE = 'CD' THEN
-											  'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-											  WHEN IT.ID_TYPE = 'N' THEN
-											  'អត្តសញ្ញាណប័ណ្ណ' 
-											  WHEN IT.ID_TYPE = 'P' THEN
-											  'លិខិតឆ្លងដែន' 
-											  WHEN IT.ID_TYPE = 'MI' THEN
-											  'ឆាយា' 
-											  WHEN IT.ID_TYPE = 'R' THEN
-											  'សៀវភៅស្នាក់នៅ' 
-											  WHEN IT.ID_TYPE = 'B' THEN
-											  'សំបុត្រកំណើត' 
-											END AS IDENTIFICATION_TYPE
-											FROM
-												app_application ap
-												INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
-												AND asu.status = 't' 
-												AND asu.customer_type IN ('PERSONAL_GUARANTOR','MORTGAGOR')
-												INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
-												ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
-												left JOIN app_customer_identification Ci ON Ci.customer_id = cc.ID 
-												AND Ci.application_id = ap.
-												ID left JOIN adm_identification_type it ON it.ID = Ci.identification_type_id
-												LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
-												AND cc.ID = cir.customer_id 
-												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
+                var sqlguarantor_1 = @"SELECT * FROM (
+
+SELECT ROW_NUMBER 
+() OVER (ORDER BY AG.ID) AS NUM,
+AP.APPLICATION_NO,
+CUS.PHONE_NUMBER,
+(CUS.FAMILY_NAME_KH ||' '||CUS.GIVEN_NAME_KH) AS GUARANTOR_NAME , 
+A.NET_PROFIT ,
+(B.NET_PROFIT - A.NET_PROFIT) AS OTHER_INCOME,
+A.CAREER,
+A.LENGTH_,
+CI.ID_NUMBER,
+ASU.CUSTOMER_TYPE,
+AIT.NAME AS IDENTIFICATION_TYPE
+FROM APP_APPLICATION AP 
+INNER JOIN APP_SUPPLEMENTARY ASU ON ASU.APPLICATION_ID = AP.ID AND ASU.STATUS = 't' AND ASU.CUSTOMER_TYPE IN ('PERSONAL_GUARANTOR','MORTGAGOR')
+INNER JOIN APP_GUARANTOR AG ON AG.SUPPLEMENTARY_ID = ASU.ID AND AG.STATUS = 't'
+INNER JOIN CUS_CUSTOMER CUS ON CUS.ID = AG.CUSTOMER_ID
+-----IDENTIFICATION---
+INNER JOIN app_customer_identification CI ON CI.CUSTOMER_ID = CUS.ID AND CI.APPLICATION_ID = AP.ID AND CI.STATUS= 't'
+INNER JOIN ADM_IDENTIFICATION_TYPE AIT ON AIT.ID = CI.IDENTIFICATION_TYPE_ID
+INNER JOIN (
+	SELECT MIN
+		( CI.ID ) ID,
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	FROM
+		APP_CUSTOMER_IDENTIFICATION CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) Z ON Z.CUSTOMER_ID = CI.CUSTOMER_ID 
+	AND Z.APPLICATION_ID = AP.ID 
+	AND Z.ID = CI.ID 
+-----IDENTIFICATION---
+------ INCOME---------
+LEFT JOIN (SELECT 
+A.*
+ FROM 
+(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	0 AS LENGTH_,
+	'' AS CAREER
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) A 
+	----FIRST
+	INNER JOIN (SELECT 
+	MAX(C.NET_PROFIT) AS NET_PROFIT ,
+	C.CUSTOMER_ID ,
+	C.APPLICATION_ID
+	FROM
+	(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) C GROUP BY C.CUSTOMER_ID , C.APPLICATION_ID
+	) B ON B.CUSTOMER_ID = A.CUSTOMER_ID AND B.APPLICATION_ID = A.APPLICATION_ID AND A.NET_PROFIT = B.NET_PROFIT
+  ) A ON A.CUSTOMER_ID = CUS.ID AND A.APPLICATION_ID = AP.ID
+	-----INCOME-------
+	---OTHER---
+	INNER JOIN (
+	SELECT 
+	SUM(C.NET_PROFIT) AS NET_PROFIT ,
+	C.CUSTOMER_ID ,
+	C.APPLICATION_ID
+	FROM
+	(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) C GROUP BY C.CUSTOMER_ID , C.APPLICATION_ID
+	) B ON B.CUSTOMER_ID = CUS.ID AND B.APPLICATION_ID = AP.ID
+	-----OTHER----
 											WHERE
 											ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 1";
-                var sqlGuarantor2 = @"SELECT
-	* 
-FROM
-	(
-	SELECT ROW_NUMBER
-		( ) OVER ( ORDER BY asu.ID ) AS num,
-		ap.application_no,
-		ag.full_name_kh,
-		Ci.id_number,
-		cc.phone_number,
-		CAR.NAME AS career,
-		cir.length_of_business||' ខែ' as length_of_bus,
-		'' AS other_income,
-		asu.customer_type,
-		CASE
-      WHEN IT.ID_TYPE = 'F' THEN
-      'សៀវភៅគ្រួសារ' 
-      WHEN IT.ID_TYPE = 'CD' THEN
-      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-      WHEN IT.ID_TYPE = 'N' THEN
-      'អត្តសញ្ញាណប័ណ្ណ' 
-      WHEN IT.ID_TYPE = 'P' THEN
-      'លិខិតឆ្លងដែន' 
-      WHEN IT.ID_TYPE = 'MI' THEN
-      'ឆាយា' 
-      WHEN IT.ID_TYPE = 'R' THEN
-      'សៀវភៅស្នាក់នៅ' 
-      WHEN IT.ID_TYPE = 'B' THEN
-      'សំបុត្រកំណើត' 
-    END AS IDENTIFICATION_TYPE
+                var sqlGuarantor2 = @"SELECT * FROM (
+
+SELECT ROW_NUMBER 
+() OVER (ORDER BY AG.ID) AS NUM,
+AP.APPLICATION_NO,
+CUS.PHONE_NUMBER,
+(CUS.FAMILY_NAME_KH ||' '||CUS.GIVEN_NAME_KH) AS GUARANTOR_NAME , 
+A.NET_PROFIT ,
+(B.NET_PROFIT - A.NET_PROFIT) AS OTHER_INCOME,
+A.CAREER,
+A.LENGTH_,
+CI.ID_NUMBER,
+ASU.CUSTOMER_TYPE,
+AIT.NAME AS IDENTIFICATION_TYPE
+FROM APP_APPLICATION AP 
+INNER JOIN APP_SUPPLEMENTARY ASU ON ASU.APPLICATION_ID = AP.ID AND ASU.STATUS = 't' AND ASU.CUSTOMER_TYPE IN ('PERSONAL_GUARANTOR','MORTGAGOR')
+INNER JOIN APP_GUARANTOR AG ON AG.SUPPLEMENTARY_ID = ASU.ID AND AG.STATUS = 't'
+INNER JOIN CUS_CUSTOMER CUS ON CUS.ID = AG.CUSTOMER_ID
+-----IDENTIFICATION---
+INNER JOIN app_customer_identification CI ON CI.CUSTOMER_ID = CUS.ID AND CI.APPLICATION_ID = AP.ID AND CI.STATUS= 't'
+INNER JOIN ADM_IDENTIFICATION_TYPE AIT ON AIT.ID = CI.IDENTIFICATION_TYPE_ID
+INNER JOIN (
+	SELECT MIN
+		( CI.ID ) ID,
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
 	FROM
-		app_application ap
-		INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
-		AND asu.status = 't' 
-		AND asu.customer_type IN ('PERSONAL_GUARANTOR','MORTGAGOR')
-		INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
-		ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
-		left JOIN app_customer_identification Ci ON Ci.customer_id = cc.ID 
-		AND Ci.application_id = ap.
-		ID left JOIN adm_identification_type it ON it.ID = Ci.identification_type_id
-		LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
-		AND cc.ID = cir.customer_id 
-		LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
-		
+		APP_CUSTOMER_IDENTIFICATION CI 
 	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) Z ON Z.CUSTOMER_ID = CI.CUSTOMER_ID 
+	AND Z.APPLICATION_ID = AP.ID 
+	AND Z.ID = CI.ID 
+-----IDENTIFICATION---
+------ INCOME---------
+LEFT JOIN (SELECT 
+A.*
+ FROM 
+(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	0 AS LENGTH_,
+	'' AS CAREER
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) A 
+	----FIRST
+	INNER JOIN (SELECT 
+	MAX(C.NET_PROFIT) AS NET_PROFIT ,
+	C.CUSTOMER_ID ,
+	C.APPLICATION_ID
+	FROM
+	(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) C GROUP BY C.CUSTOMER_ID , C.APPLICATION_ID
+	) B ON B.CUSTOMER_ID = A.CUSTOMER_ID AND B.APPLICATION_ID = A.APPLICATION_ID AND A.NET_PROFIT = B.NET_PROFIT
+  ) A ON A.CUSTOMER_ID = CUS.ID AND A.APPLICATION_ID = AP.ID
+	-----INCOME-------
+	---OTHER---
+	INNER JOIN (
+	SELECT 
+	SUM(C.NET_PROFIT) AS NET_PROFIT ,
+	C.CUSTOMER_ID ,
+	C.APPLICATION_ID
+	FROM
+	(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) C GROUP BY C.CUSTOMER_ID , C.APPLICATION_ID
+	) B ON B.CUSTOMER_ID = CUS.ID AND B.APPLICATION_ID = AP.ID
+	-----OTHER----
+											WHERE
 											ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 2";
-                var sqlguarantor3 = @"SELECT
-	* 
-FROM
-	(
-	SELECT ROW_NUMBER
-		( ) OVER ( ORDER BY asu.ID ) AS num,
-		ap.application_no,
-		ag.full_name_kh,
-		Ci.id_number,
-		cc.phone_number,
-		CAR.NAME AS career,
-		cir.length_of_business||' ខែ' as length_of_bus,
-		'' AS other_income,
-		asu.customer_type,
-		CASE
-      WHEN IT.ID_TYPE = 'F' THEN
-      'សៀវភៅគ្រួសារ' 
-      WHEN IT.ID_TYPE = 'CD' THEN
-      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-      WHEN IT.ID_TYPE = 'N' THEN
-      'អត្តសញ្ញាណប័ណ្ណ' 
-      WHEN IT.ID_TYPE = 'P' THEN
-      'លិខិតឆ្លងដែន' 
-      WHEN IT.ID_TYPE = 'MI' THEN
-      'ឆាយា' 
-      WHEN IT.ID_TYPE = 'R' THEN
-      'សៀវភៅស្នាក់នៅ' 
-      WHEN IT.ID_TYPE = 'B' THEN
-      'សំបុត្រកំណើត' 
-    END AS IDENTIFICATION_TYPE
+                var sqlguarantor3 = @"SELECT * FROM (
+
+SELECT ROW_NUMBER 
+() OVER (ORDER BY AG.ID) AS NUM,
+AP.APPLICATION_NO,
+CUS.PHONE_NUMBER,
+(CUS.FAMILY_NAME_KH ||' '||CUS.GIVEN_NAME_KH) AS GUARANTOR_NAME , 
+A.NET_PROFIT ,
+(B.NET_PROFIT - A.NET_PROFIT) AS OTHER_INCOME,
+A.CAREER,
+A.LENGTH_,
+CI.ID_NUMBER,
+ASU.CUSTOMER_TYPE,
+AIT.NAME AS IDENTIFICATION_TYPE
+FROM APP_APPLICATION AP 
+INNER JOIN APP_SUPPLEMENTARY ASU ON ASU.APPLICATION_ID = AP.ID AND ASU.STATUS = 't' AND ASU.CUSTOMER_TYPE IN ('PERSONAL_GUARANTOR','MORTGAGOR')
+INNER JOIN APP_GUARANTOR AG ON AG.SUPPLEMENTARY_ID = ASU.ID AND AG.STATUS = 't'
+INNER JOIN CUS_CUSTOMER CUS ON CUS.ID = AG.CUSTOMER_ID
+-----IDENTIFICATION---
+INNER JOIN app_customer_identification CI ON CI.CUSTOMER_ID = CUS.ID AND CI.APPLICATION_ID = AP.ID AND CI.STATUS= 't'
+INNER JOIN ADM_IDENTIFICATION_TYPE AIT ON AIT.ID = CI.IDENTIFICATION_TYPE_ID
+INNER JOIN (
+	SELECT MIN
+		( CI.ID ) ID,
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
 	FROM
-		app_application ap
-		INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
-		AND asu.status = 't' 
-		AND asu.customer_type IN ('PERSONAL_GUARANTOR','MORTGAGOR')
-		INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
-		ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
-		left JOIN app_customer_identification Ci ON Ci.customer_id = cc.ID 
-		AND Ci.application_id = ap.
-		ID left JOIN adm_identification_type it ON it.ID = Ci.identification_type_id
-		LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
-		AND cc.ID = cir.customer_id 
-		LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
+		APP_CUSTOMER_IDENTIFICATION CI 
 	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) Z ON Z.CUSTOMER_ID = CI.CUSTOMER_ID 
+	AND Z.APPLICATION_ID = AP.ID 
+	AND Z.ID = CI.ID 
+-----IDENTIFICATION---
+------ INCOME---------
+LEFT JOIN (SELECT 
+A.*
+ FROM 
+(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	0 AS LENGTH_,
+	'' AS CAREER
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) A 
+	----FIRST
+	INNER JOIN (SELECT 
+	MAX(C.NET_PROFIT) AS NET_PROFIT ,
+	C.CUSTOMER_ID ,
+	C.APPLICATION_ID
+	FROM
+	(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) C GROUP BY C.CUSTOMER_ID , C.APPLICATION_ID
+	) B ON B.CUSTOMER_ID = A.CUSTOMER_ID AND B.APPLICATION_ID = A.APPLICATION_ID AND A.NET_PROFIT = B.NET_PROFIT
+  ) A ON A.CUSTOMER_ID = CUS.ID AND A.APPLICATION_ID = AP.ID
+	-----INCOME-------
+	---OTHER---
+	INNER JOIN (
+	SELECT 
+	SUM(C.NET_PROFIT) AS NET_PROFIT ,
+	C.CUSTOMER_ID ,
+	C.APPLICATION_ID
+	FROM
+	(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) C GROUP BY C.CUSTOMER_ID , C.APPLICATION_ID
+	) B ON B.CUSTOMER_ID = CUS.ID AND B.APPLICATION_ID = AP.ID
+	-----OTHER----
+											WHERE
 											ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 3";
-                var sqlguanrator_4 = @"SELECT
-	* 
-FROM
-	(
-	SELECT ROW_NUMBER
-		( ) OVER ( ORDER BY asu.ID ) AS num,
-		ap.application_no,
-		ag.full_name_kh,
-		Ci.id_number,
-		cc.phone_number,
-		CAR.NAME AS career,
-		cir.length_of_business||' ខែ' as length_of_bus,
-		'' AS other_income,
-		asu.customer_type,
-		CASE
-      WHEN IT.ID_TYPE = 'F' THEN
-      'សៀវភៅគ្រួសារ' 
-      WHEN IT.ID_TYPE = 'CD' THEN
-      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-      WHEN IT.ID_TYPE = 'N' THEN
-      'អត្តសញ្ញាណប័ណ្ណ' 
-      WHEN IT.ID_TYPE = 'P' THEN
-      'លិខិតឆ្លងដែន' 
-      WHEN IT.ID_TYPE = 'MI' THEN
-      'ឆាយា' 
-      WHEN IT.ID_TYPE = 'R' THEN
-      'សៀវភៅស្នាក់នៅ' 
-      WHEN IT.ID_TYPE = 'B' THEN
-      'សំបុត្រកំណើត' 
-    END AS IDENTIFICATION_TYPE
+                var sqlguanrator_4 = @"SELECT * FROM (
+
+SELECT ROW_NUMBER 
+() OVER (ORDER BY AG.ID) AS NUM,
+AP.APPLICATION_NO,
+CUS.PHONE_NUMBER,
+(CUS.FAMILY_NAME_KH ||' '||CUS.GIVEN_NAME_KH) AS GUARANTOR_NAME , 
+A.NET_PROFIT ,
+(B.NET_PROFIT - A.NET_PROFIT) AS OTHER_INCOME,
+A.CAREER,
+A.LENGTH_,
+CI.ID_NUMBER,
+ASU.CUSTOMER_TYPE,
+AIT.NAME AS IDENTIFICATION_TYPE
+FROM APP_APPLICATION AP 
+INNER JOIN APP_SUPPLEMENTARY ASU ON ASU.APPLICATION_ID = AP.ID AND ASU.STATUS = 't' AND ASU.CUSTOMER_TYPE IN ('PERSONAL_GUARANTOR','MORTGAGOR')
+INNER JOIN APP_GUARANTOR AG ON AG.SUPPLEMENTARY_ID = ASU.ID AND AG.STATUS = 't'
+INNER JOIN CUS_CUSTOMER CUS ON CUS.ID = AG.CUSTOMER_ID
+-----IDENTIFICATION---
+INNER JOIN app_customer_identification CI ON CI.CUSTOMER_ID = CUS.ID AND CI.APPLICATION_ID = AP.ID AND CI.STATUS= 't'
+INNER JOIN ADM_IDENTIFICATION_TYPE AIT ON AIT.ID = CI.IDENTIFICATION_TYPE_ID
+INNER JOIN (
+	SELECT MIN
+		( CI.ID ) ID,
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
 	FROM
-		app_application ap
-		INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
-		AND asu.status = 't' 
-		AND asu.customer_type IN ('PERSONAL_GUARANTOR','MORTGAGOR')
-		INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
-		ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
-		left JOIN app_customer_identification Ci ON Ci.customer_id = cc.ID 
-		AND Ci.application_id = ap.
-		ID left JOIN adm_identification_type it ON it.ID = Ci.identification_type_id
-		LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
-		AND cc.ID = cir.customer_id 
-		LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
+		APP_CUSTOMER_IDENTIFICATION CI 
 	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) Z ON Z.CUSTOMER_ID = CI.CUSTOMER_ID 
+	AND Z.APPLICATION_ID = AP.ID 
+	AND Z.ID = CI.ID 
+-----IDENTIFICATION---
+------ INCOME---------
+LEFT JOIN (SELECT 
+A.*
+ FROM 
+(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	0 AS LENGTH_,
+	'' AS CAREER
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) A 
+	----FIRST
+	INNER JOIN (SELECT 
+	MAX(C.NET_PROFIT) AS NET_PROFIT ,
+	C.CUSTOMER_ID ,
+	C.APPLICATION_ID
+	FROM
+	(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) C GROUP BY C.CUSTOMER_ID , C.APPLICATION_ID
+	) B ON B.CUSTOMER_ID = A.CUSTOMER_ID AND B.APPLICATION_ID = A.APPLICATION_ID AND A.NET_PROFIT = B.NET_PROFIT
+  ) A ON A.CUSTOMER_ID = CUS.ID AND A.APPLICATION_ID = AP.ID
+	-----INCOME-------
+	---OTHER---
+	INNER JOIN (
+	SELECT 
+	SUM(C.NET_PROFIT) AS NET_PROFIT ,
+	C.CUSTOMER_ID ,
+	C.APPLICATION_ID
+	FROM
+	(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) C GROUP BY C.CUSTOMER_ID , C.APPLICATION_ID
+	) B ON B.CUSTOMER_ID = CUS.ID AND B.APPLICATION_ID = AP.ID
+	-----OTHER----
+											WHERE
 											ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 4";
                 var sqlloan_request1 = @"SELECT
-										ap.application_no,
-										ac.currency,
-										apd.applied_amount,
-										apd.tenor,
-										apd.annual_interest_rate,
-										art.name,
-										apd.pay_principle_every_month,
-										apd.grace_period
-									FROM
-										app_application ap
-										INNER JOIN app_application_detail apd ON apd.application_id = apd.
-										ID INNER JOIN adm_currency ac ON ac.ID = apd.currency_id
-										INNER JOIN adm_repayment_type art on art.id = apd.repayment_type_id
+	ap.application_no,
+	ac.currency,
+	apd.applied_amount,
+	apd.tenor,
+	apd.annual_interest_rate,
+	art.name,
+	apd.pay_principle_every_month,
+	apd.grace_period
+FROM
+	app_application ap
+	INNER JOIN app_application_detail apd ON apd.application_id = ap.
+	ID 
+	LEFT JOIN adm_repayment_type art on art.id = apd.repayment_type_id
+	INNER JOIN adm_currency ac ON ac.ID = apd.currency_id
 									WHERE ap.application_no = '" + applicationNo + "'";
-                var sqlCOL_INFO = @"SELECT 
-
-									AP.APPLICATION_NO ,
-
-									COL.Collateral_TITLE as DOCUMENT_TITLE,
-
-									COL.COLLATERAL_NO ,
-
-									COL.OWNER_NAME ,
-
-									SSU.NAME AS ISSUE_BY ,
-
-									ACVE.fair_market_value as MARKET_VALUE
-
-									FROM APP_APPLICATION AP 
-									INNER JOIN APP_COL_COLLATERAL_ASSET CCA ON CCA.APPLICATION_ID = AP.ID AND CCA.STATUS = 't'
-									INNER JOIN APP_COL_COLLATERAL_SECURE CS ON CS.APP_COLLATERAL_ASSET_ID = CCA.ID AND CS.STATUS = 't'
-									INNER JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID AND COL.STATUS = 't'
-									INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID AND CCD.STATUS = 't'
-									LEFT JOIN app_col_value_evaluation ACVE ON ACVE.app_collateral_detail_ID = CCD.ID AND ACVE.STATUS = 't'
-									LEFT JOIN ADM_ISSUE_BY SSU ON SSU.ID = CCD.ISSUE_BY_ID
+                var sqlCOL_INFO = @"SELECT
+	AP.APPLICATION_NO,
+	COL.Collateral_TITLE AS DOCUMENT_TITLE,
+	COL.COLLATERAL_NO,
+	COL.OWNER_NAME,
+	COL.CO_OWNER_NAME,
+	SSU.NAME AS ISSUE_BY,
+  CVE.fair_market_value AS MARKET_VALUE 
+FROM
+	APP_APPLICATION AP
+	INNER JOIN APP_COL_COLLATERAL_ASSET CCA ON CCA.APPLICATION_ID = AP.ID 
+	AND CCA.STATUS = 't'
+	INNER JOIN APP_COL_COLLATERAL_SECURE CS ON CS.APP_COLLATERAL_ASSET_ID = CCA.ID 
+	AND CS.STATUS = 't'
+	INNER JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID 
+	AND COL.STATUS = 't'
+	INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID 
+	AND CCD.STATUS = 't'
+	INNER JOIN app_col_value_evaluation CVE ON CVE.app_collateral_detail_id = CCD.ID
+	LEFT JOIN ADM_ISSUE_BY SSU ON SSU.ID = CCD.ISSUE_BY_ID 
 									WHERE AP.application_no = '" + applicationNo + "'";
-                var sqlIV_INFO = @"SELECT
-										ap.application_no,
-										cc.family_name_kh || ' ' || cc.given_name_kh AS NAME,
-										adi.disbursement_amount,
-										adi.monthly_existing_debt_commitment 
-									FROM
-										app_application ap
-										INNER JOIN app_application_detail aad ON aad.application_id = ap.
-										ID INNER JOIN cus_customer cc ON cc.ID = aad.customer_id
-										INNER JOIN app_customer_debt_info adi ON adi.customer_id = cc.ID 
-									WHERE
-										AP.application_no = '" + applicationNo + "' ORDER BY adi.ID";
-                var sqlStatus = @"SELECT ap.application_no ,
-								adi.status
-								from app_application ap 
-								inner join app_debt_information adi on adi.application_id = ap.id
-								where AP.application_no = '" + applicationNo + "'";
+                var sqlIV_INFO = @"SELECT ap.application_no,
+			 adi.disbursement_amount,
+			 adi.monthly_existing_debt_commitment,
+			 aln.name as lender_name
+from app_application ap
+inner join app_application_detail aad on aad.application_id = ap.id 
+inner join cus_customer cc on cc.id = aad.customer_id
+inner join app_customer_debt_info adi on adi.application_id = ap.id  and cc.id = adi.customer_id and adi.status='t'
+left join adm_lender_name aln on aln.id = adi.leader_name_id
+									WHERE AP.application_no = '" + applicationNo + "'";
 				var sqlPURPOSE_1 = @"SELECT * FROM
 									(
 										SELECT 
@@ -627,14 +1243,6 @@ FROM
                 var dtsub2 = conn.getPostgreSQLDataTable(sqlsub2);
                 var dtsub3 = conn.getPostgreSQLDataTable(sqlsub3);
                 var dtcustomer = conn.getPostgreSQLDataTable(sqlcustomer);
-                var dtemployee_work = conn.getPostgreSQLDataTable(sqlemployee_work);
-                var dtsub_employee1 = conn.getPostgreSQLDataTable(sqlsub_employee1);
-                var dtsub_employee2 = conn.getPostgreSQLDataTable(sqlsub_employee2);
-                var dtsub_employee3 = conn.getPostgreSQLDataTable(sqlsub_employee3);
-                var dtownbusiness = conn.getPostgreSQLDataTable(sqlownbusiness);
-                var dtsub_business1 = conn.getPostgreSQLDataTable(sqlsub_business1);
-                var dtsub_business2 = conn.getPostgreSQLDataTable(sqlsub_business2);
-                var dtsub_business3 = conn.getPostgreSQLDataTable(sqlsub_business3);
                 var dtguarantor_1 = conn.getPostgreSQLDataTable(sqlguarantor_1);
                 var dtGuarantor2 = conn.getPostgreSQLDataTable(sqlGuarantor2);
                 var dtguarantor3 = conn.getPostgreSQLDataTable(sqlguarantor3);
@@ -642,24 +1250,13 @@ FROM
                 var dtloan_request1 = conn.getPostgreSQLDataTable(sqlloan_request1);
                 var dtCOL_INFO = conn.getPostgreSQLDataTable(sqlCOL_INFO);
                 var dtIV_INFO = conn.getPostgreSQLDataTable(sqlIV_INFO);
-                var dtStatus = conn.getPostgreSQLDataTable(sqlStatus);
 
 
 
-
-
-                var dssub1 = new ReportDataSource("sub1", dtsub1);
-                var dssub2 = new ReportDataSource("sub2", dtsub2);
-                var dssub3 = new ReportDataSource("sub3", dtsub3);
+                var dssub1 = new ReportDataSource("CO_1", dtsub1);
+                var dssub2 = new ReportDataSource("CO_2", dtsub2);
+                var dssub3 = new ReportDataSource("CO_3", dtsub3);
                 var dscustomer = new ReportDataSource("customer", dtcustomer);
-                var dsemployee_work = new ReportDataSource("employee_work", dtemployee_work);
-                var dssub_employee1 = new ReportDataSource("sub_employee1", dtsub_employee1);
-                var dssub_employee2 = new ReportDataSource("sub_employee2", dtsub_employee2);
-                var dssub_employee3 = new ReportDataSource("sub_employee3", dtsub_employee3);
-                var dsownbusiness = new ReportDataSource("ownbusiness", dtownbusiness);
-                var dssub_business1 = new ReportDataSource("sub_business1", dtsub_business1);
-                var dsDtsubBusiness2 = new ReportDataSource("sub_business2", dtsub_business2);
-                var dsDtsubBusiness3 = new ReportDataSource("sub_business3", dtsub_business3);
                 var dsDtguarantor1 = new ReportDataSource("guarantor_1", dtguarantor_1);
                 var dsDtGuarantor2 = new ReportDataSource("Guarantor2", dtGuarantor2);
                 var dsDtguarantor3 = new ReportDataSource("guarantor3", dtguarantor3);
@@ -667,12 +1264,11 @@ FROM
                 var dsDtloanRequest1 = new ReportDataSource("loan_request1", dtloan_request1);
                 var dsDtCOLINFO = new ReportDataSource("COL_INFO", dtCOL_INFO);
                 var dsDtIVINFO = new ReportDataSource("IV_INFO", dtIV_INFO);
-                var dsDtStatus = new ReportDataSource("Status", dtStatus);
 				var dsPURPOSE_1 = new ReportDataSource("PURPOSE_1", dtPURPOSE_1);
 				var dsPURPOSE_2 = new ReportDataSource("PURPOSE_2", dtPURPOSE_2);
 				var dsPURPOSE_3 = new ReportDataSource("PURPOSE_3", dtPURPOSE_3);
 				var dsPURPOSE_4 = new ReportDataSource("PURPOSE_4", dtPURPOSE_4);
-                conn.generateReport(ReportViewer1, @"Micro_Loan_Application_update", null, dscustomer, dssub1, dssub2, dssub3, dsemployee_work, dssub_employee1, dssub_employee2, dssub_employee3, dsownbusiness, dssub_business1, dsDtsubBusiness2, dsDtsubBusiness3, dsDtguarantor1, dsDtGuarantor2, dsDtguarantor3, dsDtguanrator4, dsDtloanRequest1, dsDtCOLINFO, dsDtIVINFO, dsDtStatus, dsPURPOSE_1, dsPURPOSE_2, dsPURPOSE_3, dsPURPOSE_4);
+                conn.generateReport(ReportViewer1, @"Micro_Loan_Application_update", null, dscustomer, dssub1, dssub2, dssub3,  dsDtguarantor1, dsDtGuarantor2, dsDtguarantor3, dsDtguanrator4, dsDtloanRequest1, dsDtCOLINFO, dsDtIVINFO, dsPURPOSE_1, dsPURPOSE_2, dsPURPOSE_3, dsPURPOSE_4);
 
             }
         }

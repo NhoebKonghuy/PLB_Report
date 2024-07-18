@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.9.34622.214</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-07-15T01:25:55.0118605Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-07-18T02:04:23.8983643Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -1385,9 +1385,7 @@ WHERE
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
     AP.application_no,
-		CASE WHEN CBC.CBC_FEE IS NULL THEN '............'
-		ELSE 
-    translate(to_char(CBC.cbc_fee, '9999999999.99'), '0123456789', '០១២៣៤៥៦៧៨៩') END as cbc_fee,
+    translate(to_char(CBC.cbc_fee, '9999999999.99'), '0123456789', '០១២៣៤៥៦៧៨៩') as cbc_fee,
 		CBC.currency
 FROM
     APP_APPLICATION AP
@@ -3075,7 +3073,7 @@ INNER JOIN
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value>=IIF(First(Fields!cbc_fee.Value, "CBC_FEE") = "............", "", First(Fields!currency.Value, "CBC_FEE"))</Value>
+                                                <Value>=IIF(First(Fields!cbc_fee.Value, "CBC_FEE") is nothing, "", First(Fields!currency.Value, "CBC_FEE"))</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -7011,6 +7009,40 @@ INNER JOIN
                               </TextRuns>
                               <Style>
                                 <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Siemreap</FontFamily>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                    <Color>#000000</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Siemreap</FontFamily>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                    <Color>#000000</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
                               </Style>
                             </Paragraph>
                             <Paragraph>

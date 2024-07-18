@@ -1487,8 +1487,8 @@ CASE
                 APP_CUSTOMER_IDENTIFICATION CI
                 INNER JOIN ADM_IDENTIFICATION_TYPE IT ON IT.ID = CI.IDENTIFICATION_TYPE_ID
                 INNER JOIN (
-                  ( CI.ID ) AS CREATED,
-                SELECT MIN
+                  
+                SELECT MIN ( CI.ID ) AS CREATED,
                   CI.APPLICATION_ID,
                   CI.CUSTOMER_ID 
                 FROM
@@ -1505,7 +1505,7 @@ CASE
                 CI.STATUS = 't' 
               ) A ON A.APPLICATION_ID = AP.ID 
               AND CC.ID = A.CUSTOMER_ID
-	            ) A WHERE A.APPLICATION_NO = '"+applicationNo+"' AND A.VILLAGE_CODE = '" + villageCode + "'";
+	            ) A WHERE A.APPLICATION_NO = '" + applicationNo + "' AND A.VILLAGE_CODE = '" + villageCode + "'";
             var DS_CollateralInformation = @"SELECT ROW_NUMBER
                         ( ) OVER ( ORDER BY COL.ID ) AS NUM,
                         AV.VILLAGE_CODE ,

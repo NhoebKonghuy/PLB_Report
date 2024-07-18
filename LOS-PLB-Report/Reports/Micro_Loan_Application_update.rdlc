@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.9.34622.214</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-06-19T01:20:34.3194520Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-07-16T01:32:24.7731370Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -21,187 +21,120 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="sub2">
-      <Query>
-        <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-	* 
-FROM
-	(
-	SELECT ROW_NUMBER
-		( ) OVER ( ORDER BY asd.ID ) AS num,
-    ap.application_no,
-	  cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
-	  ci.id_number,
-	  CASE
-      WHEN IT.ID_TYPE = 'F' THEN
-      'សៀវភៅគ្រួសារ' 
-      WHEN IT.ID_TYPE = 'CD' THEN
-      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-      WHEN IT.ID_TYPE = 'N' THEN
-      'អត្តសញ្ញាណប័ណ្ណ' 
-      WHEN IT.ID_TYPE = 'P' THEN
-      'លិខិតឆ្លងដែន' 
-      WHEN IT.ID_TYPE = 'MI' THEN
-      'ឆាយា' 
-      WHEN IT.ID_TYPE = 'R' THEN
-      'សៀវភៅស្នាក់នៅ' 
-      WHEN IT.ID_TYPE = 'B' THEN
-      'សំបុត្រកំណើត' 
-    END AS IDENTIFICATION_TYPE,
-	cc.phone_number
-FROM
-	app_application ap
-	inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-		AND asu.status = 't' 
-		AND asu.customer_type = 'CO_BORROWER'
-		inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-		AND asd.status = 't'
-		inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-		left join app_customer_identification ci on ci.customer_id = cc.id and ci.application_id = ap.id
-		left JOIN adm_identification_type it on it.id = ci.identification_type_id
-		
-	
-WHERE ap.application_no = '012-A892128809'
-	) A 
-WHERE
-	A.num = 2</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="num">
-          <DataField>num</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="application_no">
-          <DataField>application_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="fullname">
-          <DataField>fullname</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="id_number">
-          <DataField>id_number</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="identification_type">
-          <DataField>identification_type</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="phone_number">
-          <DataField>phone_number</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
-    <DataSet Name="sub3">
-      <Query>
-        <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-	* 
-FROM
-	(
-	SELECT ROW_NUMBER
-		( ) OVER ( ORDER BY asd.ID ) AS num,
-    ap.application_no,
-	  cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
-	  ci.id_number,
-	  CASE
-      WHEN IT.ID_TYPE = 'F' THEN
-      'សៀវភៅគ្រួសារ' 
-      WHEN IT.ID_TYPE = 'CD' THEN
-      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-      WHEN IT.ID_TYPE = 'N' THEN
-      'អត្តសញ្ញាណប័ណ្ណ' 
-      WHEN IT.ID_TYPE = 'P' THEN
-      'លិខិតឆ្លងដែន' 
-      WHEN IT.ID_TYPE = 'MI' THEN
-      'ឆាយា' 
-      WHEN IT.ID_TYPE = 'R' THEN
-      'សៀវភៅស្នាក់នៅ' 
-      WHEN IT.ID_TYPE = 'B' THEN
-      'សំបុត្រកំណើត' 
-    END AS IDENTIFICATION_TYPE,
-	cc.phone_number
-FROM
-	app_application ap
-	inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-		AND asu.status = 't' 
-		AND asu.customer_type = 'CO_BORROWER'
-		inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-		AND asd.status = 't'
-		inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-		left join app_customer_identification ci on ci.customer_id = cc.id and ci.application_id = ap.id
-		left JOIN adm_identification_type it on it.id = ci.identification_type_id
-		
-	
-WHERE ap.application_no = '012-A892128809'
-	) A 
-WHERE
-	A.num = 3</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="num">
-          <DataField>num</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="application_no">
-          <DataField>application_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="fullname">
-          <DataField>fullname</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="id_number">
-          <DataField>id_number</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="identification_type">
-          <DataField>identification_type</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="phone_number">
-          <DataField>phone_number</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
     <DataSet Name="customer">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-   app.application_no,
+        <CommandText>SELECT ROW_NUMBER
+	( ) OVER ( ORDER BY CC.ID ) AS num,
+	ap.application_no,
 	cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
-	CASE
-      WHEN IT.ID_TYPE = 'F' THEN
-      'សៀវភៅគ្រួសារ' 
-      WHEN IT.ID_TYPE = 'CD' THEN
-      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-      WHEN IT.ID_TYPE = 'N' THEN
-      'អត្តសញ្ញាណប័ណ្ណ' 
-      WHEN IT.ID_TYPE = 'P' THEN
-      'លិខិតឆ្លងដែន' 
-      WHEN IT.ID_TYPE = 'MI' THEN
-      'ឆាយា' 
-      WHEN IT.ID_TYPE = 'R' THEN
-      'សៀវភៅស្នាក់នៅ' 
-      WHEN IT.ID_TYPE = 'B' THEN
-      'សំបុត្រកំណើត' 
-    END AS IDENTIFICATION_TYPE,
-    CI.ID_NUMBER,
-	cc.phone_number
+	ci.id_number,
+	cir.company_name AS em_copany_name,
+	cir.length_of_business AS em_length_of_service,
+	cir.base_salary AS em_base_salary,
+	cir.POSITION em_position,
+	cir.other_benefit AS em_other_benifit,
+	CAR.NAME AS bis_career,
+	B.BIS_LENGTH_OF_BUSINESS,
+	B.business_income AS bis_primary_income,
+	( Z.NET_PROFIT - B.business_income ) AS other_income,
+CASE
+		
+		WHEN IT.ID_TYPE = 'F' THEN
+		'សៀវភៅគ្រួសារ' 
+		WHEN IT.ID_TYPE = 'CD' THEN
+		'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+		WHEN IT.ID_TYPE = 'N' THEN
+		'អត្តសញ្ញាណប័ណ្ណ' 
+		WHEN IT.ID_TYPE = 'P' THEN
+		'លិខិតឆ្លងដែន' 
+		WHEN IT.ID_TYPE = 'MI' THEN
+		'ឆាយា' 
+		WHEN IT.ID_TYPE = 'R' THEN
+		'សៀវភៅស្នាក់នៅ' 
+		WHEN IT.ID_TYPE = 'B' THEN
+		'សំបុត្រកំណើត' 
+	END AS IDENTIFICATION_TYPE,
+	cc.phone_number 
 FROM
-	app_application app
-	INNER JOIN app_application_detail apd ON apd.application_id = app.ID 
-	INNER JOIN cus_customer cc ON cc.ID = apd.customer_id
-	INNER JOIN app_customer_identification ci ON ci.customer_id = cc.ID 
-	AND ci.application_id = app.ID
-	INNER JOIN adm_identification_type it ON it.ID = ci.identification_type_id
-	
-WHERE app.application_no='012-A892128809'</CommandText>
+	app_application ap
+	INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID 
+	INNER JOIN cus_customer cc ON cc.ID = aad.customer_id
+	LEFT JOIN app_customer_identification ci ON ci.customer_id = cc.ID 
+	AND ci.application_id = ap.
+	ID LEFT JOIN adm_identification_type it ON it.ID = ci.identification_type_id
+	LEFT JOIN app_customer_income_employee cir ON cir.application_id = ap.ID 
+	AND cc.ID = cir.customer_id
+	LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID 
+	--IDENTIFICATION
+	INNER JOIN (
+	SELECT MIN
+		( CI.ID ) ID,
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	FROM
+		APP_CUSTOMER_IDENTIFICATION CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) A ON A.CUSTOMER_ID = CI.CUSTOMER_ID 
+	AND A.APPLICATION_ID = AP.ID 
+	AND A.ID = CI.
+	ID 
+	--IDENTIFICATION
+	--BUSINESS_INCOME
+	LEFT JOIN (
+	SELECT
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID,
+		CI.LENGTH_OF_BUSINESS AS BIS_LENGTH_OF_BUSINESS,
+		CI.NET_INCOME AS BUSINESS_INCOME 
+	FROM
+		APP_CUSTOMER_INCOME_BUSINESS CI
+		INNER JOIN (
+		SELECT MAX
+			( CIB.NET_INCOME ) AMOUNT,
+			CIB.application_id,
+			CIb.CUSTOMER_ID 
+		FROM
+			app_customer_income_business CIB 
+		WHERE
+			CIB.STATUS = 't' 
+		GROUP BY
+			CIB.applicatioN_ID,
+			CIb.CUSTOMER_ID 
+		) A ON A.CUSTOMER_ID = CI.CUSTOMER_ID 
+		AND A.APPLICATION_ID = CI.APPLICATION_ID 
+		AND A.AMOUNT = CI.NET_INCOME 
+	) B ON B.application_id = AP.ID 
+	AND b.customer_id = CC.ID 
+--BUSINESS_INCOME
+--OTHER INCOME
+	LEFT JOIN (
+	SELECT
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID,
+		SUM ( CI.NET_INCOME ) AS NET_PROFIT 
+	FROM
+		APP_CUSTOMER_INCOME_BUSINESS CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) Z ON Z.APPLICATION_ID = AP.ID 
+	AND Z.CUSTOMER_ID = Cc.ID 
+	--OTHER_INCOME
+WHERE
+	ap.application_no = '000-A735020433'</CommandText>
       </Query>
       <Fields>
+        <Field Name="num">
+          <DataField>num</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
         <Field Name="application_no">
           <DataField>application_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -218,533 +151,222 @@ WHERE app.application_no='012-A892128809'</CommandText>
           <DataField>id_number</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="phone_number">
-          <DataField>phone_number</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
-    <DataSet Name="employee_work">
-      <Query>
-        <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-								* 
-							FROM
-								(
-								SELECT ROW_NUMBER
-									( ) OVER ( ORDER BY asu.ID ) AS num,
-									ap.application_no,
-									ag.full_name_kh,
-									ait.NAME,
-									ai.id_number,
-									cc.phone_number,
-									CAR.NAME AS career,
-									cir.length_of_business,
-									cir.primary_income,
-									'' AS other_income 
-								FROM
-									app_application ap
-									INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
-									AND asu.status = 't' 
-									AND asu.customer_type = 'PERSONAL_GUARANTOR'
-									INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
-									ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
-									INNER JOIN app_customer_identification ai ON ai.customer_id = cc.ID 
-									AND ai.application_id = ap.
-									ID INNER JOIN adm_identification_type ait ON ait.ID = ai.identification_type_id
-									LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
-									AND cc.ID = cir.customer_id 
-									LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
-								   WHERE ap.application_no = '" + applicationNo + "') A WHERE A.num = 2</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="num">
-          <DataField>num</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="application_no">
-          <DataField>application_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="full_name_kh">
-          <DataField>full_name_kh</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="length_of_business">
-          <DataField>length_of_business</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="name">
-          <DataField>name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="id_number">
-          <DataField>id_number</DataField>
+        <Field Name="em_copany_name">
+          <DataField>em_copany_name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="phone_number">
           <DataField>phone_number</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="career">
-          <DataField>career</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="primary_income">
-          <DataField>primary_income</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="other_income">
-          <DataField>other_income</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
-    <DataSet Name="sub_employee1">
-      <Query>
-        <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-	* 
-FROM
-	(
-	SELECT ROW_NUMBER
-		( ) OVER ( ORDER BY asd.ID ) AS num,
-		ap.application_no,
-		cir.company_name,
-		cir.length_of_business,
-		cir.base_salary,
-		cir.position,
-		cir.other_benefit
-		
-	FROM
-		app_application ap
-		 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-		AND asu.status = 't' 
-		AND asu.customer_type = 'CO_BORROWER'
-		inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-		AND asd.status = 't'
-		inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-		INNER JOIN app_customer_income_employee cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
-
-	WHERE
-		ap.application_no = '012-A892128809' 
-	) A 
-WHERE
-	A.num = 1
-	</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="num">
-          <DataField>num</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="application_no">
-          <DataField>application_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="company_name">
-          <DataField>company_name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="length_of_business">
-          <DataField>length_of_business</DataField>
+        <Field Name="em_length_of_service">
+          <DataField>em_length_of_service</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="base_salary">
-          <DataField>base_salary</DataField>
+        <Field Name="em_base_salary">
+          <DataField>em_base_salary</DataField>
           <rd:TypeName>System.Double</rd:TypeName>
         </Field>
-        <Field Name="position">
-          <DataField>position</DataField>
+        <Field Name="em_position">
+          <DataField>em_position</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="other_benefit">
-          <DataField>other_benefit</DataField>
+        <Field Name="em_other_benifit">
+          <DataField>em_other_benifit</DataField>
           <rd:TypeName>System.Double</rd:TypeName>
         </Field>
-      </Fields>
-    </DataSet>
-    <DataSet Name="sub_employee2">
-      <Query>
-        <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-	* 
-FROM
-	(
-	SELECT ROW_NUMBER
-		( ) OVER ( ORDER BY asd.ID ) AS num,
-		ap.application_no,
-		cir.company_name,
-		cir.length_of_business,
-		cir.base_salary,
-		cir.position,
-		cir.other_benefit
-		
-	FROM
-		app_application ap
-		 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-		AND asu.status = 't' 
-		AND asu.customer_type = 'CO_BORROWER'
-		inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-		AND asd.status = 't'
-		inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-		INNER JOIN app_customer_income_employee cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
-
-	WHERE
-		ap.application_no = '012-A892128809' 
-	) A 
-WHERE
-	A.num = 2
-	</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="num">
-          <DataField>num</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="application_no">
-          <DataField>application_no</DataField>
+        <Field Name="bis_career">
+          <DataField>bis_career</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="company_name">
-          <DataField>company_name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="length_of_business">
-          <DataField>length_of_business</DataField>
+        <Field Name="bis_length_of_business">
+          <DataField>bis_length_of_business</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="base_salary">
-          <DataField>base_salary</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
-        </Field>
-        <Field Name="position">
-          <DataField>position</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="other_benefit">
-          <DataField>other_benefit</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
-    <DataSet Name="sub_employee3">
-      <Query>
-        <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-	* 
-FROM
-	(
-	SELECT ROW_NUMBER
-		( ) OVER ( ORDER BY asd.ID ) AS num,
-		ap.application_no,
-		cir.company_name,
-		cir.length_of_business,
-		cir.base_salary,
-		cir.position,
-		cir.other_benefit
-		
-	FROM
-		app_application ap
-		 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-		AND asu.status = 't' 
-		AND asu.customer_type = 'CO_BORROWER'
-		inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-		AND asd.status = 't'
-		inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-		INNER JOIN app_customer_income_employee cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
-
-	WHERE
-		ap.application_no = '012-A892128809' 
-	) A 
-WHERE
-	A.num = 3
-	</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="num">
-          <DataField>num</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="application_no">
-          <DataField>application_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="company_name">
-          <DataField>company_name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="length_of_business">
-          <DataField>length_of_business</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="base_salary">
-          <DataField>base_salary</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
-        </Field>
-        <Field Name="position">
-          <DataField>position</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="other_benefit">
-          <DataField>other_benefit</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
-    <DataSet Name="sub_business1">
-      <Query>
-        <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-											* 
-										FROM
-											(
-											SELECT ROW_NUMBER
-												( ) OVER ( ORDER BY asd.ID ) AS num,
-												ap.application_no,
-												CAR.NAME AS career,
-												cir.length_of_business,
-												cir.primary_income,
-												'' as other_income
-											FROM
-												app_application ap
-												 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-												AND asu.status = 't' 
-												AND asu.customer_type = 'CO_BORROWER'
-												inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-												AND asd.status = 't'
-												inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-												INNER JOIN app_customer_income_business cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
-												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
-		
-											WHERE
-												ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 1</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="num">
-          <DataField>num</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="application_no">
-          <DataField>application_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="career">
-          <DataField>career</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="length_of_business">
-          <DataField>length_of_business</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="primary_income">
-          <DataField>primary_income</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="other_income">
-          <DataField>other_income</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
-    <DataSet Name="sub_business2">
-      <Query>
-        <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-											* 
-										FROM
-											(
-											SELECT ROW_NUMBER
-												( ) OVER ( ORDER BY asd.ID ) AS num,
-												ap.application_no,
-												CAR.NAME AS career,
-												cir.length_of_business,
-												cir.primary_income,
-												'' as other_income
-											FROM
-												app_application ap
-												 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-												AND asu.status = 't' 
-												AND asu.customer_type = 'CO_BORROWER'
-												inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-												AND asd.status = 't'
-												inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-												INNER JOIN app_customer_income_business cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
-												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
-		
-											WHERE
-												ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 2
-</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="num">
-          <DataField>num</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="application_no">
-          <DataField>application_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="career">
-          <DataField>career</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="length_of_business">
-          <DataField>length_of_business</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="primary_income">
-          <DataField>primary_income</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="other_income">
-          <DataField>other_income</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
-    <DataSet Name="sub_business3">
-      <Query>
-        <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-											* 
-										FROM
-											(
-											SELECT ROW_NUMBER
-												( ) OVER ( ORDER BY asd.ID ) AS num,
-												ap.application_no,
-												CAR.NAME AS career,
-												cir.length_of_business,
-												cir.primary_income,
-												'' as other_income
-											FROM
-												app_application ap
-												 inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-												AND asu.status = 't' 
-												AND asu.customer_type = 'CO_BORROWER'
-												inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-												AND asd.status = 't'
-												inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-												INNER JOIN app_customer_income_business cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
-												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
-		
-											WHERE
-												ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 3</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="num">
-          <DataField>num</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="application_no">
-          <DataField>application_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="career">
-          <DataField>career</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="length_of_business">
-          <DataField>length_of_business</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="primary_income">
-          <DataField>primary_income</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="other_income">
-          <DataField>other_income</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
-    <DataSet Name="ownbusiness">
-      <Query>
-        <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-	ap.application_no,
-		AC.name as career,
-		cir.length_of_business,
-		cir.business_income,
-		'' as other_income 
-FROM
-	app_application ap
-	INNER JOIN app_application_detail apd ON apd.application_id = ap.
-	ID INNER JOIN cus_customer cc ON apd.customer_id = cc.
-	ID INNER JOIN app_customer_income_business cir ON cir.application_id = ap.ID and cc.id = cir.customer_id
-	INNER JOIN adm_career AC ON AC.ID = CIR.career_id</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="application_no">
-          <DataField>application_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="career">
-          <DataField>career</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="length_of_business">
-          <DataField>length_of_business</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="business_income">
-          <DataField>business_income</DataField>
+        <Field Name="bis_primary_income">
+          <DataField>bis_primary_income</DataField>
           <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="other_income">
           <DataField>other_income</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
     <DataSet Name="guarantor_1">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-											* 
-										FROM
-											(
-											SELECT ROW_NUMBER
-												( ) OVER ( ORDER BY asu.ID ) AS num,
-												ap.application_no,
-												ag.full_name_kh,
-												Ci.id_number,
-												cc.phone_number,
-												CAR.NAME AS career,
-												cir.length_of_business||' ខែ' as length_of_bus,
-												'' AS other_income,
-												asu.customer_type,
-												CASE
-											  WHEN IT.ID_TYPE = 'F' THEN
-											  'សៀវភៅគ្រួសារ' 
-											  WHEN IT.ID_TYPE = 'CD' THEN
-											  'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-											  WHEN IT.ID_TYPE = 'N' THEN
-											  'អត្តសញ្ញាណប័ណ្ណ' 
-											  WHEN IT.ID_TYPE = 'P' THEN
-											  'លិខិតឆ្លងដែន' 
-											  WHEN IT.ID_TYPE = 'MI' THEN
-											  'ឆាយា' 
-											  WHEN IT.ID_TYPE = 'R' THEN
-											  'សៀវភៅស្នាក់នៅ' 
-											  WHEN IT.ID_TYPE = 'B' THEN
-											  'សំបុត្រកំណើត' 
-											END AS IDENTIFICATION_TYPE
-											FROM
-												app_application ap
-												INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
-												AND asu.status = 't' 
-												AND asu.customer_type IN ('PERSONAL_GUARANTOR','MORTGAGOR')
-												INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
-												ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
-												left JOIN app_customer_identification Ci ON Ci.customer_id = cc.ID 
-												AND Ci.application_id = ap.
-												ID left JOIN adm_identification_type it ON it.ID = Ci.identification_type_id
-												LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
-												AND cc.ID = cir.customer_id 
-												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
-											WHERE
-											ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 1</CommandText>
+        <CommandText>SELECT * FROM (
+
+SELECT ROW_NUMBER 
+() OVER (ORDER BY AG.ID) AS NUM,
+AP.APPLICATION_NO,
+CUS.PHONE_NUMBER,
+(CUS.FAMILY_NAME_KH ||' '||CUS.GIVEN_NAME_KH) AS GUARANTOR_NAME , 
+A.NET_PROFIT ,
+(B.NET_PROFIT - A.NET_PROFIT) AS OTHER_INCOME,
+A.CAREER,
+A.LENGTH_,
+CI.ID_NUMBER,
+ASU.CUSTOMER_TYPE,
+AIT.NAME AS IDENTIFICATION_TYPE
+FROM APP_APPLICATION AP 
+INNER JOIN APP_SUPPLEMENTARY ASU ON ASU.APPLICATION_ID = AP.ID AND ASU.STATUS = 't' AND ASU.CUSTOMER_TYPE IN ('PERSONAL_GUARANTOR','MORTGAGOR')
+INNER JOIN APP_GUARANTOR AG ON AG.SUPPLEMENTARY_ID = ASU.ID AND AG.STATUS = 't'
+INNER JOIN CUS_CUSTOMER CUS ON CUS.ID = AG.CUSTOMER_ID
+-----IDENTIFICATION---
+INNER JOIN app_customer_identification CI ON CI.CUSTOMER_ID = CUS.ID AND CI.APPLICATION_ID = AP.ID AND CI.STATUS= 't'
+INNER JOIN ADM_IDENTIFICATION_TYPE AIT ON AIT.ID = CI.IDENTIFICATION_TYPE_ID
+INNER JOIN (
+	SELECT MIN
+		( CI.ID ) ID,
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	FROM
+		APP_CUSTOMER_IDENTIFICATION CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) Z ON Z.CUSTOMER_ID = CI.CUSTOMER_ID 
+	AND Z.APPLICATION_ID = AP.ID 
+	AND Z.ID = CI.ID 
+-----IDENTIFICATION---
+------ INCOME---------
+LEFT JOIN (SELECT 
+A.*
+ FROM 
+(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	0 AS LENGTH_,
+	'' AS CAREER
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) A 
+	----FIRST
+	INNER JOIN (SELECT 
+	MAX(C.NET_PROFIT) AS NET_PROFIT ,
+	C.CUSTOMER_ID ,
+	C.APPLICATION_ID
+	FROM
+	(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) C GROUP BY C.CUSTOMER_ID , C.APPLICATION_ID
+	) B ON B.CUSTOMER_ID = A.CUSTOMER_ID AND B.APPLICATION_ID = A.APPLICATION_ID AND A.NET_PROFIT = B.NET_PROFIT
+  ) A ON A.CUSTOMER_ID = CUS.ID AND A.APPLICATION_ID = AP.ID
+	-----INCOME-------
+	---OTHER---
+	INNER JOIN (
+	SELECT 
+	SUM(C.NET_PROFIT) AS NET_PROFIT ,
+	C.CUSTOMER_ID ,
+	C.APPLICATION_ID
+	FROM
+	(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) C GROUP BY C.CUSTOMER_ID , C.APPLICATION_ID
+	) B ON B.CUSTOMER_ID = CUS.ID AND B.APPLICATION_ID = AP.ID
+	-----OTHER----
+	WHERE AP.APPLICATION_NO = '000-A735020433'
+	)H WHERE H.NUM = 1</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -755,29 +377,33 @@ FROM
           <DataField>application_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="full_name_kh">
-          <DataField>full_name_kh</DataField>
+        <Field Name="phone_number">
+          <DataField>phone_number</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="guarantor_name">
+          <DataField>guarantor_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="net_profit">
+          <DataField>net_profit</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="id_number">
           <DataField>id_number</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="phone_number">
-          <DataField>phone_number</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="career">
           <DataField>career</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="length_of_bus">
-          <DataField>length_of_bus</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="other_income">
           <DataField>other_income</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="length_">
+          <DataField>length_</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="customer_type">
           <DataField>customer_type</DataField>
@@ -792,52 +418,177 @@ FROM
     <DataSet Name="Guarantor2">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-											* 
-										FROM
-											(
-											SELECT ROW_NUMBER
-												( ) OVER ( ORDER BY asu.ID ) AS num,
-												ap.application_no,
-												ag.full_name_kh,
-												Ci.id_number,
-												cc.phone_number,
-												CAR.NAME AS career,
-												cir.length_of_business||' ខែ' as length_of_bus,
-												'' AS other_income,
-												asu.customer_type,
-												CASE
-											  WHEN IT.ID_TYPE = 'F' THEN
-											  'សៀវភៅគ្រួសារ' 
-											  WHEN IT.ID_TYPE = 'CD' THEN
-											  'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-											  WHEN IT.ID_TYPE = 'N' THEN
-											  'អត្តសញ្ញាណប័ណ្ណ' 
-											  WHEN IT.ID_TYPE = 'P' THEN
-											  'លិខិតឆ្លងដែន' 
-											  WHEN IT.ID_TYPE = 'MI' THEN
-											  'ឆាយា' 
-											  WHEN IT.ID_TYPE = 'R' THEN
-											  'សៀវភៅស្នាក់នៅ' 
-											  WHEN IT.ID_TYPE = 'B' THEN
-											  'សំបុត្រកំណើត' 
-											END AS IDENTIFICATION_TYPE
-											FROM
-												app_application ap
-												INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
-												AND asu.status = 't' 
-												AND asu.customer_type IN ('PERSONAL_GUARANTOR','MORTGAGOR')
-												INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
-												ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
-												left JOIN app_customer_identification Ci ON Ci.customer_id = cc.ID 
-												AND Ci.application_id = ap.
-												ID left JOIN adm_identification_type it ON it.ID = Ci.identification_type_id
-												LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
-												AND cc.ID = cir.customer_id 
-												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
-											WHERE
-											ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 2
-</CommandText>
+        <CommandText>SELECT * FROM (
+
+SELECT ROW_NUMBER 
+() OVER (ORDER BY AG.ID) AS NUM,
+AP.APPLICATION_NO,
+CUS.PHONE_NUMBER,
+(CUS.FAMILY_NAME_KH ||' '||CUS.GIVEN_NAME_KH) AS GUARANTOR_NAME , 
+A.NET_PROFIT ,
+(B.NET_PROFIT - A.NET_PROFIT) AS OTHER_INCOME,
+A.CAREER,
+A.LENGTH_,
+CI.ID_NUMBER,
+ASU.CUSTOMER_TYPE,
+AIT.NAME AS IDENTIFICATION_TYPE
+FROM APP_APPLICATION AP 
+INNER JOIN APP_SUPPLEMENTARY ASU ON ASU.APPLICATION_ID = AP.ID AND ASU.STATUS = 't' AND ASU.CUSTOMER_TYPE IN ('PERSONAL_GUARANTOR','MORTGAGOR')
+INNER JOIN APP_GUARANTOR AG ON AG.SUPPLEMENTARY_ID = ASU.ID AND AG.STATUS = 't'
+INNER JOIN CUS_CUSTOMER CUS ON CUS.ID = AG.CUSTOMER_ID
+-----IDENTIFICATION---
+INNER JOIN app_customer_identification CI ON CI.CUSTOMER_ID = CUS.ID AND CI.APPLICATION_ID = AP.ID AND CI.STATUS= 't'
+INNER JOIN ADM_IDENTIFICATION_TYPE AIT ON AIT.ID = CI.IDENTIFICATION_TYPE_ID
+INNER JOIN (
+	SELECT MIN
+		( CI.ID ) ID,
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	FROM
+		APP_CUSTOMER_IDENTIFICATION CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) Z ON Z.CUSTOMER_ID = CI.CUSTOMER_ID 
+	AND Z.APPLICATION_ID = AP.ID 
+	AND Z.ID = CI.ID 
+-----IDENTIFICATION---
+------ INCOME---------
+LEFT JOIN (SELECT 
+A.*
+ FROM 
+(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	0 AS LENGTH_,
+	'' AS CAREER
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) A 
+	----FIRST
+	INNER JOIN (SELECT 
+	MAX(C.NET_PROFIT) AS NET_PROFIT ,
+	C.CUSTOMER_ID ,
+	C.APPLICATION_ID
+	FROM
+	(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) C GROUP BY C.CUSTOMER_ID , C.APPLICATION_ID
+	) B ON B.CUSTOMER_ID = A.CUSTOMER_ID AND B.APPLICATION_ID = A.APPLICATION_ID AND A.NET_PROFIT = B.NET_PROFIT
+  ) A ON A.CUSTOMER_ID = CUS.ID AND A.APPLICATION_ID = AP.ID
+	-----INCOME-------
+	---OTHER---
+	INNER JOIN (
+	SELECT 
+	SUM(C.NET_PROFIT) AS NET_PROFIT ,
+	C.CUSTOMER_ID ,
+	C.APPLICATION_ID
+	FROM
+	(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) C GROUP BY C.CUSTOMER_ID , C.APPLICATION_ID
+	) B ON B.CUSTOMER_ID = CUS.ID AND B.APPLICATION_ID = AP.ID
+	-----OTHER----
+	WHERE AP.APPLICATION_NO = '000-A735020433'
+	)H WHERE H.NUM = 2</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -848,29 +599,33 @@ FROM
           <DataField>application_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="full_name_kh">
-          <DataField>full_name_kh</DataField>
+        <Field Name="phone_number">
+          <DataField>phone_number</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="guarantor_name">
+          <DataField>guarantor_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="net_profit">
+          <DataField>net_profit</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="id_number">
           <DataField>id_number</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="phone_number">
-          <DataField>phone_number</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="career">
           <DataField>career</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="length_of_bus">
-          <DataField>length_of_bus</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="other_income">
           <DataField>other_income</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="length_">
+          <DataField>length_</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="customer_type">
           <DataField>customer_type</DataField>
@@ -885,51 +640,177 @@ FROM
     <DataSet Name="guarantor3">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-											* 
-										FROM
-											(
-											SELECT ROW_NUMBER
-												( ) OVER ( ORDER BY asu.ID ) AS num,
-												ap.application_no,
-												ag.full_name_kh,
-												Ci.id_number,
-												cc.phone_number,
-												CAR.NAME AS career,
-												cir.length_of_business||' ខែ' as length_of_bus,
-												'' AS other_income,
-												asu.customer_type,
-												CASE
-											  WHEN IT.ID_TYPE = 'F' THEN
-											  'សៀវភៅគ្រួសារ' 
-											  WHEN IT.ID_TYPE = 'CD' THEN
-											  'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-											  WHEN IT.ID_TYPE = 'N' THEN
-											  'អត្តសញ្ញាណប័ណ្ណ' 
-											  WHEN IT.ID_TYPE = 'P' THEN
-											  'លិខិតឆ្លងដែន' 
-											  WHEN IT.ID_TYPE = 'MI' THEN
-											  'ឆាយា' 
-											  WHEN IT.ID_TYPE = 'R' THEN
-											  'សៀវភៅស្នាក់នៅ' 
-											  WHEN IT.ID_TYPE = 'B' THEN
-											  'សំបុត្រកំណើត' 
-											END AS IDENTIFICATION_TYPE
-											FROM
-												app_application ap
-												INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
-												AND asu.status = 't' 
-												AND asu.customer_type IN ('PERSONAL_GUARANTOR','MORTGAGOR')
-												INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
-												ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
-												left JOIN app_customer_identification Ci ON Ci.customer_id = cc.ID 
-												AND Ci.application_id = ap.
-												ID left JOIN adm_identification_type it ON it.ID = Ci.identification_type_id
-												LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
-												AND cc.ID = cir.customer_id 
-												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
-											WHERE
-											ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 3</CommandText>
+        <CommandText>SELECT * FROM (
+
+SELECT ROW_NUMBER 
+() OVER (ORDER BY AG.ID) AS NUM,
+AP.APPLICATION_NO,
+CUS.PHONE_NUMBER,
+(CUS.FAMILY_NAME_KH ||' '||CUS.GIVEN_NAME_KH) AS GUARANTOR_NAME , 
+A.NET_PROFIT ,
+(B.NET_PROFIT - A.NET_PROFIT) AS OTHER_INCOME,
+A.CAREER,
+A.LENGTH_,
+CI.ID_NUMBER,
+ASU.CUSTOMER_TYPE,
+AIT.NAME AS IDENTIFICATION_TYPE
+FROM APP_APPLICATION AP 
+INNER JOIN APP_SUPPLEMENTARY ASU ON ASU.APPLICATION_ID = AP.ID AND ASU.STATUS = 't' AND ASU.CUSTOMER_TYPE IN ('PERSONAL_GUARANTOR','MORTGAGOR')
+INNER JOIN APP_GUARANTOR AG ON AG.SUPPLEMENTARY_ID = ASU.ID AND AG.STATUS = 't'
+INNER JOIN CUS_CUSTOMER CUS ON CUS.ID = AG.CUSTOMER_ID
+-----IDENTIFICATION---
+INNER JOIN app_customer_identification CI ON CI.CUSTOMER_ID = CUS.ID AND CI.APPLICATION_ID = AP.ID AND CI.STATUS= 't'
+INNER JOIN ADM_IDENTIFICATION_TYPE AIT ON AIT.ID = CI.IDENTIFICATION_TYPE_ID
+INNER JOIN (
+	SELECT MIN
+		( CI.ID ) ID,
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	FROM
+		APP_CUSTOMER_IDENTIFICATION CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) Z ON Z.CUSTOMER_ID = CI.CUSTOMER_ID 
+	AND Z.APPLICATION_ID = AP.ID 
+	AND Z.ID = CI.ID 
+-----IDENTIFICATION---
+------ INCOME---------
+LEFT JOIN (SELECT 
+A.*
+ FROM 
+(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	0 AS LENGTH_,
+	'' AS CAREER
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) A 
+	----FIRST
+	INNER JOIN (SELECT 
+	MAX(C.NET_PROFIT) AS NET_PROFIT ,
+	C.CUSTOMER_ID ,
+	C.APPLICATION_ID
+	FROM
+	(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) C GROUP BY C.CUSTOMER_ID , C.APPLICATION_ID
+	) B ON B.CUSTOMER_ID = A.CUSTOMER_ID AND B.APPLICATION_ID = A.APPLICATION_ID AND A.NET_PROFIT = B.NET_PROFIT
+  ) A ON A.CUSTOMER_ID = CUS.ID AND A.APPLICATION_ID = AP.ID
+	-----INCOME-------
+	---OTHER---
+	INNER JOIN (
+	SELECT 
+	SUM(C.NET_PROFIT) AS NET_PROFIT ,
+	C.CUSTOMER_ID ,
+	C.APPLICATION_ID
+	FROM
+	(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) C GROUP BY C.CUSTOMER_ID , C.APPLICATION_ID
+	) B ON B.CUSTOMER_ID = CUS.ID AND B.APPLICATION_ID = AP.ID
+	-----OTHER----
+	WHERE AP.APPLICATION_NO = '000-A735020433'
+	)H WHERE H.NUM = 3</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -940,29 +821,33 @@ FROM
           <DataField>application_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="full_name_kh">
-          <DataField>full_name_kh</DataField>
+        <Field Name="phone_number">
+          <DataField>phone_number</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="guarantor_name">
+          <DataField>guarantor_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="net_profit">
+          <DataField>net_profit</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="id_number">
           <DataField>id_number</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="phone_number">
-          <DataField>phone_number</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="career">
           <DataField>career</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="length_of_bus">
-          <DataField>length_of_bus</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="other_income">
           <DataField>other_income</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="length_">
+          <DataField>length_</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="customer_type">
           <DataField>customer_type</DataField>
@@ -977,51 +862,177 @@ FROM
     <DataSet Name="guanrator_4">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-											* 
-										FROM
-											(
-											SELECT ROW_NUMBER
-												( ) OVER ( ORDER BY asu.ID ) AS num,
-												ap.application_no,
-												ag.full_name_kh,
-												Ci.id_number,
-												cc.phone_number,
-												CAR.NAME AS career,
-												cir.length_of_business||' ខែ' as length_of_bus,
-												'' AS other_income,
-												asu.customer_type,
-												CASE
-											  WHEN IT.ID_TYPE = 'F' THEN
-											  'សៀវភៅគ្រួសារ' 
-											  WHEN IT.ID_TYPE = 'CD' THEN
-											  'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-											  WHEN IT.ID_TYPE = 'N' THEN
-											  'អត្តសញ្ញាណប័ណ្ណ' 
-											  WHEN IT.ID_TYPE = 'P' THEN
-											  'លិខិតឆ្លងដែន' 
-											  WHEN IT.ID_TYPE = 'MI' THEN
-											  'ឆាយា' 
-											  WHEN IT.ID_TYPE = 'R' THEN
-											  'សៀវភៅស្នាក់នៅ' 
-											  WHEN IT.ID_TYPE = 'B' THEN
-											  'សំបុត្រកំណើត' 
-											END AS IDENTIFICATION_TYPE
-											FROM
-												app_application ap
-												INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
-												AND asu.status = 't' 
-												AND asu.customer_type IN ('PERSONAL_GUARANTOR','MORTGAGOR')
-												INNER JOIN app_guarantor ag ON ag.supplementary_id = asu.
-												ID INNER JOIN cus_customer cc ON cc.ID = ag.customer_id
-												left JOIN app_customer_identification Ci ON Ci.customer_id = cc.ID 
-												AND Ci.application_id = ap.
-												ID left JOIN adm_identification_type it ON it.ID = Ci.identification_type_id
-												LEFT JOIN app_customer_income_business cir ON cir.application_id = ap.ID 
-												AND cc.ID = cir.customer_id 
-												LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID
-											WHERE
-											ap.application_no = '" + applicationNo + "' ) A WHERE A.num = 4</CommandText>
+        <CommandText>SELECT * FROM (
+
+SELECT ROW_NUMBER 
+() OVER (ORDER BY AG.ID) AS NUM,
+AP.APPLICATION_NO,
+CUS.PHONE_NUMBER,
+(CUS.FAMILY_NAME_KH ||' '||CUS.GIVEN_NAME_KH) AS GUARANTOR_NAME , 
+A.NET_PROFIT ,
+(B.NET_PROFIT - A.NET_PROFIT) AS OTHER_INCOME,
+A.CAREER,
+A.LENGTH_,
+CI.ID_NUMBER,
+ASU.CUSTOMER_TYPE,
+AIT.NAME AS IDENTIFICATION_TYPE
+FROM APP_APPLICATION AP 
+INNER JOIN APP_SUPPLEMENTARY ASU ON ASU.APPLICATION_ID = AP.ID AND ASU.STATUS = 't' AND ASU.CUSTOMER_TYPE IN ('PERSONAL_GUARANTOR','MORTGAGOR')
+INNER JOIN APP_GUARANTOR AG ON AG.SUPPLEMENTARY_ID = ASU.ID AND AG.STATUS = 't'
+INNER JOIN CUS_CUSTOMER CUS ON CUS.ID = AG.CUSTOMER_ID
+-----IDENTIFICATION---
+INNER JOIN app_customer_identification CI ON CI.CUSTOMER_ID = CUS.ID AND CI.APPLICATION_ID = AP.ID AND CI.STATUS= 't'
+INNER JOIN ADM_IDENTIFICATION_TYPE AIT ON AIT.ID = CI.IDENTIFICATION_TYPE_ID
+INNER JOIN (
+	SELECT MIN
+		( CI.ID ) ID,
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	FROM
+		APP_CUSTOMER_IDENTIFICATION CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) Z ON Z.CUSTOMER_ID = CI.CUSTOMER_ID 
+	AND Z.APPLICATION_ID = AP.ID 
+	AND Z.ID = CI.ID 
+-----IDENTIFICATION---
+------ INCOME---------
+LEFT JOIN (SELECT 
+A.*
+ FROM 
+(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	CI.LENGTH_OF_BUSINESS AS LENGTH_,
+	CR.NAME AS CAREER
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+	LEFT JOIN ADM_CAREER CR ON CR.ID = CI.CAREER_ID
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT ,
+	0 AS LENGTH_,
+	'' AS CAREER
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) A 
+	----FIRST
+	INNER JOIN (SELECT 
+	MAX(C.NET_PROFIT) AS NET_PROFIT ,
+	C.CUSTOMER_ID ,
+	C.APPLICATION_ID
+	FROM
+	(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) C GROUP BY C.CUSTOMER_ID , C.APPLICATION_ID
+	) B ON B.CUSTOMER_ID = A.CUSTOMER_ID AND B.APPLICATION_ID = A.APPLICATION_ID AND A.NET_PROFIT = B.NET_PROFIT
+  ) A ON A.CUSTOMER_ID = CUS.ID AND A.APPLICATION_ID = AP.ID
+	-----INCOME-------
+	---OTHER---
+	INNER JOIN (
+	SELECT 
+	SUM(C.NET_PROFIT) AS NET_PROFIT ,
+	C.CUSTOMER_ID ,
+	C.APPLICATION_ID
+	FROM
+	(SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_BUSINESS CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_EMPLOYEE CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUS_INCOME_PROPERTY_RENTAL CI 
+WHERE
+	CI.STATUS = 't' UNION
+SELECT
+	CI.APPLICATION_ID,
+	CI.CUSTOMER_ID,
+	CI.NET_INCOME AS NET_PROFIT 
+FROM
+	APP_CUSTOMER_INCOME_SOURCE CI 
+WHERE
+	CI.STATUS = 't'
+	) C GROUP BY C.CUSTOMER_ID , C.APPLICATION_ID
+	) B ON B.CUSTOMER_ID = CUS.ID AND B.APPLICATION_ID = AP.ID
+	-----OTHER----
+	WHERE AP.APPLICATION_NO = '000-A735020433'
+	)H WHERE H.NUM = 4</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -1032,36 +1043,40 @@ FROM
           <DataField>application_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="full_name_kh">
-          <DataField>full_name_kh</DataField>
+        <Field Name="phone_number">
+          <DataField>phone_number</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="guarantor_name">
+          <DataField>guarantor_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="net_profit">
+          <DataField>net_profit</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
         <Field Name="id_number">
           <DataField>id_number</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="phone_number">
-          <DataField>phone_number</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="career">
           <DataField>career</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="length_of_bus">
-          <DataField>length_of_bus</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="other_income">
           <DataField>other_income</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="length_">
+          <DataField>length_</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="identification_type">
+          <DataField>identification_type</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="customer_type">
           <DataField>customer_type</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="identification_type">
-          <DataField>identification_type</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -1081,9 +1096,9 @@ FROM
 FROM
 	app_application ap
 	INNER JOIN app_application_detail apd ON apd.application_id = apd.
-	ID INNER JOIN adm_currency ac ON ac.ID = apd.currency_id
-	INNER JOIN adm_repayment_type art on art.id = apd.repayment_type_id
-	WHERE AP.APPLICATION_NO='012-A892128809'</CommandText>
+	ID 
+	LEFT JOIN adm_repayment_type art on art.id = apd.repayment_type_id
+	INNER JOIN adm_currency ac ON ac.ID = apd.currency_id</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -1123,27 +1138,27 @@ FROM
     <DataSet Name="COL_INFO">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT 
-
-									AP.APPLICATION_NO ,
-
-									COL.Collateral_TITLE as DOCUMENT_TITLE,
-
-									COL.COLLATERAL_NO ,
-
-									COL.OWNER_NAME ,
-
-									SSU.NAME AS ISSUE_BY ,
-
-									'' as MARKET_VALUE
-
-									FROM APP_APPLICATION AP 
-									INNER JOIN APP_COL_COLLATERAL_ASSET CCA ON CCA.APPLICATION_ID = AP.ID AND CCA.STATUS = 't'
-									INNER JOIN APP_COL_COLLATERAL_SECURE CS ON CS.APP_COLLATERAL_ASSET_ID = CCA.ID AND CS.STATUS = 't'
-									INNER JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID AND COL.STATUS = 't'
-									INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID AND CCD.STATUS = 't'
-									LEFT JOIN ADM_ISSUE_BY SSU ON SSU.ID = CCD.ISSUE_BY_ID
-									WHERE AP.application_no = '" + applicationNo + "'</CommandText>
+        <CommandText>SELECT
+	AP.APPLICATION_NO,
+	COL.Collateral_TITLE AS DOCUMENT_TITLE,
+	COL.COLLATERAL_NO,
+	COL.OWNER_NAME,
+	COL.CO_OWNER_NAME,
+	SSU.NAME AS ISSUE_BY,
+  CVE.fair_market_value AS MARKET_VALUE 
+FROM
+	APP_APPLICATION AP
+	INNER JOIN APP_COL_COLLATERAL_ASSET CCA ON CCA.APPLICATION_ID = AP.ID 
+	AND CCA.STATUS = 't'
+	INNER JOIN APP_COL_COLLATERAL_SECURE CS ON CS.APP_COLLATERAL_ASSET_ID = CCA.ID 
+	AND CS.STATUS = 't'
+	INNER JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID 
+	AND COL.STATUS = 't'
+	INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID 
+	AND CCD.STATUS = 't'
+	INNER JOIN app_col_value_evaluation CVE ON CVE.app_collateral_detail_id = CCD.ID
+	LEFT JOIN ADM_ISSUE_BY SSU ON SSU.ID = CCD.ISSUE_BY_ID 
+WHERE AP.APPLICATION_NO = '012-A764117253'</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -1162,6 +1177,10 @@ FROM
           <DataField>owner_name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="co_owner_name">
+          <DataField>co_owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="issue_by">
           <DataField>issue_by</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -1176,22 +1195,21 @@ FROM
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT ap.application_no,
-cc.family_name_kh||' '|| cc.given_name_kh as name,
-adi.disbursement_amount,
-adi.monthly_existing_debt_commitment
+			 adi.disbursement_amount,
+			 adi.monthly_existing_debt_commitment,
+			 aln.name as lender_name
 from app_application ap
 inner join app_application_detail aad on aad.application_id = ap.id 
 inner join cus_customer cc on cc.id = aad.customer_id
-inner join app_customer_debt_info adi on adi.customer_id = cc.id 
-WHERE AP.application_no='012-A16515102' order by adi.id</CommandText>
+inner join app_customer_debt_info adi on adi.application_id = ap.id  and cc.id = adi.customer_id and adi.status='t'
+left join adm_lender_name aln on aln.id = adi.leader_name_id
+where ap.application_no = '012-A040383645'
+
+</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
           <DataField>application_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="name">
-          <DataField>name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="disbursement_amount">
@@ -1202,96 +1220,8 @@ WHERE AP.application_no='012-A16515102' order by adi.id</CommandText>
           <DataField>monthly_existing_debt_commitment</DataField>
           <rd:TypeName>System.Double</rd:TypeName>
         </Field>
-      </Fields>
-    </DataSet>
-    <DataSet Name="Status">
-      <Query>
-        <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT ap.application_no ,
-adi.status
-from app_application ap 
-inner join app_debt_information adi on adi.application_id = ap.id</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="application_no">
-          <DataField>application_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="status">
-          <DataField>status</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
-    <DataSet Name="sub1">
-      <Query>
-        <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-	* 
-FROM
-	(
-	SELECT ROW_NUMBER
-		( ) OVER ( ORDER BY asd.ID ) AS num,
-    ap.application_no,
-	  cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
-	  ci.id_number,
-	  CASE
-      WHEN IT.ID_TYPE = 'F' THEN
-      'សៀវភៅគ្រួសារ' 
-      WHEN IT.ID_TYPE = 'CD' THEN
-      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-      WHEN IT.ID_TYPE = 'N' THEN
-      'អត្តសញ្ញាណប័ណ្ណ' 
-      WHEN IT.ID_TYPE = 'P' THEN
-      'លិខិតឆ្លងដែន' 
-      WHEN IT.ID_TYPE = 'MI' THEN
-      'ឆាយា' 
-      WHEN IT.ID_TYPE = 'R' THEN
-      'សៀវភៅស្នាក់នៅ' 
-      WHEN IT.ID_TYPE = 'B' THEN
-      'សំបុត្រកំណើត' 
-    END AS IDENTIFICATION_TYPE,
-	cc.phone_number
-FROM
-	app_application ap
-	inner JOIN app_supplementary asu ON ap.ID = asu.application_id 
-		AND asu.status = 't' 
-		AND asu.customer_type = 'CO_BORROWER'
-		inner JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
-		AND asd.status = 't'
-		inner JOIN cus_customer cc ON cc.ID = asd.customer_id 
-		left join app_customer_identification ci on ci.customer_id = cc.id and ci.application_id = ap.id
-		left JOIN adm_identification_type it on it.id = ci.identification_type_id
-		
-	
-WHERE ap.application_no = '012-A892128809'
-	) A 
-WHERE
-	A.num = 1</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="num">
-          <DataField>num</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="application_no">
-          <DataField>application_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="fullname">
-          <DataField>fullname</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="id_number">
-          <DataField>id_number</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="identification_type">
-          <DataField>identification_type</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="phone_number">
-          <DataField>phone_number</DataField>
+        <Field Name="lender_name">
+          <DataField>lender_name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -1436,6 +1366,537 @@ WHERE
         </Field>
       </Fields>
     </DataSet>
+    <DataSet Name="CO_1">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>select * from (
+SELECT ROW_NUMBER
+	( ) OVER ( ORDER BY asd.ID ) AS num,
+	ap.application_no,
+	cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
+	ci.id_number,
+	cir.company_name AS em_copany_name,
+	cir.length_of_business AS em_length_of_service,
+	cir.base_salary AS em_base_salary,
+	cir.POSITION em_position,
+	cir.other_benefit AS em_other_benifit,
+	CAR.NAME AS bis_career,
+	B.BIS_LENGTH_OF_BUSINESS,
+	B.business_income AS bis_primary_income,
+	( Z.NET_PROFIT - B.business_income ) AS other_income,
+CASE
+		
+		WHEN IT.ID_TYPE = 'F' THEN
+		'សៀវភៅគ្រួសារ' 
+		WHEN IT.ID_TYPE = 'CD' THEN
+		'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+		WHEN IT.ID_TYPE = 'N' THEN
+		'អត្តសញ្ញាណប័ណ្ណ' 
+		WHEN IT.ID_TYPE = 'P' THEN
+		'លិខិតឆ្លងដែន' 
+		WHEN IT.ID_TYPE = 'MI' THEN
+		'ឆាយា' 
+		WHEN IT.ID_TYPE = 'R' THEN
+		'សៀវភៅស្នាក់នៅ' 
+		WHEN IT.ID_TYPE = 'B' THEN
+		'សំបុត្រកំណើត' 
+	END AS IDENTIFICATION_TYPE,
+	cc.phone_number 
+FROM
+	app_application ap
+	INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
+	AND asu.status = 't' AND asu.customer_type = 'CO_BORROWER'
+	INNER JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
+	AND asd.status = 't'
+	INNER JOIN cus_customer cc ON cc.ID = asd.customer_id
+	LEFT JOIN app_customer_identification ci ON ci.customer_id = cc.ID 
+	AND ci.application_id = ap.
+	ID LEFT JOIN adm_identification_type it ON it.ID = ci.identification_type_id
+	LEFT JOIN app_customer_income_employee cir ON cir.application_id = ap.ID 
+	AND cc.ID = cir.customer_id
+	LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID 
+	--IDENTIFICATION
+	INNER JOIN (
+	SELECT MIN
+		( CI.ID ) ID,
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	FROM
+		APP_CUSTOMER_IDENTIFICATION CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) A ON A.CUSTOMER_ID = CI.CUSTOMER_ID 
+	AND A.APPLICATION_ID = AP.ID 
+	AND A.ID = CI.
+	ID 
+	--IDENTIFICATION
+	--BUSINESS_INCOME
+	LEFT JOIN (
+	SELECT
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID,
+		CI.LENGTH_OF_BUSINESS AS BIS_LENGTH_OF_BUSINESS,
+		CI.NET_INCOME AS BUSINESS_INCOME 
+	FROM
+		APP_CUSTOMER_INCOME_BUSINESS CI
+		INNER JOIN (
+		SELECT MAX
+			( CIB.NET_INCOME ) AMOUNT,
+			CIB.application_id,
+			CIb.CUSTOMER_ID 
+		FROM
+			app_customer_income_business CIB 
+		WHERE
+			CIB.STATUS = 't' 
+		GROUP BY
+			CIB.applicatioN_ID,
+			CIb.CUSTOMER_ID 
+		) A ON A.CUSTOMER_ID = CI.CUSTOMER_ID 
+		AND A.APPLICATION_ID = CI.APPLICATION_ID 
+		AND A.AMOUNT = CI.NET_INCOME 
+	) B ON B.application_id = AP.ID 
+	AND b.customer_id = CC.ID 
+--BUSINESS_INCOME
+--OTHER INCOME
+	LEFT JOIN (
+	SELECT
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID,
+		SUM ( CI.NET_INCOME ) AS NET_PROFIT 
+	FROM
+		APP_CUSTOMER_INCOME_BUSINESS CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) Z ON Z.APPLICATION_ID = AP.ID 
+	AND Z.CUSTOMER_ID = Cc.ID 
+	--OTHER_INCOME
+WHERE
+	ap.application_no = '000-A735020433'
+	)a where a.num = 1</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="num">
+          <DataField>num</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="application_no">
+          <DataField>application_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="fullname">
+          <DataField>fullname</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="id_number">
+          <DataField>id_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="em_copany_name">
+          <DataField>em_copany_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="em_length_of_service">
+          <DataField>em_length_of_service</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="em_base_salary">
+          <DataField>em_base_salary</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="em_position">
+          <DataField>em_position</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="em_other_benifit">
+          <DataField>em_other_benifit</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="bis_career">
+          <DataField>bis_career</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="bis_length_of_business">
+          <DataField>bis_length_of_business</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="bis_primary_income">
+          <DataField>bis_primary_income</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="other_income">
+          <DataField>other_income</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="identification_type">
+          <DataField>identification_type</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="phone_number">
+          <DataField>phone_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="CO_2">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>select * from (
+SELECT ROW_NUMBER
+	( ) OVER ( ORDER BY asd.ID ) AS num,
+	ap.application_no,
+	cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
+	ci.id_number,
+	cir.company_name AS em_copany_name,
+	cir.length_of_business AS em_length_of_service,
+	cir.base_salary AS em_base_salary,
+	cir.POSITION em_position,
+	cir.other_benefit AS em_other_benifit,
+	CAR.NAME AS bis_career,
+	B.BIS_LENGTH_OF_BUSINESS,
+	B.business_income AS bis_primary_income,
+	( Z.NET_PROFIT - B.business_income ) AS other_income,
+CASE
+		
+		WHEN IT.ID_TYPE = 'F' THEN
+		'សៀវភៅគ្រួសារ' 
+		WHEN IT.ID_TYPE = 'CD' THEN
+		'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+		WHEN IT.ID_TYPE = 'N' THEN
+		'អត្តសញ្ញាណប័ណ្ណ' 
+		WHEN IT.ID_TYPE = 'P' THEN
+		'លិខិតឆ្លងដែន' 
+		WHEN IT.ID_TYPE = 'MI' THEN
+		'ឆាយា' 
+		WHEN IT.ID_TYPE = 'R' THEN
+		'សៀវភៅស្នាក់នៅ' 
+		WHEN IT.ID_TYPE = 'B' THEN
+		'សំបុត្រកំណើត' 
+	END AS IDENTIFICATION_TYPE,
+	cc.phone_number 
+FROM
+	app_application ap
+	INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
+	AND asu.status = 't' AND asu.customer_type = 'CO_BORROWER'
+	INNER JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
+	AND asd.status = 't'
+	INNER JOIN cus_customer cc ON cc.ID = asd.customer_id
+	LEFT JOIN app_customer_identification ci ON ci.customer_id = cc.ID 
+	AND ci.application_id = ap.
+	ID LEFT JOIN adm_identification_type it ON it.ID = ci.identification_type_id
+	LEFT JOIN app_customer_income_employee cir ON cir.application_id = ap.ID 
+	AND cc.ID = cir.customer_id
+	LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID 
+	--IDENTIFICATION
+	INNER JOIN (
+	SELECT MIN
+		( CI.ID ) ID,
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	FROM
+		APP_CUSTOMER_IDENTIFICATION CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) A ON A.CUSTOMER_ID = CI.CUSTOMER_ID 
+	AND A.APPLICATION_ID = AP.ID 
+	AND A.ID = CI.
+	ID 
+	--IDENTIFICATION
+	--BUSINESS_INCOME
+	LEFT JOIN (
+	SELECT
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID,
+		CI.LENGTH_OF_BUSINESS AS BIS_LENGTH_OF_BUSINESS,
+		CI.NET_INCOME AS BUSINESS_INCOME 
+	FROM
+		APP_CUSTOMER_INCOME_BUSINESS CI
+		INNER JOIN (
+		SELECT MAX
+			( CIB.NET_INCOME ) AMOUNT,
+			CIB.application_id,
+			CIb.CUSTOMER_ID 
+		FROM
+			app_customer_income_business CIB 
+		WHERE
+			CIB.STATUS = 't' 
+		GROUP BY
+			CIB.applicatioN_ID,
+			CIb.CUSTOMER_ID 
+		) A ON A.CUSTOMER_ID = CI.CUSTOMER_ID 
+		AND A.APPLICATION_ID = CI.APPLICATION_ID 
+		AND A.AMOUNT = CI.NET_INCOME 
+	) B ON B.application_id = AP.ID 
+	AND b.customer_id = CC.ID 
+--BUSINESS_INCOME
+--OTHER INCOME
+	LEFT JOIN (
+	SELECT
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID,
+		SUM ( CI.NET_INCOME ) AS NET_PROFIT 
+	FROM
+		APP_CUSTOMER_INCOME_BUSINESS CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) Z ON Z.APPLICATION_ID = AP.ID 
+	AND Z.CUSTOMER_ID = Cc.ID 
+	--OTHER_INCOME
+WHERE
+	ap.application_no = '000-A735020433'
+	)a where a.num = 2</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="num">
+          <DataField>num</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="application_no">
+          <DataField>application_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="fullname">
+          <DataField>fullname</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="id_number">
+          <DataField>id_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="em_copany_name">
+          <DataField>em_copany_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="em_length_of_service">
+          <DataField>em_length_of_service</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="em_base_salary">
+          <DataField>em_base_salary</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="em_position">
+          <DataField>em_position</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="em_other_benifit">
+          <DataField>em_other_benifit</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="bis_career">
+          <DataField>bis_career</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="bis_length_of_business">
+          <DataField>bis_length_of_business</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="bis_primary_income">
+          <DataField>bis_primary_income</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="other_income">
+          <DataField>other_income</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="identification_type">
+          <DataField>identification_type</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="phone_number">
+          <DataField>phone_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="CO_3">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>select * from (
+SELECT ROW_NUMBER
+	( ) OVER ( ORDER BY asd.ID ) AS num,
+	ap.application_no,
+	cc.family_name_kh || ' ' || cc.given_name_kh AS fullname,
+	ci.id_number,
+	cir.company_name AS em_copany_name,
+	cir.length_of_business AS em_length_of_service,
+	cir.base_salary AS em_base_salary,
+	cir.POSITION em_position,
+	cir.other_benefit AS em_other_benifit,
+	CAR.NAME AS bis_career,
+	B.BIS_LENGTH_OF_BUSINESS,
+	B.business_income AS bis_primary_income,
+	( Z.NET_PROFIT - B.business_income ) AS other_income,
+CASE
+		
+		WHEN IT.ID_TYPE = 'F' THEN
+		'សៀវភៅគ្រួសារ' 
+		WHEN IT.ID_TYPE = 'CD' THEN
+		'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
+		WHEN IT.ID_TYPE = 'N' THEN
+		'អត្តសញ្ញាណប័ណ្ណ' 
+		WHEN IT.ID_TYPE = 'P' THEN
+		'លិខិតឆ្លងដែន' 
+		WHEN IT.ID_TYPE = 'MI' THEN
+		'ឆាយា' 
+		WHEN IT.ID_TYPE = 'R' THEN
+		'សៀវភៅស្នាក់នៅ' 
+		WHEN IT.ID_TYPE = 'B' THEN
+		'សំបុត្រកំណើត' 
+	END AS IDENTIFICATION_TYPE,
+	cc.phone_number 
+FROM
+	app_application ap
+	INNER JOIN app_supplementary asu ON ap.ID = asu.application_id 
+	AND asu.status = 't' AND asu.customer_type = 'CO_BORROWER'
+	INNER JOIN app_supplementary_detail asd ON asd.supplementary_id = asu.ID 
+	AND asd.status = 't'
+	INNER JOIN cus_customer cc ON cc.ID = asd.customer_id
+	LEFT JOIN app_customer_identification ci ON ci.customer_id = cc.ID 
+	AND ci.application_id = ap.
+	ID LEFT JOIN adm_identification_type it ON it.ID = ci.identification_type_id
+	LEFT JOIN app_customer_income_employee cir ON cir.application_id = ap.ID 
+	AND cc.ID = cir.customer_id
+	LEFT JOIN ADM_CAREER CAR ON CAR.ID = CIR.CAREER_ID 
+	--IDENTIFICATION
+	INNER JOIN (
+	SELECT MIN
+		( CI.ID ) ID,
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	FROM
+		APP_CUSTOMER_IDENTIFICATION CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) A ON A.CUSTOMER_ID = CI.CUSTOMER_ID 
+	AND A.APPLICATION_ID = AP.ID 
+	AND A.ID = CI.
+	ID 
+	--IDENTIFICATION
+	--BUSINESS_INCOME
+	LEFT JOIN (
+	SELECT
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID,
+		CI.LENGTH_OF_BUSINESS AS BIS_LENGTH_OF_BUSINESS,
+		CI.NET_INCOME AS BUSINESS_INCOME 
+	FROM
+		APP_CUSTOMER_INCOME_BUSINESS CI
+		INNER JOIN (
+		SELECT MAX
+			( CIB.NET_INCOME ) AMOUNT,
+			CIB.application_id,
+			CIb.CUSTOMER_ID 
+		FROM
+			app_customer_income_business CIB 
+		WHERE
+			CIB.STATUS = 't' 
+		GROUP BY
+			CIB.applicatioN_ID,
+			CIb.CUSTOMER_ID 
+		) A ON A.CUSTOMER_ID = CI.CUSTOMER_ID 
+		AND A.APPLICATION_ID = CI.APPLICATION_ID 
+		AND A.AMOUNT = CI.NET_INCOME 
+	) B ON B.application_id = AP.ID 
+	AND b.customer_id = CC.ID 
+--BUSINESS_INCOME
+--OTHER INCOME
+	LEFT JOIN (
+	SELECT
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID,
+		SUM ( CI.NET_INCOME ) AS NET_PROFIT 
+	FROM
+		APP_CUSTOMER_INCOME_BUSINESS CI 
+	WHERE
+		CI.STATUS = 't' 
+	GROUP BY
+		CI.APPLICATION_ID,
+		CI.CUSTOMER_ID 
+	) Z ON Z.APPLICATION_ID = AP.ID 
+	AND Z.CUSTOMER_ID = Cc.ID 
+	--OTHER_INCOME
+WHERE
+	ap.application_no = '000-A735020433'
+	)a where a.num = 3</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="num">
+          <DataField>num</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="application_no">
+          <DataField>application_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="fullname">
+          <DataField>fullname</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="id_number">
+          <DataField>id_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="em_copany_name">
+          <DataField>em_copany_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="em_length_of_service">
+          <DataField>em_length_of_service</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="em_base_salary">
+          <DataField>em_base_salary</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="em_position">
+          <DataField>em_position</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="em_other_benifit">
+          <DataField>em_other_benifit</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="bis_career">
+          <DataField>bis_career</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="bis_length_of_business">
+          <DataField>bis_length_of_business</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="bis_primary_income">
+          <DataField>bis_primary_income</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="other_income">
+          <DataField>other_income</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="identification_type">
+          <DataField>identification_type</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="phone_number">
+          <DataField>phone_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
   </DataSets>
   <ReportSections>
     <ReportSection>
@@ -1549,6 +2010,7 @@ WHERE
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>customer</DataSetName>
+            <Top>0.01389in</Top>
             <Left>4.64724in</Left>
             <Height>0.44167in</Height>
             <Width>2.66667in</Width>
@@ -2095,8 +2557,8 @@ WHERE
                 <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>sub1</DataSetName>
-            <Top>0.44167in</Top>
+            <DataSetName>CO_1</DataSetName>
+            <Top>0.45556in</Top>
             <Left>0.01389in</Left>
             <Height>0.75in</Height>
             <Width>7.30001in</Width>
@@ -2346,7 +2808,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>Applicant 3--</Value>
+                                  <Value>Applicant 3</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Arial</FontFamily>
@@ -2516,7 +2978,7 @@ WHERE
                                 <TextRun>
                                   <Value>=First(Fields!fullname.Value, "customer")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2548,9 +3010,9 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!fullname.Value, "sub1")</Value>
+                                  <Value>=First(Fields!fullname.Value, "CO_1")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2582,9 +3044,9 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!fullname.Value, "sub2")</Value>
+                                  <Value>=First(Fields!fullname.Value, "CO_2")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2616,9 +3078,9 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!fullname.Value, "sub3")</Value>
+                                  <Value>=First(Fields!fullname.Value, "CO_3")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2632,6 +3094,7 @@ WHERE
                             <Border>
                               <Style>Solid</Style>
                             </Border>
+                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -2703,7 +3166,7 @@ WHERE
                                 <TextRun>
                                   <Value>=First(Fields!identification_type.Value, "customer")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2735,9 +3198,9 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!identification_type.Value, "sub1")</Value>
+                                  <Value>=First(Fields!identification_type.Value, "CO_1")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2769,9 +3232,9 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!identification_type.Value, "sub2")</Value>
+                                  <Value>=First(Fields!identification_type.Value, "CO_2")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2803,9 +3266,9 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!identification_type.Value, "sub3")</Value>
+                                  <Value>=First(Fields!identification_type.Value, "CO_3")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2909,9 +3372,9 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!id_number.Value, "customer")</Value>
+                                  <Value>=First(Fields!phone_number.Value, "customer")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2943,9 +3406,9 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!id_number.Value, "sub1")</Value>
+                                  <Value>=First(Fields!phone_number.Value, "CO_1")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2977,9 +3440,9 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!id_number.Value, "sub2")</Value>
+                                  <Value>=First(Fields!id_number.Value, "CO_2")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3011,9 +3474,9 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!id_number.Value, "sub3")</Value>
+                                  <Value>=First(Fields!id_number.Value, "CO_3")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3099,7 +3562,7 @@ WHERE
                                 <TextRun>
                                   <Value>=First(Fields!phone_number.Value, "customer")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3131,9 +3594,9 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!phone_number.Value, "sub1")</Value>
+                                  <Value>=First(Fields!phone_number.Value, "CO_1")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3165,9 +3628,9 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!phone_number.Value, "sub2")</Value>
+                                  <Value>=First(Fields!phone_number.Value, "CO_2")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3199,9 +3662,9 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!phone_number.Value, "sub3")</Value>
+                                  <Value>=First(Fields!phone_number.Value, "CO_3")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3377,10 +3840,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!career.Value, "employee_work")</Value>
+                                  <Value>=First(Fields!em_copany_name.Value, "customer")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -3416,10 +3879,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!company_name.Value, "sub_employee1")</Value>
+                                  <Value>=First(Fields!em_copany_name.Value, "CO_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -3455,10 +3918,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!company_name.Value, "sub_employee2")</Value>
+                                  <Value>=First(Fields!em_copany_name.Value, "CO_2")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -3494,10 +3957,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!company_name.Value, "sub_employee3")</Value>
+                                  <Value>=First(Fields!em_copany_name.Value, "CO_3")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -3585,10 +4048,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!career.Value, "employee_work")</Value>
+                                  <Value>=First(Fields!em_position.Value, "customer")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -3624,10 +4087,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!position.Value, "sub_employee1")</Value>
+                                  <Value>=First(Fields!em_position.Value, "CO_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -3663,10 +4126,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!position.Value, "sub_employee2")</Value>
+                                  <Value>=First(Fields!em_position.Value, "CO_2")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -3702,10 +4165,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!position.Value, "sub_employee3")</Value>
+                                  <Value>=First(Fields!em_position.Value, "CO_3")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -3793,10 +4256,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!length_of_business.Value, "employee_work")</Value>
+                                  <Value>=first(Fields!em_length_of_service.Value, "customer")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -3806,27 +4269,17 @@ WHERE
                                   <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>DaunPenh</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ខែ</Value>
+                                  <Value>=iif(first(Fields!em_length_of_service.Value, "customer") is nothing,"","ខែ/Month(s)")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value>/Month(s)</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -3862,40 +4315,21 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!length_of_business.Value, "sub_employee1")</Value>
+                                  <Value>=Sum(Fields!em_length_of_service.Value, "CO_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS</FontFamily>
+                                    <FontFamily>Khmer OS content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value xml:space="preserve"> </Value>
+                                  <Value>=iif(Sum(Fields!em_length_of_service.Value, "CO_1") is nothing,""," ខែ/Month(s)")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS</FontFamily>
+                                    <FontFamily>Khmer OS content</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value>ខែ</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value>/Month(s)</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
@@ -3930,40 +4364,21 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!length_of_business.Value, "sub_employee2")</Value>
+                                  <Value>=first(Fields!em_length_of_service.Value, "CO_2")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value xml:space="preserve"> </Value>
+                                  <Value>=iif(first(Fields!em_length_of_service.Value, "CO_2") is nothing,""," ខែ/Month(s)")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value>ខែ</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value>/Month(s)</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
@@ -3998,10 +4413,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!length_of_business.Value, "sub_business3")</Value>
+                                  <Value>=first(Fields!em_length_of_service.Value, "CO_3")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -4011,27 +4426,18 @@ WHERE
                                   <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ខែ</Value>
+                                  <Value>=iif(first(Fields!em_length_of_service.Value, "CO_3") is nothing,""," ខែ/Month(s)")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value>/Month(s)</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
@@ -4047,7 +4453,7 @@ WHERE
                                   <Value />
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -4160,10 +4566,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!primary_income.Value, "employee_work")</Value>
+                                  <Value>=first(Fields!em_base_salary.Value, "customer")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0.00;(#,0.00)</Format>
@@ -4171,21 +4577,24 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!em_base_salary.Value, "customer") is nothing,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -4219,10 +4628,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!base_salary.Value, "sub_employee1")</Value>
+                                  <Value>=first(Fields!em_base_salary.Value, "CO_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0.00;(#,0.00)</Format>
@@ -4230,21 +4639,13 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value>=iif(Sum(Fields!em_base_salary.Value, "CO_1") is nothing,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value>/USD</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontSize>8.5pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -4278,10 +4679,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!base_salary.Value, "sub_employee2")</Value>
+                                  <Value>=first(Fields!em_base_salary.Value, "CO_2")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>f2</Format>
@@ -4289,21 +4690,24 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>f2</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!em_base_salary.Value, "CO_2") is nothing, "","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>f2</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -4337,10 +4741,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!base_salary.Value, "sub_employee3")</Value>
+                                  <Value>=first(Fields!em_base_salary.Value, "CO_3")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>f2</Format>
@@ -4348,21 +4752,13 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value>=iif(first(Fields!em_base_salary.Value, "CO_3") is nothing,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value>/USD</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontSize>8.5pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
+                                    <Format>f2</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -4448,10 +4844,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!other_income.Value, "employee_work")</Value>
+                                  <Value>=first(Fields!em_other_benifit.Value, "customer")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0.00;(#,0.00)</Format>
@@ -4459,21 +4855,24 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!em_other_benifit.Value, "customer") is nothing,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -4507,10 +4906,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!other_benefit.Value, "sub_employee1")</Value>
+                                  <Value>=first(Fields!em_other_benifit.Value, "CO_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0.00;(#,0.00)</Format>
@@ -4518,21 +4917,24 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!em_other_benifit.Value, "CO_1") is nothing,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -4566,10 +4968,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!other_benefit.Value, "sub_employee2")</Value>
+                                  <Value>=first(Fields!em_other_benifit.Value, "CO_2")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0.00;(#,0.00)</Format>
@@ -4577,21 +4979,24 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!em_other_benifit.Value, "CO_2") is nothing,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -4625,10 +5030,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!other_benefit.Value, "sub_employee3")</Value>
+                                  <Value>=first(Fields!em_other_benifit.Value, "CO_3")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0.00;(#,0.00)</Format>
@@ -4636,21 +5041,24 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!em_other_benifit.Value, "CO_3") is nothing,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -4853,10 +5261,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!career.Value, "ownbusiness")</Value>
+                                  <Value>=First(Fields!bis_career.Value, "customer")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -4892,7 +5300,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!career.Value, "sub_business1")</Value>
+                                  <Value>=First(Fields!bis_career.Value, "CO_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -4931,7 +5339,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!career.Value, "sub_business2")</Value>
+                                  <Value>=First(Fields!bis_career.Value, "CO_2")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -4970,10 +5378,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!career.Value, "sub_business3")</Value>
+                                  <Value>=First(Fields!bis_career.Value, "CO_3")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -5066,10 +5474,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!business_income.Value, "ownbusiness")</Value>
+                                  <Value>=first(Fields!bis_length_of_business.Value, "customer")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -5079,28 +5487,18 @@ WHERE
                                   <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ខែ</Value>
+                                  <Value>=iif(first(Fields!bis_length_of_business.Value, "customer") is nothing,"","ខែ/Month(s)")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value>/Month(s)</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
@@ -5135,10 +5533,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!length_of_business.Value, "sub_business1")</Value>
+                                  <Value>=first(Fields!bis_length_of_business.Value, "CO_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS </FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -5148,27 +5546,18 @@ WHERE
                                   <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS </FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ខែ</Value>
+                                  <Value>=iif(first(Fields!bis_length_of_business.Value, "CO_1") is nothing ,"","ខែ/Month(s)")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value>/Month(s)</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
@@ -5203,7 +5592,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!length_of_business.Value, "sub_business2")</Value>
+                                  <Value>=first(Fields!bis_length_of_business.Value, "CO_2")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS</FontFamily>
@@ -5223,20 +5612,11 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ខែ</Value>
+                                  <Value>=iif(first(Fields!bis_length_of_business.Value, "CO_2") is nothing,"","ខែ/Month(s)")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value>/Month(s)</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>Khmer OS</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
@@ -5271,10 +5651,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!length_of_business.Value, "sub_business3")</Value>
+                                  <Value>=first(Fields!em_length_of_service.Value, "CO_3")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -5284,27 +5664,18 @@ WHERE
                                   <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ខែ</Value>
+                                  <Value>=iif(first(Fields!em_length_of_service.Value, "CO_3") is nothing,"","ខែ/Month(s)")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value>/Month(s)</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
@@ -5416,7 +5787,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!business_income.Value, "ownbusiness")</Value>
+                                  <Value>=first(Fields!bis_primary_income.Value, "customer")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -5427,22 +5798,24 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!bis_primary_income.Value, "customer") is nothing,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>Khmer OS content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -5476,10 +5849,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!primary_income.Value, "sub_business1")</Value>
+                                  <Value>=first(Fields!bis_primary_income.Value, "CO_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0.00;(#,0.00)</Format>
@@ -5487,22 +5860,24 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!bis_primary_income.Value, "CO_1") is nothing,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -5536,10 +5911,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!primary_income.Value, "sub_business2")</Value>
+                                  <Value>=First(Fields!bis_primary_income.Value, "CO_2")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0.00;(#,0.00)</Format>
@@ -5547,22 +5922,24 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(First(Fields!bis_primary_income.Value, "CO_2") is nothing,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -5596,10 +5973,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!primary_income.Value, "sub_business3")</Value>
+                                  <Value>=First(Fields!bis_primary_income.Value, "CO_3")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0.00;(#,0.00)</Format>
@@ -5607,22 +5984,24 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(First(Fields!bis_primary_income.Value, "CO_3") is nothing,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
-                                    <FontSize>8.5pt</FontSize>
+                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>#,0.00;(#,0.00)</Format>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
@@ -5708,7 +6087,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value>=first(Fields!other_income.Value, "customer")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -5718,10 +6097,10 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!em_other_benifit.Value, "customer") is nothing ,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -5757,7 +6136,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value>=first(Fields!other_income.Value, "CO_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -5767,10 +6146,10 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!other_income.Value, "CO_1") is nothing,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -5806,7 +6185,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value>=first(Fields!other_income.Value, "CO_2")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -5816,10 +6195,10 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!other_income.Value, "CO_2") is nothing ,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -5855,20 +6234,20 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value>=first(Fields!other_income.Value, "CO_3")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!other_income.Value, "CO_3") is nothing,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -6476,10 +6855,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!full_name_kh.Value, "guarantor_1")</Value>
+                                  <Value>=First(Fields!guarantor_name.Value, "guarantor_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -6515,7 +6894,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!full_name_kh.Value, "Guarantor2")</Value>
+                                  <Value>=First(Fields!phone_number.Value, "Guarantor2")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS</FontFamily>
@@ -6554,7 +6933,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!full_name_kh.Value, "guarantor3")</Value>
+                                  <Value>=First(Fields!guarantor_name.Value, "guarantor3")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS </FontFamily>
@@ -6593,7 +6972,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!full_name_kh.Value, "guanrator_4")</Value>
+                                  <Value>=First(Fields!guarantor_name.Value, "guanrator_4")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS </FontFamily>
@@ -6687,7 +7066,7 @@ WHERE
                                   <Value>=First(Fields!identification_type.Value, "guarantor_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -6916,7 +7295,7 @@ WHERE
                                   <Value>=First(Fields!id_number.Value, "guarantor_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -7124,7 +7503,7 @@ WHERE
                                   <Value>=First(Fields!phone_number.Value, "guarantor_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -7329,10 +7708,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=first(Fields!career.Value, "guarantor_1")</Value>
+                                  <Value>=First(Fields!career.Value, "guarantor_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -7368,7 +7747,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!career.Value, "Guarantor2")</Value>
+                                  <Value>=First(Fields!career.Value, "Guarantor2")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -7407,7 +7786,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!career.Value, "guarantor3")</Value>
+                                  <Value>=First(Fields!career.Value, "guarantor3")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Muol Light</FontFamily>
@@ -7446,10 +7825,10 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!career.Value, "guanrator_4")</Value>
+                                  <Value>=First(Fields!career.Value, "guanrator_4")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontFamily>khmer os content</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -7542,7 +7921,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ខែ</Value>
+                                  <Value>=FIRST(Fields!length_.Value, "guarantor_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -7552,9 +7931,10 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/Month(s)</Value>
+                                  <Value>=iif(first(Fields!length_.Value, "guarantor_1") is nothing,"","ខែ/Month(s)")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -7590,7 +7970,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ខែ</Value>
+                                  <Value>=first(Fields!length_.Value, "Guarantor2")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -7600,9 +7980,10 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/Month(s)</Value>
+                                  <Value>=iif(first(Fields!length_.Value, "Guarantor2") is nothing,"","ខែ/Month(s)")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -7638,7 +8019,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ខែ</Value>
+                                  <Value>=first(Fields!length_.Value, "guarantor3")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -7648,9 +8029,10 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/Month(s)</Value>
+                                  <Value>=iif(first(Fields!length_.Value, "guarantor3") is nothing,"","ខែ/Month(s)")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -7686,7 +8068,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ខែ</Value>
+                                  <Value>=first(Fields!length_.Value, "guanrator_4")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -7696,9 +8078,10 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/Month(s)</Value>
+                                  <Value>=iif(first(Fields!length_.Value, "guanrator_4") is nothing,"","ខែ/Month(s)")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -7811,7 +8194,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value>=first(Fields!net_profit.Value, "guarantor_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -7821,10 +8204,10 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!net_profit.Value, "guarantor_1") is nothing, "","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -7860,7 +8243,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value>=first(Fields!net_profit.Value, "Guarantor2")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -7870,10 +8253,10 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!net_profit.Value, "Guarantor2") is nothing ,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -7909,7 +8292,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value>=first(Fields!net_profit.Value, "guarantor3")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -7919,10 +8302,10 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!net_profit.Value, "Guarantor2") is nothing,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -7958,7 +8341,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value>=first(Fields!net_profit.Value, "guanrator_4")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -7968,10 +8351,10 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!net_profit.Value, "guanrator_4") is nothing,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -8059,7 +8442,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value>=first(Fields!other_income.Value, "guarantor_1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -8069,10 +8452,10 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!other_income.Value, "guarantor_1") is nothing, "","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -8108,7 +8491,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value>=first(Fields!other_income.Value, "Guarantor2")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -8118,10 +8501,10 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!other_income.Value, "Guarantor2") is nothing ,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -8157,7 +8540,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value>=first(Fields!other_income.Value, "guarantor3")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -8167,10 +8550,10 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!other_income.Value, "guarantor3") is nothing ,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -8206,7 +8589,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ដុល្លារ</Value>
+                                  <Value>=first(Fields!other_income.Value, "guanrator_4")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -8216,10 +8599,10 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>/USD</Value>
+                                  <Value>=iif(first(Fields!other_income.Value, "guanrator_4") is nothing,"","ដុល្លារ/USD")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Content</FontFamily>
                                     <FontSize>8.5pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
@@ -8376,8 +8759,8 @@ WHERE
                 <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>sub1</DataSetName>
-            <Top>1.19167in</Top>
+            <DataSetName>guarantor_1</DataSetName>
+            <Top>1.20556in</Top>
             <Left>0.01389in</Left>
             <Height>6.75in</Height>
             <Width>7.3in</Width>
@@ -8630,7 +9013,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>       ខែ/Month</Value>
+                                  <Value> ខែ/Month</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -8646,6 +9029,7 @@ WHERE
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox155</rd:DefaultName>
+                          <ToolTip>=Sum(Fields!tenor.Value, "loan_request1")</ToolTip>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -8735,7 +9119,8 @@ WHERE
                                 <TextRun>
                                   <Value>=first(Fields!applied_amount.Value, "loan_request1")</Value>
                                   <Style>
-                                    <FontFamily>Arial</FontFamily>
+                                    <FontFamily>Khmer OS Muol Light</FontFamily>
+                                    <FontSize>9pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -8815,7 +9200,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=first(Fields!annual_interest_rate.Value, "loan_request1")</Value>
+                                  <Value>=Sum(Fields!annual_interest_rate.Value, "loan_request1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -8985,7 +9370,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=Sum(Fields!grace_period.Value, "loan_request1")</Value>
+                                  <Value>=first(Fields!grace_period.Value, "loan_request1")</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Arial</FontFamily>
@@ -9505,7 +9890,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=iif(First(Fields!status.Value, "Status") = true ,chr(254),chr(168))</Value>
+                                  <Value>=iif(first(Fields!monthly_existing_debt_commitment.Value, "IV_INFO") is nothing,chr(168),chr(254))</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>wingdings</FontFamily>
@@ -9555,7 +9940,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=iif(First(Fields!status.Value, "Status") is nothing ,chr(254),chr(168))</Value>
+                                  <Value>=iif(first(Fields!monthly_existing_debt_commitment.Value, "IV_INFO") is nothing,chr(254),chr(168))</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>wingdings</FontFamily>
@@ -9648,7 +10033,7 @@ WHERE
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>loan_request1</DataSetName>
-            <Top>7.94167in</Top>
+            <Top>7.95556in</Top>
             <Left>0.01389in</Left>
             <Height>1.25in</Height>
             <Width>7.30002in</Width>
@@ -9882,14 +10267,14 @@ WHERE
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="name">
+                        <Textbox Name="lender_name">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!name.Value</Value>
+                                  <Value>=Fields!lender_name.Value</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -9904,7 +10289,7 @@ WHERE
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>name</rd:DefaultName>
+                          <rd:DefaultName>lender_name</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>Solid</Style>
@@ -9928,7 +10313,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!disbursement_amount.Value)</Value>
+                                  <Value>=Fields!disbursement_amount.Value</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -9966,7 +10351,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!monthly_existing_debt_commitment.Value)</Value>
+                                  <Value>=Fields!monthly_existing_debt_commitment.Value</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -10202,7 +10587,7 @@ WHERE
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>IV_INFO</DataSetName>
-            <Top>9.20556in</Top>
+            <Top>9.21945in</Top>
             <Left>0.01389in</Left>
             <Height>0.75in</Height>
             <Width>7.30002in</Width>
@@ -10595,6 +10980,42 @@ WHERE
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!owner_name.Value</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value xml:space="preserve"> </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=IIF(First(Fields!co_owner_name.Value, "COL_INFO") IS NOTHING,"","និង")</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value xml:space="preserve"> </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Content</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=Fields!co_owner_name.Value</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -11625,7 +12046,7 @@ WHERE
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>COL_INFO</DataSetName>
-            <Top>9.96945in</Top>
+            <Top>9.98334in</Top>
             <Left>0.01389in</Left>
             <Height>0.75in</Height>
             <Width>7.30002in</Width>
@@ -12394,7 +12815,7 @@ WHERE
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>customer</DataSetName>
-            <Top>10.73334in</Top>
+            <Top>10.74723in</Top>
             <Left>0.01389in</Left>
             <Height>0.25in</Height>
             <Width>7.3in</Width>
@@ -13483,8 +13904,8 @@ WHERE
                 <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>employee_work</DataSetName>
-            <Top>11.01112in</Top>
+            <DataSetName>guarantor_1</DataSetName>
+            <Top>11.02501in</Top>
             <Left>0.01389in</Left>
             <Height>0.75in</Height>
             <Width>7.3in</Width>
@@ -13496,7 +13917,7 @@ WHERE
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>11.89693in</Height>
+        <Height>11.91082in</Height>
         <Style />
       </Body>
       <Width>7.31391in</Width>

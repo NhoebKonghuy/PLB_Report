@@ -1,31 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
-  <am:AuthoringMetadata>
-    <am:CreatedBy>
-      <am:Name>SSDTRS</am:Name>
-      <am:Version>17.6.33723.286</am:Version>
-    </am:CreatedBy>
-    <am:UpdatedBy>
-      <am:Name>SSDTRS</am:Name>
-      <am:Version>17.9.34622.214</am:Version>
-    </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-06-24T02:57:43.2749060Z</am:LastModifiedTimestamp>
-  </am:AuthoringMetadata>
+<Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily">
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource1">
       <DataSourceReference>DataSource1</DataSourceReference>
-      <rd:SecurityType>None</rd:SecurityType>
       <rd:DataSourceID>c8b8b81e-c56f-46a4-a7f2-0c6bcc0f4605</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
+    <DataSet Name="DS_BORROWER_INFORMATION">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT
+	AP.APPLICATION_NO,
+	APP.CUSTOMER_ID,
+	CUS.FAMILY_NAME_KH || ' ' || CUS.GIVEN_NAME_KH AS BORROWER_NAME,
+	TO_CHAR( CUS.DATE_OF_BIRTH, 'DD/MM/YYYY' ) AS DOB,
+CASE
+		
+		WHEN CUS.GENDER = 'MALE' THEN
+		'ប្រុស' ELSE'ស្រី' 
+	END AS GENDER 
+FROM
+	APP_APPLICATION AP
+	INNER JOIN APP_APPLICATION_DETAIL APP ON APP.APPLICATION_ID = AP.
+	ID INNER JOIN CUS_CUSTOMER CUS ON CUS.ID = APP.CUSTOMER_ID
+</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="application_no">
+          <DataField>application_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="customer_id">
+          <DataField>customer_id</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="borrower_name">
+          <DataField>borrower_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="dob">
+          <DataField>dob</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="gender">
+          <DataField>gender</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
     <DataSet Name="DS_INFORMATION_USER">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
 	cc.ref_no,
+	cc.resident,
 	ap.name as prefix,
 	cc.given_name_en,
 	cc.given_name_kh,
@@ -38,17 +69,25 @@
 	'' as fax_number,
 	'' as Dual_Citizenships,
 	'' AS office_phone_number,
-	case when an.name='Cambodian' THEN 'ខ្មែរ​' else '' end as nationality
+	an.NAME,
+	cib.occupation_description as biz_position,
+	cie.position as em_position,
+	to_char(cie.start_date, 'DD/MM/YYYY') as start_date 
 FROM
 	cus_customer cc
 	INNER JOIN adm_nationality an ON an.ID = cc.nationality_id
-  inner join adm_prefix ap on ap.id = cc.prefix_id   
-where cc.ref_no='C1709541779933'</CommandText>
+  inner join adm_prefix ap on ap.id = cc.prefix_id
+	inner join cus_income_business cib on cib.customer_id = cc.id 
+	inner join cus_income_employee cie on cie.customer_id = cc.id </CommandText>
       </Query>
       <Fields>
         <Field Name="ref_no">
           <DataField>ref_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="resident">
+          <DataField>resident</DataField>
+          <rd:TypeName>System.Int16</rd:TypeName>
         </Field>
         <Field Name="given_name_en">
           <DataField>given_name_en</DataField>
@@ -98,8 +137,20 @@ where cc.ref_no='C1709541779933'</CommandText>
           <DataField>office_phone_number</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="nationality">
-          <DataField>nationality</DataField>
+        <Field Name="name">
+          <DataField>name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="biz_position">
+          <DataField>biz_position</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="em_position">
+          <DataField>em_position</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="start_date">
+          <DataField>start_date</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -108,29 +159,35 @@ where cc.ref_no='C1709541779933'</CommandText>
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
+	cca.street_no,
+	cca.group_no,
 	apc.province_kh,
 	avc.village_kh,
 	adc.district_kh,
-	cca.house_no,
 	acc.commune_kh,
-	cca.street_no,
-	cca.group_no,
-	cc.ref_no,
-	CASE WHEN ac.country_en='CAMBODIA' then 'កម្ពុជា' END AS country_kh 
+	ac.country_en, 
+	cca.house_no,
+	ac.country_kh AS country_kh 
 FROM
 	cus_customer cc
-	INNER JOIn cus_corr_address cca on cca.customer_id = cc.id
+	INNER JOIN cus_corr_address cca on cca.customer_id = cc.id
  INNER JOIN adm_province_cbc apc ON apc.ID = cca.province_id
 	INNER JOIN adm_village_cbc avc ON avc.ID = cca.village_id
 	INNER JOIN adm_commune_cbc acc ON acc.ID = cca.commune_id
 	INNER JOIN adm_district_cbc adc ON adc.ID = cca.district_id
-	INNER JOIN adm_country ac ON ac.ID = cca.country_id
-	
-	where cc.ref_no='C1691466323088'</CommandText>
+	INNER JOIN adm_country ac ON ac.ID = cca.country_id</CommandText>
       </Query>
       <Fields>
+        <Field Name="street_no">
+          <DataField>street_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="province_kh">
           <DataField>province_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="group_no">
+          <DataField>group_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="village_kh">
@@ -145,20 +202,12 @@ FROM
           <DataField>commune_kh</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="country_en">
+          <DataField>country_en</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="house_no">
           <DataField>house_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="ref_no">
-          <DataField>ref_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="street_no">
-          <DataField>street_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="group_no">
-          <DataField>group_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="country_kh">
@@ -171,27 +220,31 @@ FROM
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
+  cc.ref_no,
 	apc.province_kh,
 	avc.village_kh,
 	adc.district_kh,
 	acc.commune_kh,
+	ac.country_en, 
 	cca.house_no,
 	cca.street_no,
 	cca.group_no,
-	cc.ref_no,
-	CASE WHEN ac.country_en='CAMBODIA' then 'កម្ពុជា' END AS country_kh 
+	ac.country_kh AS country_kh 
 FROM
 	cus_customer cc
-	INNER JOIn cus_permanent_address cca on cca.customer_id = cc.id
+	INNER JOIN cus_permanent_address cca on cca.customer_id = cc.id
  INNER JOIN adm_province_cbc apc ON apc.ID = cca.province_id
 	INNER JOIN adm_village_cbc avc ON avc.ID = cca.village_id
 	INNER JOIN adm_commune_cbc acc ON acc.ID = cca.commune_id
 	INNER JOIN adm_district_cbc adc ON adc.ID = cca.district_id
 	INNER JOIN adm_country ac ON ac.ID = cca.country_id
-	
-	where cc.ref_no='C1691466323088'</CommandText>
+	WHERE cc.ref_no =  'C1720973474534'</CommandText>
       </Query>
       <Fields>
+        <Field Name="ref_no">
+          <DataField>ref_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="province_kh">
           <DataField>province_kh</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -208,6 +261,10 @@ FROM
           <DataField>commune_kh</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="country_en">
+          <DataField>country_en</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="house_no">
           <DataField>house_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -216,52 +273,44 @@ FROM
           <DataField>street_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="ref_no">
-          <DataField>ref_no</DataField>
+        <Field Name="country_kh">
+          <DataField>country_kh</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="group_no">
           <DataField>group_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="country_kh">
-          <DataField>country_kh</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
       </Fields>
     </DataSet>
-    <DataSet Name="DS_IDENTIFICATION">
+    <DataSet Name="DS_IDENTIFICATION_1">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT ci.id_number,
-to_char(ci.issued_date, 'DD/MM/YYYY') as issued_date,
-to_char(ci.expiry_date, 'DD/MM/YYYY') as expiry_date,
+        <CommandText>SELECT * FROM(
+SELECT ROW_NUMBER 
+( ) OVER ( ORDER BY ci.ID ) AS num,
 cc.ref_no,
- CASE
-      
-      WHEN AIT.ID_TYPE = 'F' THEN
-      'សៀវភៅគ្រួសារ' 
-      WHEN AIT.ID_TYPE = 'CD' THEN
-      'លិខិតបញ្ជាក់អត្តសញ្ញាណ' 
-      WHEN AIT.ID_TYPE = 'N' THEN
-      'អត្តសញ្ញាណប័ណ្ណ' 
-      WHEN AIT.ID_TYPE = 'P' THEN
-      'លិខិតឆ្លងដែន' 
-      WHEN AIT.ID_TYPE = 'MI' THEN
-      'ឆាយា' 
-      WHEN aIT.ID_TYPE = 'R' THEN
-      'សៀវភៅស្នាក់នៅ' 
-      WHEN aIT.ID_TYPE = 'B' THEN
-      'សំបុត្រកំណើត' 
-    END AS IDENTIFICATION_TYPE
-from cus_customer cc
+ci.id_number,
+to_char(CI.issued_date, 'DD/MM/YYYY') as issued_date,
+to_char(ci.expiry_date, 'DD/MM/YYYY') as expiry_date,
+ait.name from cus_customer cc
 inner join cus_identification ci on ci.customer_id = cc.id
 inner join adm_identification_type ait on ait.id = ci.identification_type_id
-where cc.ref_no='C1709188950827'</CommandText>
+WHERE cc.ref_no = 'C1720973474534'
+)A 
+WHERE A.NUM=1</CommandText>
       </Query>
       <Fields>
+        <Field Name="num">
+          <DataField>num</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
         <Field Name="id_number">
           <DataField>id_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ref_no">
+          <DataField>ref_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="issued_date">
@@ -272,12 +321,8 @@ where cc.ref_no='C1709188950827'</CommandText>
           <DataField>expiry_date</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="ref_no">
-          <DataField>ref_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="identification_type">
-          <DataField>identification_type</DataField>
+        <Field Name="name">
+          <DataField>name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -285,29 +330,13 @@ where cc.ref_no='C1709188950827'</CommandText>
     <DataSet Name="DS_MARITAL_STATUS">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT ams.name,
-cie.company_name,
- to_char(cie.start_date, 'DD/MM/YYYY') as start_date,
- cie.position
+        <CommandText>SELECT ams.name
  from cus_customer cc 
-inner join adm_marital_status ams on ams.id = cc.marital_status_id
-LEFT join cus_income_employee cie on cie.customer_id = cc.id</CommandText>
+inner join adm_marital_status ams on ams.id = cc.marital_status_id</CommandText>
       </Query>
       <Fields>
         <Field Name="name">
           <DataField>name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="company_name">
-          <DataField>company_name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="start_date">
-          <DataField>start_date</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="position">
-          <DataField>position</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -320,13 +349,11 @@ LEFT join cus_income_employee cie on cie.customer_id = cc.id</CommandText>
 	act.NAME AS CAT,
 	cc.cif_number,
 	cc.short_name,
-	'' as resident,
-	cc.ref_no
+	'' as resident
 FROM
 	cus_customer cc
 	INNER JOIN adm_customer_classification acc ON acc.ID = cc.cus_classification_id
 	INNER JOIN adm_customer_category act ON act.id = cc.customer_category_id
-where cc.ref_no='C1695185061213'
 	</CommandText>
       </Query>
       <Fields>
@@ -350,26 +377,44 @@ where cc.ref_no='C1695185061213'
           <DataField>resident</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DS_IDENTIFICATION_2">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT * FROM(
+SELECT ROW_NUMBER 
+( ) OVER ( ORDER BY ci.ID ) AS num,
+cc.ref_no,
+ci.id_number,
+to_char(CI.issued_date, 'DD/MM/YYYY') as issued_date,
+to_char(ci.expiry_date, 'DD/MM/YYYY') as expiry_date,
+ait.name from cus_customer cc
+inner join cus_identification ci on ci.customer_id = cc.id
+inner join adm_identification_type ait on ait.id = ci.identification_type_id
+WHERE cc.ref_no = 'C1720973474534'
+)A 
+WHERE A.NUM=2</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="num">
+          <DataField>num</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
         <Field Name="ref_no">
           <DataField>ref_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-      </Fields>
-    </DataSet>
-    <DataSet Name="BRANCH_NAME">
-      <Query>
-        <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT ap.application_no,
-mb.name
- FROM
-app_application ap 
-inner join app_application_detail apd on apd.application_id = ap.id
-inner join mas_branch mb on mb.id = apd.branch_id
-</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="application_no">
-          <DataField>application_no</DataField>
+        <Field Name="id_number">
+          <DataField>id_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="issued_date">
+          <DataField>issued_date</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="expiry_date">
+          <DataField>expiry_date</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="name">
@@ -378,36 +423,46 @@ inner join mas_branch mb on mb.id = apd.branch_id
         </Field>
       </Fields>
     </DataSet>
-    <DataSet Name="DS_BORROWER_INFORMATION">
+    <DataSet Name="DS_IDENTIFICATION_3">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT
-	CUS.REF_NO,
-	CUS.FAMILY_NAME_KH || ' ' || CUS.GIVEN_NAME_KH AS BORROWER_NAME,
-	TO_CHAR( CUS.DATE_OF_BIRTH, 'DD/MM/YYYY' ) AS DOB,
-CASE
-		
-		WHEN CUS.GENDER = 'MALE' THEN
-		'ប្រុស' ELSE'ស្រី' 
-	END AS GENDER 
-FROM
-	cus_customer CUS </CommandText>
+        <CommandText>SELECT * FROM(
+SELECT ROW_NUMBER 
+( ) OVER ( ORDER BY ci.ID ) AS num,
+cc.ref_no,
+ci.id_number,
+to_char(CI.issued_date, 'DD/MM/YYYY') as issued_date,
+to_char(ci.expiry_date, 'DD/MM/YYYY') as expiry_date,
+ait.name from cus_customer cc
+inner join cus_identification ci on ci.customer_id = cc.id
+inner join adm_identification_type ait on ait.id = ci.identification_type_id
+WHERE cc.ref_no = 'C1720973474534'
+)A 
+WHERE A.NUM=3</CommandText>
       </Query>
       <Fields>
+        <Field Name="num">
+          <DataField>num</DataField>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
         <Field Name="ref_no">
           <DataField>ref_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="borrower_name">
-          <DataField>borrower_name</DataField>
+        <Field Name="id_number">
+          <DataField>id_number</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="dob">
-          <DataField>dob</DataField>
+        <Field Name="issued_date">
+          <DataField>issued_date</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="gender">
-          <DataField>gender</DataField>
+        <Field Name="expiry_date">
+          <DataField>expiry_date</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="name">
+          <DataField>name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -508,7 +563,7 @@ FROM
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DS_BORROWER_INFORMATION</DataSetName>
-            <Top>0.01389in</Top>
+            <Top>0.02778in</Top>
             <Left>2.01389in</Left>
             <Height>0.46667in</Height>
             <Width>6.37778in</Width>
@@ -717,8 +772,8 @@ FROM
                 <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>DS_ADRESS_CORR</DataSetName>
-            <Top>0.49445in</Top>
+            <DataSetName>DS_ADRESS_PER</DataSetName>
+            <Top>0.50834in</Top>
             <Left>0.01389in</Left>
             <Height>0.5in</Height>
             <Width>8.37778in</Width>
@@ -893,35 +948,35 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!house_no.Value, "DS_ADRESS_CORR")</Value>
+                                  <Value>=iif(First(Fields!house_no.Value, "DS_ADRESS_CORR") is nothing or First(Fields!house_no.Value, "DS_ADRESS_CORR")="","..........",First(Fields!house_no.Value, "DS_ADRESS_CORR"))</Value>
                                   <Style>
                                     <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value xml:space="preserve"> </Value>
+                                  <Value>/</Value>
                                   <Style>
                                     <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!street_no.Value, "DS_ADRESS_CORR")</Value>
+                                  <Value>=iif(First(Fields!street_no.Value, "DS_ADRESS_CORR") is nothing or First(Fields!street_no.Value, "DS_ADRESS_CORR")="","..........",First(Fields!street_no.Value, "DS_ADRESS_CORR"))</Value>
                                   <Style>
                                     <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value xml:space="preserve"> </Value>
+                                  <Value>/</Value>
                                   <Style>
                                     <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!group_no.Value, "DS_ADRESS_CORR")</Value>
+                                  <Value>=iif(First(Fields!group_no.Value, "DS_ADRESS_CORR") is nothing or First(Fields!group_no.Value, "DS_ADRESS_CORR")="","..........",First(Fields!group_no.Value, "DS_ADRESS_CORR"))</Value>
                                   <Style>
                                     <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -938,7 +993,6 @@ FROM
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1008,7 +1062,6 @@ FROM
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1336,7 +1389,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>o</Value>
+                                  <Value>=iif(First(Fields!province_kh.Value, "DS_ADRESS_CORR")=First(Fields!province_kh.Value, "DS_ADRESS_PER") and First(Fields!district_kh.Value, "DS_ADRESS_CORR")=First(Fields!district_kh.Value, "DS_ADRESS_PER") and First(Fields!commune_kh.Value, "DS_ADRESS_CORR")=First(Fields!commune_kh.Value, "DS_ADRESS_PER") and First(Fields!village_kh.Value, "DS_ADRESS_CORR")=First(Fields!village_kh.Value, "DS_ADRESS_PER"),chr(254),chr(168))</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Wingdings</FontFamily>
@@ -1433,35 +1486,35 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!house_no.Value, "DS_ADRESS_PER")</Value>
+                                  <Value>=IIF(First(Fields!house_no.Value, "DS_ADRESS_PER") is nothing or First(Fields!house_no.Value, "DS_ADRESS_PER") ="",".........",First(Fields!house_no.Value, "DS_ADRESS_PER"))</Value>
                                   <Style>
                                     <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value xml:space="preserve"> </Value>
+                                  <Value>/</Value>
                                   <Style>
                                     <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!street_no.Value, "DS_ADRESS_PER")</Value>
+                                  <Value>=iif(First(Fields!street_no.Value, "DS_ADRESS_PER") is nothing or First(Fields!street_no.Value, "DS_ADRESS_PER")="","..........",First(Fields!street_no.Value, "DS_ADRESS_PER"))</Value>
                                   <Style>
                                     <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value xml:space="preserve"> </Value>
+                                  <Value>/</Value>
                                   <Style>
                                     <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!group_no.Value, "DS_ADRESS_PER")</Value>
+                                  <Value>=iif(First(Fields!group_no.Value, "DS_ADRESS_PER") is nothing or First(Fields!group_no.Value, "DS_ADRESS_PER")="","..........",First(Fields!group_no.Value, "DS_ADRESS_PER"))</Value>
                                   <Style>
                                     <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -1478,7 +1531,6 @@ FROM
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1548,7 +1600,6 @@ FROM
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1988,7 +2039,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!identification_type.Value, "DS_IDENTIFICATION")</Value>
+                                  <Value>=First(Fields!name.Value, "DS_IDENTIFICATION_1")</Value>
                                   <Style>
                                     <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -2005,7 +2056,6 @@ FROM
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -2058,9 +2108,9 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!identification_type.Value, "DS_IDENTIFICATION")</Value>
+                                  <Value>=First(Fields!name.Value, "DS_IDENTIFICATION_2")</Value>
                                   <Style>
-                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontFamily>Khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -2073,7 +2123,6 @@ FROM
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -2131,7 +2180,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!id_number.Value, "DS_IDENTIFICATION")</Value>
+                                  <Value>=First(Fields!id_number.Value, "DS_IDENTIFICATION_1")</Value>
                                   <Style>
                                     <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -2200,9 +2249,9 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!id_number.Value, "DS_IDENTIFICATION")</Value>
+                                  <Value>=First(Fields!id_number.Value, "DS_IDENTIFICATION_2")</Value>
                                   <Style>
-                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontFamily>Khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -2272,7 +2321,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!issued_date.Value, "DS_IDENTIFICATION")</Value>
+                                  <Value>=First(Fields!issued_date.Value, "DS_IDENTIFICATION_1")</Value>
                                   <Style>
                                     <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -2289,7 +2338,6 @@ FROM
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -2342,9 +2390,9 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!identification_type.Value, "DS_IDENTIFICATION")</Value>
+                                  <Value>=First(Fields!name.Value, "DS_IDENTIFICATION_3")</Value>
                                   <Style>
-                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontFamily>Khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -2357,7 +2405,6 @@ FROM
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -2415,7 +2462,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!expiry_date.Value, "DS_IDENTIFICATION")</Value>
+                                  <Value>=First(Fields!expiry_date.Value, "DS_IDENTIFICATION_1")</Value>
                                   <Style>
                                     <FontFamily>khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -2484,9 +2531,9 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!id_number.Value, "DS_IDENTIFICATION")</Value>
+                                  <Value>=First(Fields!id_number.Value, "DS_IDENTIFICATION_3")</Value>
                                   <Style>
-                                    <FontFamily>khmer os content</FontFamily>
+                                    <FontFamily>Khmer os content</FontFamily>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
@@ -3130,11 +3177,11 @@ FROM
                                                   <Paragraph>
                                                     <TextRuns>
                                                       <TextRun>
-                                                        <Value />
+                                                        <Value>=First(Fields!dob.Value, "DS_INFORMATION_USER")</Value>
                                                         <Style>
                                                           <FontStyle>Normal</FontStyle>
-                                                          <FontFamily>Wingdings</FontFamily>
-                                                          <FontSize>12pt</FontSize>
+                                                          <FontFamily>khmer OS content</FontFamily>
+                                                          <FontSize>8pt</FontSize>
                                                           <FontWeight>Normal</FontWeight>
                                                           <TextDecoration>None</TextDecoration>
                                                         </Style>
@@ -3169,17 +3216,7 @@ FROM
                                                       <Paragraph>
                                                         <TextRuns>
                                                           <TextRun>
-                                                            <Value xml:space="preserve"> </Value>
-                                                            <Style>
-                                                              <FontStyle>Normal</FontStyle>
-                                                              <FontFamily>Wingdings</FontFamily>
-                                                              <FontSize>12pt</FontSize>
-                                                              <FontWeight>Normal</FontWeight>
-                                                              <TextDecoration>None</TextDecoration>
-                                                            </Style>
-                                                          </TextRun>
-                                                          <TextRun>
-                                                            <Value>=IIF(First(Fields!phone_number.Value, "DS_INFORMATION_USER") Is Nothing, Chr(168), Chr(254))</Value>
+                                                            <Value>=IIf(IsNothing(First(Fields!phone_number.Value, "DS_INFORMATION_USER")), Chr(168), Chr(254))</Value>
                                                             <Style>
                                                               <FontStyle>Normal</FontStyle>
                                                               <FontFamily>Wingdings</FontFamily>
@@ -3199,10 +3236,10 @@ FROM
                                                             </Style>
                                                           </TextRun>
                                                           <TextRun>
-                                                            <Value>=IIF(First(Fields!email.Value, "DS_INFORMATION_USER") Is Nothing, Chr(168), Chr(254))</Value>
+                                                            <Value>=IIf(IsNothing(First(Fields!email.Value, "DS_INFORMATION_USER")), Chr(168), Chr(254))</Value>
                                                             <Style>
                                                               <FontStyle>Normal</FontStyle>
-                                                              <FontFamily>Wingdings</FontFamily>
+                                                              <FontFamily>wingdings</FontFamily>
                                                               <FontSize>8pt</FontSize>
                                                               <FontWeight>Normal</FontWeight>
                                                               <TextDecoration>None</TextDecoration>
@@ -3643,7 +3680,7 @@ FROM
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value>=First(Fields!nationality.Value, "DS_INFORMATION_USER")</Value>
+                                    <Value>=First(Fields!name.Value, "DS_INFORMATION_USER")</Value>
                                     <Style>
                                       <FontFamily>khmer os content</FontFamily>
                                       <FontSize>8pt</FontSize>
@@ -3975,7 +4012,7 @@ FROM
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DS_INFORMATION_USER</DataSetName>
-            <Top>1.00834in</Top>
+            <Top>1.02223in</Top>
             <Left>0.01389in</Left>
             <Height>5.80833in</Height>
             <Width>8.37778in</Width>
@@ -4226,7 +4263,7 @@ FROM
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value>=IIf(First(Fields!name.Value, "DS_MARITAL_STATUS") = "Single", Chr(254), Chr(168))</Value>
+                                    <Value>=IIf(First(Fields!name.Value, "DS_MARITAL_STATUS") = "Single", Chr(225), Chr(168))</Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
                                       <FontFamily>Wingdings</FontFamily>
@@ -4266,7 +4303,7 @@ FROM
                                     </Style>
                                   </TextRun>
                                   <TextRun>
-                                    <Value>=IIf(First(Fields!name.Value, "DS_MARITAL_STATUS") = "Divorced", Chr(254), Chr(168))</Value>
+                                    <Value>=IIf(First(Fields!name.Value, "DS_MARITAL_STATUS") = "Divorced", Chr(225), Chr(168))</Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
                                       <FontFamily>wingdings</FontFamily>
@@ -4291,7 +4328,7 @@ FROM
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value>=IIf(First(Fields!name.Value, "DS_MARITAL_STATUS") = "Widower", Chr(254), Chr(168))</Value>
+                                    <Value>=IIf(First(Fields!name.Value, "DS_MARITAL_STATUS") = "Widower", Chr(225), Chr(168))</Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
                                       <FontFamily>wingdings</FontFamily>
@@ -4311,7 +4348,7 @@ FROM
                                     </Style>
                                   </TextRun>
                                   <TextRun>
-                                    <Value>=IIf(First(Fields!name.Value, "DS_MARITAL_STATUS") = "Separated", Chr(254), Chr(168))</Value>
+                                    <Value>=IIf(First(Fields!name.Value, "DS_MARITAL_STATUS") = "Separated", Chr(225), Chr(168))</Value>
                                     <Style>
                                       <FontStyle>Normal</FontStyle>
                                       <FontFamily>wingdings</FontFamily>
@@ -4359,15 +4396,28 @@ FROM
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value>=First(Fields!position.Value, "DS_MARITAL_STATUS")</Value>
+                                        <Value>=iif(First(Fields!biz_position.Value, "DS_INFORMATION_USER") is nothing,"..........",First(Fields!biz_position.Value, "DS_INFORMATION_USER"))</Value>
                                         <Style>
-                                          <FontFamily>khmer os content</FontFamily>
+                                          <FontFamily>Arial</FontFamily>
+                                          <FontSize>8pt</FontSize>
+                                        </Style>
+                                      </TextRun>
+                                      <TextRun>
+                                        <Value> / </Value>
+                                        <Style>
+                                          <FontFamily>Arial</FontFamily>
+                                          <FontSize>8pt</FontSize>
+                                        </Style>
+                                      </TextRun>
+                                      <TextRun>
+                                        <Value>=iif(First(Fields!em_position.Value, "DS_INFORMATION_USER") is nothing,"..........",First(Fields!em_position.Value, "DS_INFORMATION_USER"))</Value>
+                                        <Style>
+                                          <FontFamily>Arial</FontFamily>
+                                          <FontSize>8pt</FontSize>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
-                                    <Style>
-                                      <TextAlign>Center</TextAlign>
-                                    </Style>
+                                    <Style />
                                   </Paragraph>
                                 </Paragraphs>
                                 <rd:DefaultName>Textbox116</rd:DefaultName>
@@ -4395,15 +4445,13 @@ FROM
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value>=First(Fields!start_date.Value, "DS_MARITAL_STATUS")</Value>
+                                            <Value>=First(Fields!start_date.Value, "DS_INFORMATION_USER")</Value>
                                             <Style>
-                                              <FontFamily>khmer os content</FontFamily>
+                                              <FontFamily>Arial</FontFamily>
                                             </Style>
                                           </TextRun>
                                         </TextRuns>
-                                        <Style>
-                                          <TextAlign>Center</TextAlign>
-                                        </Style>
+                                        <Style />
                                       </Paragraph>
                                     </Paragraphs>
                                     <rd:DefaultName>Textbox124</rd:DefaultName>
@@ -4478,15 +4526,13 @@ FROM
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value>=First(Fields!company_name.Value, "DS_MARITAL_STATUS")</Value>
+                                        <Value />
                                         <Style>
-                                          <FontFamily>khmer os content</FontFamily>
+                                          <FontFamily>Arial</FontFamily>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
-                                    <Style>
-                                      <TextAlign>Center</TextAlign>
-                                    </Style>
+                                    <Style />
                                   </Paragraph>
                                 </Paragraphs>
                                 <rd:DefaultName>Textbox118</rd:DefaultName>
@@ -4494,7 +4540,6 @@ FROM
                                   <Border>
                                     <Style>Solid</Style>
                                   </Border>
-                                  <VerticalAlign>Middle</VerticalAlign>
                                   <PaddingLeft>2pt</PaddingLeft>
                                   <PaddingRight>2pt</PaddingRight>
                                   <PaddingTop>2pt</PaddingTop>
@@ -4518,8 +4563,8 @@ FROM
                 <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>DS_ADRESS_CORR</DataSetName>
-            <Top>6.85834in</Top>
+            <DataSetName>DS_ADRESS_PER</DataSetName>
+            <Top>6.87223in</Top>
             <Left>0.01389in</Left>
             <Height>1.025in</Height>
             <Width>8.37778in</Width>
@@ -5544,8 +5589,8 @@ FROM
                 <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>DS_ADRESS_PER</DataSetName>
-            <Top>7.89723in</Top>
+            <DataSetName>DS_INFORMATION_USER</DataSetName>
+            <Top>7.91112in</Top>
             <Left>0.01389in</Left>
             <Height>2.125in</Height>
             <Width>8.37778in</Width>
@@ -5766,7 +5811,7 @@ By signing this form, I certify that information provided above is true, correct
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DS_ADRESS_CORR</DataSetName>
-            <Top>10.03611in</Top>
+            <Top>10.05in</Top>
             <Left>0.01389in</Left>
             <Height>0.5in</Height>
             <Width>8.37778in</Width>
@@ -6667,17 +6712,17 @@ By signing this form, I certify that information provided above is true, correct
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value>o</Value>
+                                        <Value>=IIf(First(Fields!resident.Value, "DS_INFORMATION_USER") = 1, Chr(254), Chr(168))</Value>
                                         <Style>
                                           <FontStyle>Normal</FontStyle>
                                           <FontFamily>Wingdings</FontFamily>
-                                          <FontSize>12pt</FontSize>
+                                          <FontSize>8pt</FontSize>
                                           <FontWeight>Normal</FontWeight>
                                           <TextDecoration>None</TextDecoration>
                                         </Style>
                                       </TextRun>
                                       <TextRun>
-                                        <Value>Resident            </Value>
+                                        <Value>Resident           </Value>
                                         <Style>
                                           <FontStyle>Normal</FontStyle>
                                           <FontFamily>HelveticaNeueLT Std</FontFamily>
@@ -6687,17 +6732,17 @@ By signing this form, I certify that information provided above is true, correct
                                         </Style>
                                       </TextRun>
                                       <TextRun>
-                                        <Value>o</Value>
+                                        <Value>=IIf(First(Fields!resident.Value, "DS_INFORMATION_USER") = 0, Chr(254), Chr(168))</Value>
                                         <Style>
                                           <FontStyle>Normal</FontStyle>
-                                          <FontFamily>Wingdings</FontFamily>
-                                          <FontSize>12pt</FontSize>
+                                          <FontFamily>wingdings</FontFamily>
+                                          <FontSize>8pt</FontSize>
                                           <FontWeight>Normal</FontWeight>
                                           <TextDecoration>None</TextDecoration>
                                         </Style>
                                       </TextRun>
                                       <TextRun>
-                                        <Value>Non Resident</Value>
+                                        <Value> Non Resident</Value>
                                         <Style>
                                           <FontStyle>Normal</FontStyle>
                                           <FontFamily>HelveticaNeueLT Std</FontFamily>
@@ -6736,8 +6781,8 @@ By signing this form, I certify that information provided above is true, correct
                 <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>BRANCH_NAME</DataSetName>
-            <Top>10.65222in</Top>
+            <DataSetName>DS_INFORMATION_USER</DataSetName>
+            <Top>10.66611in</Top>
             <Left>0.01389in</Left>
             <Height>1.25in</Height>
             <Width>8.37779in</Width>
@@ -6749,7 +6794,7 @@ By signing this form, I certify that information provided above is true, correct
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>11.90222in</Height>
+        <Height>11.91611in</Height>
         <Style />
       </Body>
       <Width>8.39168in</Width>

@@ -57,8 +57,9 @@ FROM
   INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID 
   AND CCD.STATUS = 't'
   LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID 
-WHERE
-  AP.APPLICATION_NO = 'B-0002-A88322' GROUP BY AP.APPLICATION_NO , AV.VILLAGE_CODE HAVING COUNT(AV.VILLAGE_CODE)  &gt;1</CommandText>
+--WHERE
+ -- AP.APPLICATION_NO = 'B-0002-A88322' 
+GROUP BY AP.APPLICATION_NO , AV.VILLAGE_CODE HAVING COUNT(AV.VILLAGE_CODE) = 1</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -957,23 +958,18 @@ FROM
 	SELECT ROW_NUMBER
 		( ) OVER ( ORDER BY AG.ID ) AS num,
   AP.APPLICATION_NO,
-	CASE WHEN
-	CC.FAMILY_NAME_KH IS NULL
-	THEN '.........' ELSE
-  CC.FAMILY_NAME_KH|| ' ' || CC.GIVEN_NAME_KH END AS COL_NAME,
+  CC.FAMILY_NAME_KH|| ' ' || CC.GIVEN_NAME_KH AS COL_NAME,
 CASE
     
     WHEN CC.GENDER = 'MALE' THEN
-    'ប្រុស' 
-		WHEN CC.GENDER = 'FEMALE' THEN 'ស្រី' ELSE '........' 
+    'ប្រុស' ELSE'ស្រី' 
   END AS GENDER,
 CASE
     
     WHEN ANN.NAME = 'Cambodian' THEN
-    'ខ្មែរ'  ELSE '.......'
+    'ខ្មែរ' 
   END AS NATIONALITY,
-	CASE WHEN 
-  TO_CHAR( CC.DATE_OF_BIRTH, 'DD' ) IS NULL THEN '.....' ELSE TO_CHAR( CC.DATE_OF_BIRTH, 'DD' ) END AS DOB_DAY,
+  TO_CHAR( CC.DATE_OF_BIRTH, 'DD' ) AS DOB_DAY,
 CASE
     
     WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JAN' THEN
@@ -1114,10 +1110,11 @@ CASE
   ) A ON A.APPLICATION_ID = AP.ID 
   AND CC.ID = A.CUSTOMER_ID 
 	WHERE
-		ap.application_no = '012-A599250287' 
+		ap.application_no = '012-A41856' 
 	) A 
 WHERE
-	A.num = 1</CommandText>
+	A.num = 1
+</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -1136,56 +1133,28 @@ WHERE
           <DataField>gender</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="commune_kh">
-          <DataField>commune_kh</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="nationality">
           <DataField>nationality</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="province_kh">
-          <DataField>province_kh</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="dob_day">
           <DataField>dob_day</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="village_kh">
-          <DataField>village_kh</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="dob_month">
           <DataField>dob_month</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="district_kh">
-          <DataField>district_kh</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="dob_year">
           <DataField>dob_year</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="steet_no">
-          <DataField>steet_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="id_number">
           <DataField>id_number</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="house_no">
-          <DataField>house_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="identification_type">
           <DataField>identification_type</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="group_no">
-          <DataField>group_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="issue_day">
@@ -1198,6 +1167,34 @@ WHERE
         </Field>
         <Field Name="issue_year">
           <DataField>issue_year</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="commune_kh">
+          <DataField>commune_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="province_kh">
+          <DataField>province_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="village_kh">
+          <DataField>village_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="district_kh">
+          <DataField>district_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="steet_no">
+          <DataField>steet_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="house_no">
+          <DataField>house_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="group_no">
+          <DataField>group_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -1524,22 +1521,17 @@ WHERE
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT ap.application_no,
-ac.currency,
 apd.approved_amount,
 kh_function(cast(apd.approved_amount as integer)) as approved_amount_kh,
-NUM_TO_WORDS(CAST(annual_interest_rate AS numeric)) as annual_interest_rate_kh,
-apd.annual_interest_rate
+apd.annual_interest_rate,
+NUM_TO_WORDS(CAST(annual_interest_rate AS numeric))||' ភាគរយ' as annual_interest_rate_kh
+
 from app_application ap 
-inner join app_application_detail apd on apd.application_id = ap.id 
-inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
+inner join app_application_detail apd on apd.application_id = ap.id </CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
           <DataField>application_no</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="currency">
-          <DataField>currency</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="approved_amount">
@@ -1550,13 +1542,13 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
           <DataField>approved_amount_kh</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="annual_interest_rate_kh">
-          <DataField>annual_interest_rate_kh</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="annual_interest_rate">
           <DataField>annual_interest_rate</DataField>
           <rd:TypeName>System.Single</rd:TypeName>
+        </Field>
+        <Field Name="annual_interest_rate_kh">
+          <DataField>annual_interest_rate_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -1631,9 +1623,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>
-                                            <Style>
-                                              <TextAlign>Center</TextAlign>
-                                            </Style>
+                                            <Style />
                                           </Paragraph>
                                           <Paragraph>
                                             <TextRuns>
@@ -1648,9 +1638,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>
-                                            <Style>
-                                              <TextAlign>Center</TextAlign>
-                                            </Style>
+                                            <Style />
                                           </Paragraph>
                                           <Paragraph>
                                             <TextRuns>
@@ -1870,7 +1858,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!application_no.Value</Value>
+                                  <Value />
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -2062,51 +2050,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value> ជាក្រុមហ៊ុនមហាជនទទួលខុសត្រូវមានកម្រិត (ចុះបញ្ជីពាណិជ្ជកម្មលេខ ០០០០០២៩២ ចុះថ្ងៃទី១៩ ខែមិថុនា ឆ្នាំ២០០៩) និងទទួលបានអាជ្ញាប័ណ្ណធ្វើប្រតិបត្តិការធនាគារ ស្របតាមច្បាប់នៃព្រះរាជាណាចក្រកម្ពុជា និងមានទីស្នាក់ការចុះបញ្ជីស្ថិតនៅផ្ទះលេខ ............ ផ្លូវ............ ភូមិ............ ឃុំ-សង្កាត់............ ក្រុង-ស្រុក-ខណ្ឌ ............ ខេត្ត-រាជធានី............ព្រះរាជាណាចក្រកម្ពុជា តំណាងដោយឈ្មោះ .................... មានតួនាទីជា..................(តទៅហៅថា “</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontSize>9pt</FontSize>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value>ធនាគារ</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontSize>9pt</FontSize>
-                                                  <FontWeight>Bold</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value>”  ឬ “</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontSize>9pt</FontSize>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value>ភាគី “ក””</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontSize>9pt</FontSize>
-                                                  <FontWeight>Bold</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value>) និង</Value>
+                                                <Value> ជាក្រុមហ៊ុនមហាជនទទួលខុសត្រូវមានកម្រិត (ចុះបញ្ជីពាណិជ្ជកម្មលេខ ០០០០០២៩២ ចុះថ្ងៃទី១៩ ខែមិថុនា ឆ្នាំ២០០៩) និងទទួលបានអាជ្ញាប័ណ្ណធ្វើប្រតិបត្តិការធនាគារ ស្របតាមច្បាប់នៃព្រះរាជាណាចក្រកម្ពុជា និងមានទីស្នាក់ការចុះបញ្ជីស្ថិតនៅផ្ទះលេខ ............ ផ្លូវ............ ភូមិ............ ឃុំ-សង្កាត់............ ក្រុង-ស្រុក-ខណ្ឌ ............ ខេត្ត-រាជធានី............ (តទៅហៅថា “ធនាគារ”  ឬ “ភាគី “ក””)</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -2118,6 +2062,24 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                               </TextRun>
                                             </TextRuns>
                                             <Style />
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>និង</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                            </Style>
                                           </Paragraph>
                                         </Paragraphs>
                                         <rd:DefaultName>Textbox20</rd:DefaultName>
@@ -2366,7 +2328,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value> កាន់អត្តសញ្ញាណប័ណ្ណលេខ/លិខិតឆ្លងដែនលេខ </Value>
+                                                <Value> កាន់អត្តសញ្ញាណប័ណ្ណ លេខ /លិខិតឆ្លងដែនលេខ </Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -2541,6 +2503,11 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                   <Color>#000000</Color>
                                                 </Style>
                                               </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
                                               <TextRun>
                                                 <Value> ផ្លូវ </Value>
                                                 <Style>
@@ -2652,12 +2619,23 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value> ព្រះរាជាណាចក្រកម្ពុជា (តទៅហៅថា “ភាគី “ខ” ”)។</Value>
+                                                <Value>(តទៅហៅថា “ភាគី “ខ” ”)។</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
                                                   <FontSize>9pt</FontSize>
                                                   <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>អ្នកធានាដោយវត្ថុ (កម្ម</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
                                                   <TextDecoration>None</TextDecoration>
                                                   <Color>#000000</Color>
                                                 </Style>
@@ -2668,7 +2646,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>អ្នកធានាដោយវត្ថុ (កម្មសិទ្ធិករ)</Value>
+                                                <Value>សិទ្ធិករ)</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -3140,7 +3118,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value> ព្រះរាជាណាចក្រកម្ពុជា (តទៅហៅថា “ភាគី “ខ” ”)។</Value>
+                                                <Value> (តទៅហៅថា “ភាគី “ខ” ”)។</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -3396,7 +3374,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>មូលហេតុ : ដើម្បីធានាបំណុលស្របតាមកិច្ចសន្យាខ្ចីបរិភោគចុះថ្ងៃទី ......................... ខែ ............................. ឆ្នាំ .............................. </Value>
+                                                <Value>មូលហេតុ : ដើម្បីធានាបំណុលស្របតាមកិច្ចសន្យាខ្ចីបរិភោគចុះថ្ងៃទី ................. ខែ ............... ឆ្នាំ ............... </Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -3572,26 +3550,6 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value>=First(Fields!currency.Value, "APPROVE_AMOUNT")</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontSize>9pt</FontSize>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value xml:space="preserve"> </Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontSize>9pt</FontSize>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
                                                 <Value>=Sum(Fields!approved_amount.Value, "APPROVE_AMOUNT")</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
@@ -3653,7 +3611,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value>)</Value>
+                                                <Value>)។</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Arial</FontFamily>
@@ -3800,7 +3758,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value> % </Value>
+                                                <Value>% </Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -3986,7 +3944,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>សំណងការខូចខាត ....................% </Value>
+                                                <Value>សំណងការខូចខាត 24% </Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -4006,7 +3964,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value>ជាអក្សរ ........................</Value>
+                                                <Value>ជាអក្សរ ម្ភៃបួនភាគរយ​ </Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -5124,7 +5082,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value> ព្រមព្រៀងថា ខ្លួនយល់ព្រមទទួលយកការអនុវត្តដោយបង្ខំភ្លាមទៅលើអចលនវត្ថុហ៊ីប៉ូតែក ស្របតាមក្រមនីតិវិធីរដ្ឋប្បវេណី និងច្បាប់ និ ងបទដ្ឋានផ្សេងទៀតជាធរមាននៃព្រះរាជាណាចក្រកម្ពុជា ប្រសិនបើករណីបំពានលក្ខខណ្ឌដូចដែលមានចែងនៅក្នុងកិច្ចសន្យាបង្កើតហ៊ីប៉ូតែក នេះ និង/ឬកិច្ចសន្យាខ្ចីបរិភោគកើតឡើង។</Value>
+                                                <Value> ព្រមព្រៀងថា ខ្លួនយល់ព្រមទទួលយកការអនុវត្តដោយបង្ខំភ្លាមទៅលើអចលនវត្ថុហ៊ីប៉ូតែក ស្របតាមក្រមនីតិវិធីរដ្ឋប្បវេណី និងច្បាប់ និងបទដ្ឋានផ្សេងទៀតជាធរមាននៃព្រះរាជាណាចក្រកម្ពុជា ប្រសិនបើករណីបំពានលក្ខខណ្ឌដូចដែលមានចែងនៅក្នុងកិច្ចសន្យាបង្កើតហ៊ីប៉ូតែក នេះ និង/ឬកិច្ចសន្យាខ្ចីបរិភោគកើតឡើង។</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -5227,7 +5185,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value> ច្បាប់ នៅថ្ងៃ ........................................................... ខែ ............................................ ឆ្នាំ ....................................................... ព.ស ..................</Value>
+                                  <Value> ច្បាប់ នៅថ្ងៃ .......................ខែ .................ឆ្នាំ ...................ព.ស ................. ថ្ងៃទី ................ខែ .................... ឆ្នាំ .................... ចំពោះមុខយើង .................។</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Content</FontFamily>
@@ -5238,25 +5196,6 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                 </TextRun>
                               </TextRuns>
                               <Style />
-                            </Paragraph>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>........................................... ថ្ងៃទី .................................. ខែ .............................. ឆ្នាំ ................................. ចំពោះមុខយើង ......................................................................................... ។</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Content</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <LeftIndent>0.19722in</LeftIndent>
-                              <Style>
-                                <TextAlign>Left</TextAlign>
-                                <LineHeight>10pt</LineHeight>
-                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox112</rd:DefaultName>
@@ -5302,14 +5241,43 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>ធនាគារ ហ្វីលីព ភីអិលស៊ី</Value>
+                                                <Value>​ភាគី​ </Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
                                                   <FontSize>9pt</FontSize>
                                                   <FontWeight>Bold</FontWeight>
                                                   <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>“</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Times New Roman</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>ក</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>”</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Times New Roman</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>
@@ -5320,7 +5288,36 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>អ្នកតំណាងពេញសិទ្ធិ</Value>
+                                                <Value>                   ក្នុងនាម និង</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>តំណាងស្របច្បាប់អោយ</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                              <LineHeight>9pt</LineHeight>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>               ធនាគារ ហ្វីលីព ភីអិលស៊ី</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -5330,9 +5327,215 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                   <Color>#000000</Color>
                                                 </Style>
                                               </TextRun>
+                                              <TextRun>
+                                                <Value xml:space="preserve"> </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Cambria</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>សាខា</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>…….</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Cambria</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
                                             </TextRuns>
                                             <Style>
-                                              <TextAlign>Center</TextAlign>
+                                              <TextAlign>Left</TextAlign>
+                                              <LineHeight>9pt</LineHeight>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Cambria</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                              <LineHeight>9pt</LineHeight>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Cambria</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                              <LineHeight>9pt</LineHeight>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Cambria</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                              <LineHeight>9pt</LineHeight>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Cambria</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                              <LineHeight>9pt</LineHeight>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Cambria</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                              <LineHeight>9pt</LineHeight>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Cambria</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                              <LineHeight>9pt</LineHeight>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Cambria</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                              <LineHeight>9pt</LineHeight>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Cambria</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                              <LineHeight>9pt</LineHeight>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>ឈ្មោះ៖...............</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                  <Color>#000000</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <LeftIndent>0.625in</LeftIndent>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                              <LineHeight>9pt</LineHeight>
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
@@ -5389,6 +5592,176 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                               </TextRun>
                                               <TextRun>
                                                 <Value>”</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Times New Roman</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Center</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Times New Roman</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Center</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Times New Roman</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Center</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Times New Roman</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Center</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Times New Roman</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Center</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Times New Roman</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Center</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Times New Roman</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Center</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Times New Roman</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Center</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Times New Roman</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Center</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Times New Roman</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Center</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value />
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Times New Roman</FontFamily>
@@ -5484,10 +5857,10 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                           <TablixBody>
                             <TablixColumns>
                               <TablixColumn>
-                                <Width>2.10833in</Width>
+                                <Width>3in</Width>
                               </TablixColumn>
                               <TablixColumn>
-                                <Width>5.14167in</Width>
+                                <Width>4.25in</Width>
                               </TablixColumn>
                             </TablixColumns>
                             <TablixRows>
@@ -5510,7 +5883,6 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                   <FontSize>9pt</FontSize>
                                                   <FontWeight>Bold</FontWeight>
                                                   <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>
@@ -8898,7 +9270,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value> ព្រមព្រៀងដោយជាក់លាក់ និងមិនកែប្រែ និងដោយឥតលក្ខខណ្ឌលះបង់នូវសិទ្ធិរបស់ ខ្លួនក្នុងការ ជំទាស់ទៅនឹងសុពលភាព និងភាពដែលអាចអនុវត្តបាននៃកិច្ចសន្យានេះ និង/ឬកិច្ចសន្យាខ្ចីបរិភោគ។</Value>
+                                                <Value> ព្រមព្រៀងដោយជាក់លាក់ និងមិនកែប្រែ និងដោយឥតលក្ខខណ្ឌលះបង់នូវសិទ្ធិរបស់ ខ្លួនក្នុងការជំទាស់ទៅនឹងសុពលភាព និងភាពដែលអាចអនុវត្តបាននៃកិច្ចសន្យានេះ និង/ឬកិច្ចសន្យាខ្ចីបរិភោគ។</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -9113,7 +9485,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value xml:space="preserve"> </Value>
+                                                <Value xml:space="preserve"> </Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>DaunPenh</FontFamily>
@@ -9135,32 +9507,76 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                             </TextRuns>
                                             <Style />
                                           </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox20</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                </TablixCells>
+                              </TablixRow>
+                            </TablixRows>
+                          </TablixBody>
+                          <TablixColumnHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixColumnHierarchy>
+                          <TablixRowHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixRowHierarchy>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                          </Style>
+                        </Tablix>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Tablix Name="Tablix28">
+                          <TablixBody>
+                            <TablixColumns>
+                              <TablixColumn>
+                                <Width>0.81914in</Width>
+                              </TablixColumn>
+                              <TablixColumn>
+                                <Width>6.43086in</Width>
+                              </TablixColumn>
+                            </TablixColumns>
+                            <TablixRows>
+                              <TablixRow>
+                                <Height>0.25in</Height>
+                                <TablixCells>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox63">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
                                                 <Value>១.</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Times New Roman</FontFamily>
-                                                  <FontSize>9pt</FontSize>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value>  ​​</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Times New Roman</FontFamily>
-                                                  <FontSize>7pt</FontSize>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                </Style>
-                                              </TextRun>
-                                              <TextRun>
-                                                <Value>ផ្ទះសង់អំពី ............................................................................................................ ប្រក់ ..................... .......... ......... ......... </Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
                                                   <FontSize>9pt</FontSize>
                                                   <FontWeight>Normal</FontWeight>
@@ -9168,50 +9584,32 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>
-                                            <Style />
+                                            <Style>
+                                              <TextAlign>Right</TextAlign>
+                                            </Style>
                                           </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox16</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox64">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
                                           <Paragraph>
                                             <TextRuns>
-                                              <TextRun>
-                                                <Value>      ទំហំ .......................................ដែលមានទីតាំងស្ថិតនៅភូមិ .........................................................................ឃុំ/សង្កាត់ ...... ..  </Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontSize>9pt</FontSize>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                </Style>
-                                              </TextRun>
-                                            </TextRuns>
-                                            <Style />
-                                          </Paragraph>
-                                          <Paragraph>
-                                            <TextRuns>
-                                              <TextRun>
-                                                <Value>      ស្រុក/ខណ្ឌ/ក្រុង ........... ...................................................................................... ខេត្ត/រាជធានី .................................................................................................................. និងស្ថិតនៅក្នុងបរិវេណអចលនវត្ថុលេខ .............................................................................................................................................................................................. ។</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontSize>9pt</FontSize>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                </Style>
-                                              </TextRun>
-                                            </TextRuns>
-                                            <Style />
-                                          </Paragraph>
-                                          <Paragraph>
-                                            <TextRuns>
-                                              <TextRun>
-                                                <Value>២. </Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Times New Roman</FontFamily>
-                                                  <FontSize>9pt</FontSize>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                </Style>
-                                              </TextRun>
                                               <TextRun>
                                                 <Value xml:space="preserve"> </Value>
                                                 <Style>
@@ -9223,7 +9621,213 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                 </Style>
                                               </TextRun>
                                               <TextRun>
-                                                <Value>ផ្ទះសង់អំពី ............................................................................................................ ប្រក់ ............... .......... ........ ............. .......         ទំហំ .......................................................</Value>
+                                                <Value>ផ្ទះសង់អំពី ............................................................................................................ ប្រក់ ................................................................. ទំហំ .......................................................ដែលមានទីតាំងស្ថិតនៅភូមិ .........................................................................ឃុំ/សង្កាត់ ..................................................................................................................... ស្រុក/ខណ្ឌ/ក្រុង .............................................</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>..........</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>11pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>................... ខេត្ត/រាជធានី .......................</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>..........</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>11pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>.............................................ព្រះរាជាណាចក្រកម្ពុជា។ និងស្ថិតនៅក្នុងបរិវេណអចលនវត្ថុលេខ .............................................................................................................................................................................................. ។</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox20</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                </TablixCells>
+                              </TablixRow>
+                            </TablixRows>
+                          </TablixBody>
+                          <TablixColumnHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixColumnHierarchy>
+                          <TablixRowHierarchy>
+                            <TablixMembers>
+                              <TablixMember />
+                            </TablixMembers>
+                          </TablixRowHierarchy>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                          </Style>
+                        </Tablix>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Tablix Name="Tablix29">
+                          <TablixBody>
+                            <TablixColumns>
+                              <TablixColumn>
+                                <Width>0.81914in</Width>
+                              </TablixColumn>
+                              <TablixColumn>
+                                <Width>6.43086in</Width>
+                              </TablixColumn>
+                            </TablixColumns>
+                            <TablixRows>
+                              <TablixRow>
+                                <Height>0.25in</Height>
+                                <TablixCells>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox65">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>២.</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Right</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox16</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixCell>
+                                  <TablixCell>
+                                    <CellContents>
+                                      <Textbox Name="Textbox66">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value xml:space="preserve"> </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Times New Roman</FontFamily>
+                                                  <FontSize>7pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>ផ្ទះសង់អំពី ............................................................................................................ ប្រក់ ................................................................. ទំហំ .......................................................ដែលមានទីតាំងស្ថិតនៅភូមិ .........................................................................ឃុំ/សង្កាត់ ..................................................................................................................... ស្រុក/ខណ្ឌ/ក្រុង </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>.................................................................... </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>11pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>ខេត្ត/រាជធានី</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value> ...................................................................</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>11pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>ព្រះរាជាណាចក្រកម្ពុជា។</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -9238,7 +9842,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>      ដែលមានទីតាំងស្ថិតនៅភូមិ .........................................................................ឃុំ/សង្កាត់ ............................. ...............................  </Value>
+                                                <Value>និងស្ថិតនៅក្នុងបរិវេណអចលនវត្ថុលេខ .............................................................................................................................................................................................. ។</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -9248,42 +9852,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>
-                                            <Style>
-                                              <TextAlign>Left</TextAlign>
-                                              <LineHeight>10pt</LineHeight>
-                                            </Style>
-                                          </Paragraph>
-                                          <Paragraph>
-                                            <TextRuns>
-                                              <TextRun>
-                                                <Value>      ស្រុក/ខណ្ឌ/ក្រុង ................................................................................................. ខេត្ត/រាជធានី ...................... ................... .......       និងស្ថិតនៅក្នុងបរិវេណអចលនវត្ថុលេខ </Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontSize>9pt</FontSize>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                </Style>
-                                              </TextRun>
-                                            </TextRuns>
-                                            <Style>
-                                              <TextAlign>Left</TextAlign>
-                                              <LineHeight>10pt</LineHeight>
-                                            </Style>
-                                          </Paragraph>
-                                          <Paragraph>
-                                            <TextRuns>
-                                              <TextRun>
-                                                <Value>      .......................................................................................................................................................................................... ។</Value>
-                                                <Style>
-                                                  <FontStyle>Normal</FontStyle>
-                                                  <FontFamily>Khmer OS Content</FontFamily>
-                                                  <FontSize>9pt</FontSize>
-                                                  <FontWeight>Normal</FontWeight>
-                                                  <TextDecoration>None</TextDecoration>
-                                                </Style>
-                                              </TextRun>
-                                            </TextRuns>
+                                            <LeftIndent>0.68958in</LeftIndent>
                                             <Style>
                                               <TextAlign>Left</TextAlign>
                                               <LineHeight>10pt</LineHeight>
@@ -9609,8 +10178,14 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
             <TablixRowHierarchy>
               <TablixMembers>
                 <TablixMember>
-                  <Group Name="Details" />
+                  <Group Name="Details">
+                    <GroupExpressions>
+                      <GroupExpression>A</GroupExpression>
+                    </GroupExpressions>
+                  </Group>
                   <TablixMembers>
+                    <TablixMember />
+                    <TablixMember />
                     <TablixMember />
                     <TablixMember />
                     <TablixMember />
@@ -9648,7 +10223,7 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>VILLAGE</DataSetName>
-            <Height>8in</Height>
+            <Height>8.5in</Height>
             <Width>7.25in</Width>
             <Style>
               <Border>
@@ -9657,135 +10232,11 @@ inner join adm_currency ac on ac.id = apd.currency_id</CommandText>
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>8.05196in</Height>
+        <Height>10.72696in</Height>
         <Style />
       </Body>
-      <Width>7.25001in</Width>
+      <Width>7.25in</Width>
       <Page>
-        <PageFooter>
-          <Height>0.58333in</Height>
-          <PrintOnFirstPage>true</PrintOnFirstPage>
-          <PrintOnLastPage>true</PrintOnLastPage>
-          <ReportItems>
-            <Textbox Name="Textbox1">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>..........................................................................................................................................................................................................................................</Value>
-                      <Style />
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Center</TextAlign>
-                  </Style>
-                </Paragraph>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value />
-                      <Style />
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Center</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>Textbox1</rd:DefaultName>
-              <Top>0.04167in</Top>
-              <Height>0.25in</Height>
-              <Width>7.25in</Width>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-                <PaddingLeft>2pt</PaddingLeft>
-                <PaddingRight>2pt</PaddingRight>
-                <PaddingTop>2pt</PaddingTop>
-                <PaddingBottom>2pt</PaddingBottom>
-              </Style>
-            </Textbox>
-            <Textbox Name="Textbox2">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>="ទំព័រទី " &amp; Globals!PageNumber &amp; " នៃ " &amp; Globals!TotalPages</Value>
-                      <Style />
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Center</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>Textbox2</rd:DefaultName>
-              <Top>0.19167in</Top>
-              <Left>3.14167in</Left>
-              <Height>0.25in</Height>
-              <Width>1in</Width>
-              <ZIndex>1</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-                <VerticalAlign>Top</VerticalAlign>
-                <PaddingLeft>2pt</PaddingLeft>
-                <PaddingRight>2pt</PaddingRight>
-                <PaddingTop>2pt</PaddingTop>
-                <PaddingBottom>2pt</PaddingBottom>
-              </Style>
-            </Textbox>
-            <Textbox Name="Textbox3">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>Micro_Hypothec Agreement_V1.4.docx</Value>
-                      <Style>
-                        <FontStyle>Normal</FontStyle>
-                        <FontFamily>Arial</FontFamily>
-                        <FontSize>6pt</FontSize>
-                        <FontWeight>Normal</FontWeight>
-                        <TextDecoration>None</TextDecoration>
-                        <Color>#000000</Color>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style />
-                </Paragraph>
-              </Paragraphs>
-              <rd:DefaultName>Textbox3</rd:DefaultName>
-              <Top>0.19167in</Top>
-              <Left>5.58833in</Left>
-              <Height>0.25in</Height>
-              <Width>1.66167in</Width>
-              <ZIndex>2</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-                <VerticalAlign>Top</VerticalAlign>
-                <PaddingLeft>2pt</PaddingLeft>
-                <PaddingRight>2pt</PaddingRight>
-                <PaddingTop>2pt</PaddingTop>
-                <PaddingBottom>2pt</PaddingBottom>
-              </Style>
-            </Textbox>
-          </ReportItems>
-          <Style>
-            <Border>
-              <Style>None</Style>
-            </Border>
-          </Style>
-        </PageFooter>
         <PageHeight>11.69in</PageHeight>
         <PageWidth>8.27in</PageWidth>
         <LeftMargin>0.79in</LeftMargin>

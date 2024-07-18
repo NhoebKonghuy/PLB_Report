@@ -1102,10 +1102,8 @@ FROM
                             WHERE MB.APPLICATION_NO='" + applicationNo + "'";
                 var CBC_FEE = @"SELECT
     AP.application_no,
-		CASE WHEN CBC.CBC_FEE IS NULL THEN '............'
-		ELSE 
-    translate(to_char(CBC.cbc_fee, '99999.99'), '0123456789', '០១២៣៤៥៦៧៨៩') END as cbc_fee,
-		' '||CBC.currency as currency
+    translate(to_char(CBC.cbc_fee, '9999999999.99'), '0123456789', '០១២៣៤៥៦៧៨៩') as cbc_fee,
+		CBC.currency
 FROM
     APP_APPLICATION AP
 INNER JOIN
