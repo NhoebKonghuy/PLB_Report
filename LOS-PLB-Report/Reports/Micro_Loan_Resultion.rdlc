@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.9.34622.214</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-07-05T01:36:28.9184698Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-07-23T04:21:05.4422746Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -127,7 +127,7 @@ WHERE AP.APPLICATION_NO='012-A685743812'</CommandText>
 AP.APPLICATION_NO ,
 SA.NOTE AS COMMENT ,
 SA.application_status,
-DE.FIRST_NAME_KH||' '||DE.LAST_NAME_KH AS USER_NAME,
+DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
 TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
 FROM APP_APPLICATION AP 
 INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
@@ -266,7 +266,7 @@ WHERE AP.APPLICATION_NO='012-A685743812'</CommandText>
 AP.APPLICATION_NO ,
 SA.NOTE AS COMMENT ,
 SA.application_status,
-DE.FIRST_NAME_KH||' '||DE.LAST_NAME_KH AS USER_NAME,
+DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
 TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
 FROM APP_APPLICATION AP 
 INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
@@ -306,7 +306,7 @@ WHERE ROL.ROLE = 'BM' AND AP.APPLICATION_NO='011-A827859391'</CommandText>
 AP.APPLICATION_NO ,
 SA.NOTE AS COMMENT ,
 SA.application_status,
-DE.FIRST_NAME_KH||' '||DE.LAST_NAME_KH AS USER_NAME,
+DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
 TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
 FROM APP_APPLICATION AP 
 INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
@@ -346,7 +346,7 @@ WHERE ROL.ROLE = 'Head of Micro' AND AP.APPLICATION_NO='011-A35574'</CommandText
 AP.APPLICATION_NO ,
 SA.NOTE AS COMMENT ,
 SA.application_status,
-DE.FIRST_NAME_KH||' '||DE.LAST_NAME_KH AS USER_NAME,
+DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
 TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
 FROM APP_APPLICATION AP 
 INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
@@ -724,13 +724,14 @@ WHERE AP.APPLICATION_NO='011-A35574'</CommandText>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT
 	AP.APPLICATION_NO,
-	ASLP.NAME 
+	ALP.NAME 
 FROM
 	APP_APPLICATION AP
 	INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.
-	ID INNER JOIN APP_LOAN_PURPOSE ALP ON ALP.APPLICATION_DETAIL_ID = AAD.ID 
+	ID INNER JOIN mas_loan_sub_product ALP ON ALP.ID = AAD.LOAN_SUB_PRODUCT_ID
 	AND ALP.STATUS = 't'
-	INNER JOIN ADM_SUB_LOAN_PURPOSE ASLP ON ASLP.ID = ALP.SUB_LOAN_PURPOSE_ID </CommandText>
+
+</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -789,6 +790,69 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
         <Field Name="condition">
           <DataField>condition</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="ACC_NUMBER">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT
+									AP.APPLICATION_NO,
+ACA.ACCOUNT_NO AS account_number					FROM
+									APP_APPLICATION AP
+									LEFT JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.
+									ID LEFT JOIN app_loan_disbuse_response ACA ON ACA.app_detail_id = AAD.ID 
+									AND ACA.STATUS = 't'</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="application_no">
+          <DataField>application_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="account_number">
+          <DataField>account_number</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="BRANCH">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT * FROM BRANCH_PLB</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="branch_kh">
+          <DataField>branch_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="application_no">
+          <DataField>application_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="MONTHLY">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT ap.application_no,
+			 aad.total_ang_monthly_commitment,
+			 acd.monthly_existing_debt_commitment 
+from app_application ap 
+inner join app_application_detail aad on aad.application_id = ap.id 
+inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="application_no">
+          <DataField>application_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="total_ang_monthly_commitment">
+          <DataField>total_ang_monthly_commitment</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="monthly_existing_debt_commitment">
+          <DataField>monthly_existing_debt_commitment</DataField>
+          <rd:TypeName>System.Double</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -936,7 +1000,7 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Loan Account Number:</Value>
+                                  <Value>Loan Account Number:ssssss</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -969,9 +1033,10 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=First(Fields!account_number.Value, "ACC_NUMBER")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1014,6 +1079,7 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
                                   <Value>Branch</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1047,7 +1113,7 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!branh_name.Value, "GENERA1")</Value>
+                                  <Value>=First(Fields!branch_kh.Value, "BRANCH")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -1557,6 +1623,7 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
                                               <TextRun>
                                                 <Value>Loan Purpose Code2</Value>
                                                 <Style>
+                                                  <FontFamily>Arial</FontFamily>
                                                   <FontSize>8pt</FontSize>
                                                 </Style>
                                               </TextRun>
@@ -2458,7 +2525,7 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=first(Fields!monthly_existing_debt_commitment.Value, "FAC_REQUEST_INFO")</Value>
+                                  <Value>=first(Fields!total_ang_monthly_commitment.Value, "MONTHLY")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -2533,7 +2600,7 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=first(Fields!monthly_existing_debt_commitment.Value, "APPROVAL_FAC_REQUEST_INFO")</Value>
+                                  <Value>=FIRST(Fields!total_ang_monthly_commitment.Value, "MONTHLY") - Sum(Fields!monthly_existing_debt_commitment.Value, "MONTHLY")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -3652,6 +3719,13 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
                                     <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
+                                <TextRun>
+                                  <Value>=iif(first(Fields!loan_fee.Value, "FAC_REQUEST_INFO") is nothing,"","%")</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
                               </TextRuns>
                               <Style>
                                 <TextAlign>Left</TextAlign>
@@ -3721,6 +3795,13 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=first(Fields!approval_loan_fee.Value, "APPROVAL_FAC_REQUEST_INFO")</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=iif(first(Fields!approval_loan_fee.Value, "APPROVAL_FAC_REQUEST_INFO") is nothing,"","%")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -4322,7 +4403,7 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=first(Fields!tenor.Value, "FAC_REQUEST_INFO")</Value>
+                                  <Value>=first(Fields!approval_period.Value, "APPROVAL_FAC_REQUEST_INFO")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -4998,7 +5079,14 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Sum(Fields!ltv_ratio.Value, "FAC_REQUEST_INFO")</Value>
+                                  <Value>=FIRST(Fields!ltv_ratio.Value, "FAC_REQUEST_INFO")</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=IIF(FIRST(Fields!ltv_ratio.Value, "FAC_REQUEST_INFO") IS NOTHING,"","%")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -5026,7 +5114,6 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
                           </Style>
                         </Textbox>
                         <ColSpan>3</ColSpan>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell />
@@ -5075,6 +5162,13 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=first(Fields!ltv_ratio.Value, "APPROVAL_FAC_REQUEST_INFO")</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=IIF(FIRST(Fields!ltv_ratio.Value, "APPROVAL_FAC_REQUEST_INFO") IS NOTHING,"","%")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -5421,6 +5515,7 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
                                   <Value>=Fields!condition_type.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5453,6 +5548,7 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
                                   <Value>=Fields!justification.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5659,6 +5755,7 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
                                   <Value>=Fields!condition.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <FontSize>8pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -8006,7 +8103,7 @@ WHERE AP.APPLICATION_NO='011-A419259489'</CommandText>
             </Style>
           </Image>
         </ReportItems>
-        <Height>12.90217in</Height>
+        <Height>12.23761in</Height>
         <Style />
       </Body>
       <Width>9.21582in</Width>

@@ -256,21 +256,21 @@
       <SubType>Designer</SubType>
     </None>
     <EmbeddedResource Include="Reports\Micro_Guarantee_Agreement.rdlc" />
-    <EmbeddedResource Include="Reports\SUB_COLLATERAL_INFORMATION.rdlc" />
-    <EmbeddedResource Include="Reports\SUB_COLLATERAL_INFORMATION_INDIVIDUAL.rdlc" />
     <EmbeddedResource Include="Reports\SUB_HYPOTHEC.rdlc" />
     <EmbeddedResource Include="Reports\SUB_HYPOTHEC_INDIVIDUAL.rdlc" />
     <EmbeddedResource Include="Reports\Report.rdlc" />
-    <EmbeddedResource Include="Reports\Micro_Loan_Appraisal_Form.rdlc" />
-    <EmbeddedResource Include="Reports\Micro_Hypothec_Agreement_join.rdlc" />
-    <EmbeddedResource Include="Reports\Micro_Loan_Resultion.rdlc" />
     <EmbeddedResource Include="Reports\Guarantee_Agreement.rdlc" />
     <EmbeddedResource Include="Reports\Micro_Loan_Application_update.rdlc" />
-    <EmbeddedResource Include="Reports\Colleteral_Receipt_Update.rdlc" />
-    <EmbeddedResource Include="Reports\Micro_Hypothec_Agreement.rdlc" />
     <EmbeddedResource Include="Reports\Facility_Agrement_Clean_Loan.rdlc" />
     <EmbeddedResource Include="Reports\Facility_Agrement_Clean_Loan_For_Normal_Customer.rdlc" />
     <EmbeddedResource Include="Reports\Individual_Customer_Information.rdlc" />
+    <EmbeddedResource Include="Reports\Micro_Loan_Appraisal_Form.rdlc" />
+    <EmbeddedResource Include="Reports\Micro_Hypothec_Agreement_join.rdlc" />
+    <EmbeddedResource Include="Reports\SUB_COLLATERAL_INFORMATION.rdlc" />
+    <EmbeddedResource Include="Reports\SUB_COLLATERAL_INFORMATION_INDIVIDUAL.rdlC" />
+    <EmbeddedResource Include="Reports\Micro_Hypothec_Agreement.rdlc" />
+    <EmbeddedResource Include="Reports\Colleteral_Receipt_Update.rdlc" />
+    <EmbeddedResource Include="Reports\Micro_Loan_Resultion.rdlc" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

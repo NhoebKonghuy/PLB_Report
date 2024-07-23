@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.9.34622.214</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-05-07T10:42:07.0450314Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-07-22T03:01:28.3529579Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -28,12 +28,12 @@
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AV.VILLAGE_CODE ,
     AP.APPLICATION_NO,
-    CASE WHEN TY.CODE IN ('00102','00103') THEN RIGHT(CAST(COL.COLLATERAL_NO AS VARCHAR), 4) 
+    CASE WHEN TY.CODE IN ('00102','00103') THEN RIGHT(CAST(CCD.COLLATERAL_NAME AS VARCHAR), 4) 
     ELSE '...................................................................................................................................................................................' END AS HEAD_LAND_TITLE ,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD' ) AS ISSUED_DATE_DAY,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE_DAY,
     CASE
     
     WHEN TO_CHAR( CCD.ISSUED_DATE, 'MON' ) = 'JAN' THEN
@@ -61,8 +61,11 @@
     WHEN TO_CHAR( CCD.ISSUED_DATE, 'MON' ) = 'DEC' THEN
     'ធ្នូ' 
   END AS ISSUED_DATE_MONTH,
-  TO_CHAR( CCD.ISSUED_DATE, 'YYYY' ) AS ISSUED_DATE_YEAR ,
-    AV.VILLAGE_KH  ,  AC.COMMUNE_KH  ,  AD.DISTRICT_KH  , APR.PROVINCE_KH 
+  TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE_YEAR ,
+    TRANSLATE(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') as VILLAGE_KH  ,
+		TRANSLATE(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') as COMMUNE_KH  , 
+		TRANSLATE(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') as DISTRICT_KH, 
+		APR.PROVINCE_KH 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -78,7 +81,8 @@
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
   LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''</CommandText>
+  WHERE AP.APPLICATION_NO = '031-A58702'
+	</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -487,7 +491,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>

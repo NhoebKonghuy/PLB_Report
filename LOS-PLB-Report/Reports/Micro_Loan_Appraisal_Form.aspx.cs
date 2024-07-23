@@ -40,17 +40,18 @@ namespace LOS_PLB_Report.Reports
 							left join adm_repayment_type art on art.id = aad.repayment_type_id
 							WHERE AP.APPLICATION_NO='" + applicationNo + "'";
 				var MBLS = @"SELECT 
-							AP.APPLICATION_NO ,
-							SA.NOTE AS COMMENT ,
-							SA.application_status,
-							DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
-							TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
-							FROM APP_APPLICATION AP 
-							INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
-							INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
-							INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
-							INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
-							INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
+AP.APPLICATION_NO ,
+AAR.COMMENTS AS COMMENT ,
+SA.application_status,
+DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
+TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
+FROM APP_APPLICATION AP 
+INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
+INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
+INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
+INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
+INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
+LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID
 							WHERE ROL.ROLE = 'MBLS' AND AP.APPLICATION_NO='" + applicationNo+"'";
 				var COL_ASSET = @"SELECT ap.application_no,
 											 ast.name as sector,
@@ -61,17 +62,18 @@ namespace LOS_PLB_Report.Reports
 								inner join adm_sector_detail ast on ast.id = cca.sector_detail_id
 								WHERE AP.APPLICATION_NO='" + applicationNo+"'";
 				var BM = @"SELECT 
-							AP.APPLICATION_NO ,
-							SA.NOTE AS COMMENT ,
-							SA.application_status,
-							DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
-							TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
-							FROM APP_APPLICATION AP 
-							INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
-							INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
-							INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
-							INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
-							INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
+AP.APPLICATION_NO ,
+AAR.COMMENTS AS COMMENT ,
+SA.application_status,
+DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
+TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
+FROM APP_APPLICATION AP 
+INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
+INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
+INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
+INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
+INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
+LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID
 							WHERE ROL.ROLE = 'BM' AND AP.APPLICATION_NO='" + applicationNo+"'";
 				var LOAN_PURPOSE = @"SELECT ap.application_no,
 											 apd.purpose_detail,
@@ -85,30 +87,32 @@ namespace LOS_PLB_Report.Reports
 								LEFT JOIN adm_currency AC ON AC.ID = AAD.currency_id
 									WHERE AP.APPLICATION_NO='" + applicationNo+"'";
 				var MBLO = @"SELECT 
-								AP.APPLICATION_NO ,
-								SA.NOTE AS COMMENT ,
-								SA.application_status,
-								DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
-								TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
-								FROM APP_APPLICATION AP 
-								INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
-								INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
-								INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
-								INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
-								INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
+AP.APPLICATION_NO ,
+AAR.COMMENTS AS COMMENT ,
+SA.application_status,
+DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
+TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
+FROM APP_APPLICATION AP 
+INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
+INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
+INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
+INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
+INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
+LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID
 								WHERE ROL.ROLE = 'MBLO' AND AP.APPLICATION_NO='" + applicationNo+"'";
 				var ANALYST = @"SELECT 
-							AP.APPLICATION_NO ,
-							SA.NOTE AS COMMENT ,
-							SA.application_status,
-							DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
-							TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
-							FROM APP_APPLICATION AP 
-							INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
-							INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
-							INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
-							INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
-							INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
+AP.APPLICATION_NO ,
+AAR.COMMENTS AS COMMENT ,
+SA.application_status,
+DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
+TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
+FROM APP_APPLICATION AP 
+INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
+INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
+INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
+INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
+INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
+LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID
 							WHERE ROL.ROLE = 'Analyst' AND AP.APPLICATION_NO='" + applicationNo+"'";
 				var SUB_PURPOSE = @"SELECT ap.application_no,
 									 AAD.applied_amount,
@@ -245,7 +249,7 @@ namespace LOS_PLB_Report.Reports
 							WHERE ap.application_no ='" + applicationNo + "'";
 				var INCOME = @"SELECT *
 								FROM (
-									SELECT ap.application_no,
+									(SELECT ap.application_no,
 										   CIB.occupation_description AS SOURCE_INCOME,
 										   CIB.business_income AS income,
 										   to_char(CIB.start_date, 'yyyy') AS YEAR,
@@ -285,7 +289,52 @@ namespace LOS_PLB_Report.Reports
 									FROM app_application AP 
 									INNER JOIN app_application_detail AAD ON AAD.application_id = AP.ID 
 										INNER JOIN cus_customer CC ON CC.ID = AAD.customer_id 
-									INNER JOIN app_cus_income_property_rental CIB ON CIB.application_id = AP.ID AND CIB.customer_id = CC.ID AND CIB.STATUS= 't'
+									INNER JOIN app_cus_income_property_rental CIB ON CIB.application_id = AP.ID AND CIB.customer_id = CC.ID AND CIB.STATUS= 't')
+										UNION
+										(SELECT ap.application_no,
+										   CIB.occupation_description AS SOURCE_INCOME,
+										   CIB.business_income AS income,
+										   to_char(CIB.start_date, 'yyyy') AS YEAR,
+										   CIB.net_income AS NET_INCOME,
+										   CIB.net_income/CIB.business_income AS MARGIN,
+										   CIB.total_expense AS expense,
+													 CC.family_name_kh||' '||CC.given_name_kh as name,
+										   CIB.business_status AS BUS
+									FROM app_application AP 
+										INNER JOIN APP_SUPPLEMENTARY AST ON AST.application_id = AP.ID AND AST.CUSTOMER_TYPE = 'CO_BORROWER' AND AST.STATUS ='t'
+										INNER JOIN APP_SUPPLEMENTARY_DETAIL ASD ON ASD.SUPPLEMENTARY_ID = AST.ID AND ASD.STATUS ='t'
+										INNER JOIN cus_customer CC ON CC.ID = ASD.customer_id 
+									INNER JOIN app_customer_income_business CIB ON CIB.application_id = AP.ID AND CC.ID = CIB.customer_id AND CIB.STATUS= 't'
+									UNION 
+									SELECT ap.application_no,
+										   CIB.POSITION AS SOURCE_INCOME,
+										   (CIB.base_salary + CIB.other_benefit) AS income,
+										   to_char(CIB.start_date, 'yyyy') AS YEAR,
+										   CIB.net_income AS NET_INCOME,
+										   CIB.net_income / (CIB.base_salary + CIB.other_benefit) AS MARGIN,
+										   CIB.expense AS expense,
+										   CC.family_name_kh||' '||CC.given_name_kh as name,
+										   CIB.business_status AS BUS
+									FROM app_application AP 
+										INNER JOIN APP_SUPPLEMENTARY AST ON AST.application_id = AP.ID AND AST.CUSTOMER_TYPE = 'CO_BORROWER' AND AST.STATUS ='t'
+										INNER JOIN APP_SUPPLEMENTARY_DETAIL ASD ON ASD.SUPPLEMENTARY_ID = AST.ID AND ASD.STATUS ='t'
+										INNER JOIN cus_customer CC ON CC.ID = ASD.customer_id
+									INNER JOIN app_customer_income_employee CIB ON CIB.application_id = AP.ID AND CC.ID = CIB.customer_id AND CIB.STATUS= 't'
+									UNION
+									SELECT ap.application_no,
+										   CIB.property_rental_description AS SOURCE_INCOME,
+										   CIB.income_from_property_rental AS income,
+										   to_char(CIB.started_date, 'yyyy') AS YEAR,
+										   CIB.net_income AS NET_INCOME,
+										   CIB.net_income/CIB.income_from_property_rental AS MARGIN,
+										   CIB.miscellaneous_expenses AS expense,
+										   CC.family_name_kh||' '||CC.given_name_kh as name,
+										   CIB.business_status AS BUS
+									FROM app_application AP 
+										INNER JOIN APP_SUPPLEMENTARY AST ON AST.application_id = AP.ID AND AST.CUSTOMER_TYPE = 'CO_BORROWER' AND AST.STATUS ='t'
+										INNER JOIN APP_SUPPLEMENTARY_DETAIL ASD ON ASD.SUPPLEMENTARY_ID = AST.ID AND ASD.STATUS ='t'
+										INNER JOIN cus_customer CC ON CC.ID = ASD.customer_id 
+									INNER JOIN app_cus_income_property_rental CIB ON CIB.application_id = AP.ID AND CIB.customer_id = CC.ID AND CIB.STATUS= 't')
 								) AS subquery
 								WHERE subquery.application_no = '" + applicationNo+"'";
                 var LOAN_FUND = @"SELECT ap.application_no,
@@ -386,9 +435,9 @@ namespace LOS_PLB_Report.Reports
 										 ASI.CODE
 							 FROM APP_APPLICATION AP
 							INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID 
-							INNER JOIN CUS_CUSTOMER CC ON CC.ID = AAD.CUSTOMER_ID 
-							INNER JOIN APP_CUSTOMER_INCOME_BUSINESS CIB ON CIB.CUSTOMER_ID = CC.ID 
-							LEFT JOIN ADM_SOURCE_INCOME ASI ON ASI.ID = CIB.SOURCE_INCOME_ID
+							INNER JOIN APP_LOAN_PURPOSE ALP ON ALP.ID = AAD.LOAN_PURPOSE_ID AND ALP.STATUS = 't'
+							INNER JOIN APP_LOAN_PURPOSE_DETAIL ALPD ON ALPD.LOAN_PURPOSE_ID = ALP.ID 
+							INNER JOIN ADM_PURPOSE ASI ON ASI.ID = ALPD.PURPOSE_ID
 							WHERE ap.application_no ='" + applicationNo + "'";
 				var SCORE = @"SELECT AP.APPLICATION_NO,
 								   ACR.final_score AS CRR_SCORE,
@@ -429,13 +478,15 @@ namespace LOS_PLB_Report.Reports
 								FROM APP_APPLICATION AP
 								INNER JOIN APP_CUSTOMER_DEBT_INFO ADI ON ADI.APPLICATION_ID = AP.ID
 					WHERE AP.APPLICATION_NO='"+applicationNo+"'";
-				var NUM_ACCOUNT = @"SELECT AP.APPLICATION_NO,
-									 ACA.ACCOUNT_NUMBER
-						FROM APP_APPLICATION AP 
-						INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID 
-						INNER JOIN CUS_CUSTOMER CC ON CC.ID = AAD.CUSTOMER_ID
-						INNER JOIN APP_CUS_ACCOUNT ACA ON ACA.CUSTOMER_ID = CC.ID AND ACA.app_detail_id=AAD.ID AND ACA.STATUS='t' 
-						WHERE AP.APPLICATION_NO ='"+applicationNo+"'";
+				var NUM_ACCOUNT = @"SELECT
+									AP.APPLICATION_NO,
+								    ACA.ACCOUNT_NO AS account_number
+								FROM
+									APP_APPLICATION AP
+									LEFT JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.
+									ID LEFT JOIN app_loan_disbuse_response ACA ON ACA.app_detail_id = AAD.ID 
+									AND ACA.STATUS = 't'
+                                WHERE AP.APPLICATION_NO='" + applicationNo + "'";
 				var DEVIATE_REQUEST = @"SELECT 
 					  AP.APPLICATION_NO ,
 					  JSONB_ARRAY_ELEMENTS(APP.DEVIATION_REQUEST) ->> 'conditionType' AS CONDITION_TYPE,
@@ -452,6 +503,21 @@ namespace LOS_PLB_Report.Reports
 					INNER JOIN cus_customer CC ON CC.ID = AAD.customer_id 
 					INNER JOIN app_customer_income_business CIB ON CIB.customer_id = CC.ID
 					where ap.application_no ='"+applicationNo+"'";
+				var NBC = @"SELECT 
+								APPLICATION_NO,
+								ALP.risk_weighted
+						FROM APP_APPLICATION AP 
+						INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID
+						INNER JOIN APP_LOAN_PURPOSE ALP ON ALP.APPLICATION_DETAIL_ID = AAD.ID AND ALP.STATUS ='t'
+						WHERE AP.APPLICATION_NO ='"+applicationNo+"'";
+				var COMMENT = @"SELECT AP.APPLICATION_NO,
+							AAR.COMMENTS FROM 
+							APP_APPLICATION AP 
+							INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID 
+							INNER JOIN APP_APPLICATION_RECOMMENDATION AAR ON AAR.application_detail_id = AAD.ID 
+							WHERE AP.APPLICATION_NO = '"+applicationNo+"'";
+
+
 
 
 				var dtEXIST_DEBT = conn.getPostgreSQLDataTable(EXIST_DEBT);
@@ -483,9 +549,12 @@ namespace LOS_PLB_Report.Reports
 				var dtPURPOSE_CODE = conn.getPostgreSQLDataTable(PURPOSE_CODE);
 				var dtNET_INCOME = conn.getPostgreSQLDataTable(NET_INCOME);
 				var dtDEBT = conn.getPostgreSQLDataTable(DEBT);
+                var dtNBC = conn.getPostgreSQLDataTable(NBC);
+				var dtCOMMENT = conn.getPostgreSQLDataTable(COMMENT);
 
 
-				
+
+
                 var dsFAC_REQUEST_INFO = new ReportDataSource("LOAN_REQUEST", dtLOAN_REQUEST);
 				var dsEXIST_DEBT = new ReportDataSource("EXIST_DEBT", dtEXIST_DEBT);
 				var dsNUM_ACCOUNT = new ReportDataSource("ACC_NUMBER", dtNUM_ACCOUNT);
@@ -514,12 +583,14 @@ namespace LOS_PLB_Report.Reports
 				var dsPURPOSE_CODE = new ReportDataSource("PURPOSE_CODE", dtPURPOSE_CODE);
 				var dsNET_INCOME = new ReportDataSource("NET_INCOME", dtNET_INCOME);
 				var dsDEBT = new ReportDataSource("DEBT", dtDEBT);
+				var dsNBC = new ReportDataSource("NBC", dtNBC);
+				var dsCOMMENT = new ReportDataSource("COMMENT", dtCOMMENT);
 				var dsFACILITY_INFO = new ReportDataSource("FACILITY_INFO", dtFACILITY_INFO);
 
 
 
 
-                conn.generateReport(ReportViewer1, @"Micro_Loan_Appraisal_Form", null, dsFACILITY_INFO, dsMBLS, dsFAC_REQUEST_INFO, dsCOL_ASSET, dsBM, dsLOAN_PURPOSE, dsMBLO, dsANALYST, dsGUAN_CO_BOR, dsBORO_INFO, dsCOLLATERAL_INFO, dsSUB_PURPOSE, dsCOLLATERAL, dsINCOME, dsSCORE, dsCBC, dsINCOME, dsAPPROVAL, dsCOL_INFO, dsGENERAL_INFO, dsLOAN_FUND, dsHYP_COL, dslOAN_FMV, dsPURPOSE_CODE, dsNET_INCOME, dsDEBT, dsEXIST_DEBT, dsNUM_ACCOUNT, dsDEVIATE_REQUEST, dsNUM_EMPLOYEE);
+                conn.generateReport(ReportViewer1, @"Micro_Loan_Appraisal_Form", null, dsNBC, dsFACILITY_INFO,dsCOMMENT, dsMBLS, dsFAC_REQUEST_INFO, dsCOL_ASSET, dsBM, dsLOAN_PURPOSE, dsMBLO, dsANALYST, dsGUAN_CO_BOR, dsBORO_INFO, dsCOLLATERAL_INFO, dsSUB_PURPOSE, dsCOLLATERAL, dsINCOME, dsSCORE, dsCBC, dsINCOME, dsAPPROVAL, dsCOL_INFO, dsGENERAL_INFO, dsLOAN_FUND, dsHYP_COL, dslOAN_FMV, dsPURPOSE_CODE, dsNET_INCOME, dsDEBT, dsEXIST_DEBT, dsNUM_ACCOUNT, dsDEVIATE_REQUEST, dsNUM_EMPLOYEE);
 
             }
         }

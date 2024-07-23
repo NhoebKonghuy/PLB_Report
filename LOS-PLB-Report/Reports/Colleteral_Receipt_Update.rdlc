@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.9.34622.214</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-07-15T04:42:40.6202350Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-07-18T01:30:12.1302598Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -1744,18 +1744,7 @@ WHERE
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
-                <TablixMember>
-                  <Group Name="application_no1">
-                    <GroupExpressions>
-                      <GroupExpression>=Fields!application_no.Value</GroupExpression>
-                    </GroupExpressions>
-                  </Group>
-                  <SortExpressions>
-                    <SortExpression>
-                      <Value>=Fields!application_no.Value</Value>
-                    </SortExpression>
-                  </SortExpressions>
-                </TablixMember>
+                <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>OWNER_COL_INFO</DataSetName>
@@ -2029,7 +2018,6 @@ WHERE
                                           <PaddingBottom>2pt</PaddingBottom>
                                         </Style>
                                       </Textbox>
-                                      <rd:Selected>true</rd:Selected>
                                     </CellContents>
                                   </TablixCell>
                                 </TablixCells>
