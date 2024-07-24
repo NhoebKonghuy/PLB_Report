@@ -22,7 +22,7 @@ namespace LOS_PLB_Report.Reports
 				var FAC_REQUEST_INFO = @"SELECT AP.APPLICATION_NO,
 										 APP.total_exposure_amount as total_exposure_amount,
 										 APP.monthly_existing_debt_commitment,
-										 APP.request_loan_amount AS COMMIT_OF_LOAN_REQUEST,
+										 AAD.total_ang_monthly_commitment AS COMMIT_OF_LOAN_REQUEST,
 										 LP.NAME LOAN_PRODUCT,
 										 APP.request_loan_amount AS LOAN_AMOUNT,
 										 AC.currency as currency,
@@ -44,7 +44,7 @@ namespace LOS_PLB_Report.Reports
 							INNER JOIN CUS_CUSTOMER CC ON CC.ID = AAD.customer_id 
 							INNER JOIN mas_loan_product LP ON LP.ID = AAD.loan_product_id
 							INNER JOIN adm_currency AC ON AC.ID = APP.currency_id
-							INNER JOIN adm_repayment_type ART ON ART.ID = APP.repayment_type_id  
+							INNER JOIN adm_repayment_type ART ON ART.ID = APP.repayment_type_id
 							WHERE AP.APPLICATION_NO='" + applicationNo + "'";
 				var SqlMBLS = @"SELECT 
 				AP.APPLICATION_NO ,
@@ -61,30 +61,28 @@ namespace LOS_PLB_Report.Reports
 				LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID 
 				WHERE AP.APPLICATION_NO='" + applicationNo+"'";
 				var APPROVAL_FAC_REQUEST_INFO = @"SELECT AP.APPLICATION_NO,
-												 APP.total_exposure_amount as total_exposure_amount,
-												 APP.monthly_existing_debt_commitment,
-												 APP.approval_request_loan_amount AS COMMIT_OF_LOAN_REQUEST,
-												 LP.NAME LOAN_PRODUCT,
-												 APP.approval_request_loan_amount AS LOAN_AMOUNT,
-												 AC.currency as currency,
-												 APP.approval_annual_interest_rate||'%' as anual_inter_rate,
-												 APP.approval_monthly_interest_rate||'%' as mon_inter_rate,
-												 APP.approval_loan_fee,
-												 APP.cbc_fee AS cbc_fee,
-												 APP.TENOR,
-												 App.approval_period,
-												 ART.NAME AS REPAYMENT,
-												 AAD.pay_principle_every_month,
-												 APP.approval_total_average,
-												 APP.approval_current_dscr AS CURENT_DSCR,
-												 APP.ltv_ratio AS LTV_RATIO
-									FROM APP_APPLICATION AP 
-									INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID 
-									LEFT JOIN app_application_pre_approval APP ON APP.application_detail_id = AAD.ID
-									INNER JOIN CUS_CUSTOMER CC ON CC.ID = AAD.customer_id 
-									INNER JOIN mas_loan_product LP ON LP.ID = AAD.loan_product_id
-									INNER JOIN adm_currency AC ON AC.ID = APP.currency_id
-									LEFT JOIN adm_repayment_type ART ON ART.ID = APP.approval_repayment_type_id 
+			 APP.total_exposure_amount as total_exposure_amount,
+			 APP.monthly_existing_debt_commitment,
+			 APP.total_average - APP.monthly_existing_debt_commitment AS COMMIT_OF_LOAN_REQUEST,
+			 APP.approval_request_loan_amount AS LOAN_AMOUNT,
+			 AC.currency as currency,
+			 APP.approval_annual_interest_rate||'%' as anual_inter_rate,
+			 APP.approval_monthly_interest_rate||'%' as mon_inter_rate,
+			 APP.approval_loan_fee,
+			 APP.cbc_fee AS cbc_fee,
+			 APP.TENOR,
+			 App.approval_period,
+			 ART.NAME AS REPAYMENT,
+			 APP.approval_pay_principle_every_month,
+			 APP.approval_total_average,
+			 APP.approval_current_dscr AS CURENT_DSCR,
+			 APP.approval_ltv_ratio AS LTV_RATIO
+FROM APP_APPLICATION AP 
+INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID 
+LEFT JOIN app_application_pre_approval APP ON APP.application_detail_id = AAD.ID
+INNER JOIN CUS_CUSTOMER CC ON CC.ID = AAD.customer_id 
+INNER JOIN adm_currency AC ON AC.ID = APP.currency_id
+LEFT JOIN adm_repayment_type ART ON ART.ID = APP.approval_repayment_type_id 
 									WHERE AP.APPLICATION_NO='" + applicationNo+"'";
 				var BM = @"SELECT 
 AP.APPLICATION_NO ,

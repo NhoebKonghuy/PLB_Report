@@ -553,8 +553,8 @@ FROM
 			
 			WHEN CC.GENDER = 'MALE' THEN
 			'ប្រុស' ELSE'ស្រី' 
-		END ||
  ' ថ្ងៃខែឆ្នាំកំណើត​​ ថ្ងៃទី ' || convert_to_khmer_number ( CAST ( EXTRACT ( DAY FROM CC.DATE_OF_BIRTH ) AS INT ) ) || ' ខែ ' ||
+		END ||
 CASE
 		
 		WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JAN' THEN

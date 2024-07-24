@@ -711,7 +711,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -740,7 +740,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -769,7 +769,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -798,7 +798,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -827,7 +827,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -856,7 +856,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -885,7 +885,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -914,7 +914,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -943,7 +943,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -972,7 +972,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -1001,7 +1001,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -1018,7 +1018,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
                               WHERE AP.APPLICATION_NO = '" + applicationNo + "' ) A WHERE A.NUM = 11";
                 var COL_12= @"SELECT
   * 
@@ -1030,7 +1030,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -1059,7 +1059,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -1088,7 +1088,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -1117,7 +1117,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -1134,7 +1134,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
                               WHERE AP.APPLICATION_NO = '" + applicationNo + "' ) A WHERE A.NUM = 15";
                 var COL_16 = @"SELECT
   * 
@@ -1146,7 +1146,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -1175,7 +1175,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -1192,7 +1192,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
                               WHERE AP.APPLICATION_NO = '" + applicationNo + "' ) A WHERE A.NUM = 17";
                 var COL_18 = @"SELECT
   * 
@@ -1204,7 +1204,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -1233,7 +1233,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -1262,7 +1262,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -1279,7 +1279,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
                               WHERE AP.APPLICATION_NO = '" + applicationNo + "' ) A WHERE A.NUM = 20";
                 var COL_21 = @"SELECT
   * 
@@ -1291,7 +1291,7 @@ FROM
     COL.COLLATERAL_TITLE,
     TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-		' និង '||COL.CO_owner_name as co_owner,
+	COL.CO_owner_name as co_owner,
     TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
     TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
     'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
@@ -1308,7 +1308,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
                               WHERE AP.APPLICATION_NO = '" + applicationNo + "' ) A WHERE A.NUM = 21";
                 var GUARANTOR_LOAN = @"SELECT ROW_NUMBER
 	( ) OVER ( ORDER BY GU.ID ) AS num,
@@ -1893,7 +1893,7 @@ FROM
                 var dsCBC_FEE = new ReportDataSource("CBC_FEE", dtCBC_FEE);
                 var dsCO_BORO_3 = new ReportDataSource("CO_BORO_3", dtCO_BORO_3);
 
-                conn.generateReport(ReportViewer1, @"Facility_Agrement_Clean_Loan", null,dsBRANCH, dsCO_BORO_3, dsBORROWER_INFO, dsCO_BORO_1,dsCBC_FEE, dsC0_BORRO_2,dsTICK, dsC0_BORRO_3, dsPURPOSE, dsPURPOSEDT_1, dsPREFIX_NAME_BOR, dsPREFIX_SUB_NAME_1, dsPREFIX_SUB_NAME_2, dsPREFIX_SUB_NAME_3, dsREPATMENT, dsPURPOSEDT_2, dsPURPOSEDT_3, dsPURPOSEDT_4, dsTRANCE, dsBORROWER_INFO, dsCoL_1, dsCoL_2, dsCoL_3, dsCoL_4, dsCoL_5, dsCoL_6, dsCoL_7, dsCoL_8, dsCoL_9, dsCoL_10, dsCoL_11, dsCoL_12, dsCoL_13, dsCoL_14, dsCoL_15, dsCoL_16, dsCoL_17, dsCoL_18, dsCoL_19, dsCoL_20, dsCoL_21, dsGUARANTOR_LOAN);
+                conn.generateReport(ReportViewer1, @"Facility_Agreement_Secured_Loan", null,dsBRANCH, dsCO_BORO_3, dsBORROWER_INFO, dsCO_BORO_1,dsCBC_FEE, dsC0_BORRO_2,dsTICK, dsC0_BORRO_3, dsPURPOSE, dsPURPOSEDT_1, dsPREFIX_NAME_BOR, dsPREFIX_SUB_NAME_1, dsPREFIX_SUB_NAME_2, dsPREFIX_SUB_NAME_3, dsREPATMENT, dsPURPOSEDT_2, dsPURPOSEDT_3, dsPURPOSEDT_4, dsTRANCE, dsBORROWER_INFO, dsCoL_1, dsCoL_2, dsCoL_3, dsCoL_4, dsCoL_5, dsCoL_6, dsCoL_7, dsCoL_8, dsCoL_9, dsCoL_10, dsCoL_11, dsCoL_12, dsCoL_13, dsCoL_14, dsCoL_15, dsCoL_16, dsCoL_17, dsCoL_18, dsCoL_19, dsCoL_20, dsCoL_21, dsGUARANTOR_LOAN);
 
             }
         }

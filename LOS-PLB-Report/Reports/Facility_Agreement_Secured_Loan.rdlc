@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.9.34622.214</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-07-18T01:36:27.4133235Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-07-24T01:07:51.2281998Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -1209,11 +1209,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -1227,8 +1228,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
   ) A WHERE A.NUM = 2</CommandText>
       </Query>
       <Fields>
@@ -1250,6 +1250,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -1277,11 +1281,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -1295,8 +1300,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
   ) A WHERE A.NUM = 3</CommandText>
       </Query>
       <Fields>
@@ -1318,6 +1322,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -1345,11 +1353,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -1363,8 +1372,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
   ) A WHERE A.NUM = 4</CommandText>
       </Query>
       <Fields>
@@ -1386,6 +1394,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -1413,11 +1425,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -1431,8 +1444,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
   ) A WHERE A.NUM = 5</CommandText>
       </Query>
       <Fields>
@@ -1454,6 +1466,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -1481,11 +1497,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -1499,8 +1516,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
   ) A WHERE A.NUM = 6</CommandText>
       </Query>
       <Fields>
@@ -1522,6 +1538,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -1549,11 +1569,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -1567,8 +1588,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
   ) A WHERE A.NUM = 7</CommandText>
       </Query>
       <Fields>
@@ -1590,6 +1610,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -1617,11 +1641,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -1635,9 +1660,9 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''
-  ) A WHERE A.NUM = 8</CommandText>
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
+  ) A WHERE A.NUM = 8
+</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -1658,6 +1683,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -1685,11 +1714,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -1703,8 +1733,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
   ) A WHERE A.NUM = 9</CommandText>
       </Query>
       <Fields>
@@ -1726,6 +1755,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -1753,11 +1786,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -1771,8 +1805,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
   ) A WHERE A.NUM = 10</CommandText>
       </Query>
       <Fields>
@@ -1794,6 +1827,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -1821,11 +1858,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -1839,8 +1877,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
   ) A WHERE A.NUM = 11</CommandText>
       </Query>
       <Fields>
@@ -1862,6 +1899,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -1889,11 +1930,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -1907,8 +1949,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
   ) A WHERE A.NUM = 12</CommandText>
       </Query>
       <Fields>
@@ -1930,6 +1971,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -1957,11 +2002,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -1975,8 +2021,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
   ) A WHERE A.NUM = 13</CommandText>
       </Query>
       <Fields>
@@ -1998,6 +2043,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -2025,11 +2074,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -2043,8 +2093,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
   ) A WHERE A.NUM = 14</CommandText>
       </Query>
       <Fields>
@@ -2066,6 +2115,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -2093,11 +2146,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -2111,8 +2165,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
   ) A WHERE A.NUM = 15</CommandText>
       </Query>
       <Fields>
@@ -2134,6 +2187,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -2161,11 +2218,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -2179,8 +2237,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
   ) A WHERE A.NUM = 16</CommandText>
       </Query>
       <Fields>
@@ -2202,6 +2259,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -2229,11 +2290,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -2247,9 +2309,8 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''
-  ) A WHERE A.NUM = 12</CommandText>
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
+  ) A WHERE A.NUM = 17</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -2270,6 +2331,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -2297,11 +2362,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -2315,9 +2381,8 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''
-  ) A WHERE A.NUM = 12</CommandText>
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
+  ) A WHERE A.NUM = 18</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -2338,6 +2403,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -2365,11 +2434,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -2383,9 +2453,9 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''
-  ) A WHERE A.NUM = 19</CommandText>
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
+  ) A WHERE A.NUM = 19
+</CommandText>
       </Query>
       <Fields>
         <Field Name="num">
@@ -2406,6 +2476,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -2433,11 +2507,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -2451,8 +2526,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
   ) A WHERE A.NUM = 20</CommandText>
       </Query>
       <Fields>
@@ -2474,6 +2548,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -2501,11 +2579,12 @@ FROM
     ( ) OVER ( ORDER BY COL.ID ) AS NUM,
     AP.APPLICATION_NO,
     COL.COLLATERAL_TITLE,
-    COL.COLLATERAL_NO,
+    TRANSLATE(CCD.COLLATERAL_NAME,'1234567890','១២៣៤៥៦៧៨៩០') AS COLLATERAL_NO,
     COL.OWNER_NAME,
-    CCD.LAND_AREA|| ' m2' AS LAND_AREA,
-    TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ) AS ISSUED_DATE,
-    AV.VILLAGE_KH || ' , '||  AC.COMMUNE_KH || ' , ' || AD.DISTRICT_KH||  ' , ' || APR.PROVINCE_KH AS COL_ADDRESS 
+		' និង '||COL.CO_owner_name as co_owner,
+    TRANSLATE(to_char(CCD.LAND_AREA, 'fm999G999G999G999G999G999'),'1234567890','១២៣៤៥៦៧៨៩០')|| ' ម៉ែត្រការ៉េ' AS LAND_AREA,
+    TRANSLATE(TO_CHAR( CCD.ISSUED_DATE, 'DD/MM/YYYY' ),'1234567890','១២៣៤៥៦៧៨៩០') AS ISSUED_DATE,
+    'ភូមិ'||translate(AV.VILLAGE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ឃុំ/សង្កាត់'||  translate(AC.COMMUNE_KH,'1234567890','១២៣៤៥៦៧៨៩០') || ' ស្រុក/ខណ្ឌ' ||translate(AD.DISTRICT_KH,'1234567890','១២៣៤៥៦៧៨៩០') ||  ' ខេត្ត/ក្រុង' || APR.PROVINCE_KH AS COL_ADDRESS 
   FROM
     APP_APPLICATION AP
     INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID 
@@ -2519,8 +2598,7 @@ FROM
     LEFT JOIN ADM_VILLAGE_CBC AV ON AV.ID = CCD.VILLAGE_ID
     LEFT JOIN ADM_COMMUNE_CBC AC ON AC.ID = CCD.COMMUNE_ID
     LEFT JOIN ADM_DISTRICT_CBC AD ON AD.ID = CCD.DISTRICT_ID
-  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID 
-  WHERE AP.APPLICATION_NO = ''
+  LEFT JOIN ADM_PROVINCE_CBC APR ON APR.ID = CCD.PROVINCE_ID
   ) A WHERE A.NUM = 21</CommandText>
       </Query>
       <Fields>
@@ -2542,6 +2620,10 @@ FROM
         </Field>
         <Field Name="owner_name">
           <DataField>owner_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="co_owner">
+          <DataField>co_owner</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="land_area">
@@ -6876,19 +6958,48 @@ WHERE
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>ភាគី “ខ”</Value>
+                                                <Value>ភាគី “ក”</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Siemreap</FontFamily>
-                                                  <FontWeight>Normal</FontWeight>
+                                                  <FontWeight>Bold</FontWeight>
                                                   <TextDecoration>None</TextDecoration>
-                                                  <Color>#000000</Color>
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>
                                             <Style>
                                               <TextAlign>Center</TextAlign>
                                             </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>ក្នុងនាម និងតំណាងស្របច្បាប់អោយ</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>ធនាគារ ហ្វីលីព ភីអិលស៊ី សាខា .....</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style />
                                           </Paragraph>
                                         </Paragraphs>
                                         <rd:DefaultName>Textbox193</rd:DefaultName>
@@ -6906,144 +7017,38 @@ WHERE
                                   </TablixCell>
                                   <TablixCell>
                                     <CellContents>
-                                      <Tablix Name="Tablix8">
-                                        <TablixBody>
-                                          <TablixColumns>
-                                            <TablixColumn>
-                                              <Width>1.06745in</Width>
-                                            </TablixColumn>
-                                            <TablixColumn>
-                                              <Width>2.53242in</Width>
-                                            </TablixColumn>
-                                          </TablixColumns>
-                                          <TablixRows>
-                                            <TablixRow>
-                                              <Height>0.25in</Height>
-                                              <TablixCells>
-                                                <TablixCell>
-                                                  <CellContents>
-                                                    <Textbox Name="Textbox79">
-                                                      <CanGrow>true</CanGrow>
-                                                      <KeepTogether>true</KeepTogether>
-                                                      <Paragraphs>
-                                                        <Paragraph>
-                                                          <TextRuns>
-                                                            <TextRun>
-                                                              <Value />
-                                                              <Style />
-                                                            </TextRun>
-                                                          </TextRuns>
-                                                          <Style />
-                                                        </Paragraph>
-                                                      </Paragraphs>
-                                                      <rd:DefaultName>Textbox79</rd:DefaultName>
-                                                      <Style>
-                                                        <Border>
-                                                          <Style>None</Style>
-                                                        </Border>
-                                                        <PaddingLeft>2pt</PaddingLeft>
-                                                        <PaddingRight>2pt</PaddingRight>
-                                                        <PaddingTop>2pt</PaddingTop>
-                                                        <PaddingBottom>2pt</PaddingBottom>
-                                                      </Style>
-                                                    </Textbox>
-                                                  </CellContents>
-                                                </TablixCell>
-                                                <TablixCell>
-                                                  <CellContents>
-                                                    <Textbox Name="Textbox81">
-                                                      <CanGrow>true</CanGrow>
-                                                      <KeepTogether>true</KeepTogether>
-                                                      <Paragraphs>
-                                                        <Paragraph>
-                                                          <TextRuns>
-                                                            <TextRun>
-                                                              <Value>ភាគី “ក”     </Value>
-                                                              <Style>
-                                                                <FontStyle>Normal</FontStyle>
-                                                                <FontFamily>Khmer OS Siemreap</FontFamily>
-                                                                <FontWeight>Normal</FontWeight>
-                                                                <TextDecoration>None</TextDecoration>
-                                                                <Color>#000000</Color>
-                                                              </Style>
-                                                            </TextRun>
-                                                          </TextRuns>
-                                                          <Style>
-                                                            <TextAlign>Center</TextAlign>
-                                                          </Style>
-                                                        </Paragraph>
-                                                        <Paragraph>
-                                                          <TextRuns>
-                                                            <TextRun>
-                                                              <Value>ធនាគារ ហ្វីលីព ភីអិលស៊ី សាខា </Value>
-                                                              <Style>
-                                                                <FontStyle>Normal</FontStyle>
-                                                                <FontFamily>Khmer OS Siemreap</FontFamily>
-                                                                <FontWeight>Bold</FontWeight>
-                                                                <TextDecoration>None</TextDecoration>
-                                                                <Color>#000000</Color>
-                                                              </Style>
-                                                            </TextRun>
-                                                            <TextRun>
-                                                              <Value>=First(Fields!branch_kh.Value, "BRANCH")</Value>
-                                                              <Style>
-                                                                <FontStyle>Normal</FontStyle>
-                                                                <FontFamily>Khmer OS Siemreap</FontFamily>
-                                                                <FontWeight>Bold</FontWeight>
-                                                                <TextDecoration>None</TextDecoration>
-                                                                <Color>#000000</Color>
-                                                              </Style>
-                                                            </TextRun>
-                                                            <TextRun>
-                                                              <Value xml:space="preserve"> </Value>
-                                                              <Style>
-                                                                <FontStyle>Normal</FontStyle>
-                                                                <FontFamily>Khmer OS Siemreap</FontFamily>
-                                                                <FontWeight>Bold</FontWeight>
-                                                                <TextDecoration>None</TextDecoration>
-                                                                <Color>#000000</Color>
-                                                              </Style>
-                                                            </TextRun>
-                                                          </TextRuns>
-                                                          <Style>
-                                                            <TextAlign>Center</TextAlign>
-                                                          </Style>
-                                                        </Paragraph>
-                                                      </Paragraphs>
-                                                      <rd:DefaultName>Textbox81</rd:DefaultName>
-                                                      <Style>
-                                                        <Border>
-                                                          <Style>None</Style>
-                                                        </Border>
-                                                        <PaddingLeft>2pt</PaddingLeft>
-                                                        <PaddingRight>2pt</PaddingRight>
-                                                        <PaddingTop>2pt</PaddingTop>
-                                                        <PaddingBottom>2pt</PaddingBottom>
-                                                      </Style>
-                                                    </Textbox>
-                                                  </CellContents>
-                                                </TablixCell>
-                                              </TablixCells>
-                                            </TablixRow>
-                                          </TablixRows>
-                                        </TablixBody>
-                                        <TablixColumnHierarchy>
-                                          <TablixMembers>
-                                            <TablixMember />
-                                            <TablixMember />
-                                          </TablixMembers>
-                                        </TablixColumnHierarchy>
-                                        <TablixRowHierarchy>
-                                          <TablixMembers>
-                                            <TablixMember />
-                                          </TablixMembers>
-                                        </TablixRowHierarchy>
+                                      <Textbox Name="Textbox5">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>ភាគី “ខ”</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Siemreap</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Center</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox5</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>None</Style>
                                           </Border>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
                                         </Style>
-                                      </Tablix>
+                                      </Textbox>
                                     </CellContents>
                                   </TablixCell>
                                 </TablixCells>
@@ -7189,13 +7194,13 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value> ស្នាមមេដៃស្តាំ</Value>
+                                  <Value>ត្រាក្រុមហ៊ុន</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
+                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>#000000</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7298,7 +7303,7 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>តំណាងស្របច្បាប់</Value>
+                                  <Value />
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -7335,14 +7340,12 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>ត្រាក្រុមហ៊ុន</Value>
+                                  <Value>ស្នាមមេដៃស្តាំ</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Normal</FontWeight>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>#000000</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7773,6 +7776,56 @@ WHERE
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
+                                  <Value>ឈ្មោះ៖..................</Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Siemreap</FontFamily>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value xml:space="preserve"> </Value>
+                                  <Style>
+                                    <FontStyle>Normal</FontStyle>
+                                    <FontFamily>Khmer OS Siemreap</FontFamily>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                    <Color>#000000</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox231</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>2</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox233">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
                                   <Value> ឈ្មោះ៖ </Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
@@ -7795,9 +7848,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style>
-                                <TextAlign>Left</TextAlign>
-                              </Style>
+                              <Style />
                             </Paragraph>
                             <Paragraph>
                               <TextRuns>
@@ -7847,7 +7898,7 @@ WHERE
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox231</rd:DefaultName>
+                          <rd:DefaultName>Textbox233</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -7864,7 +7915,7 @@ WHERE
                     <TablixCell />
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox233">
+                        <Textbox Name="Textbox232">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -7893,7 +7944,9 @@ WHERE
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                             <Paragraph>
                               <TextRuns>
@@ -7939,56 +7992,6 @@ WHERE
                                 </TextRun>
                               </TextRuns>
                               <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox233</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>None</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                        <ColSpan>2</ColSpan>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell />
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox232">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value> ឈ្មោះ៖ </Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Siemreap</FontFamily>
-                                    <FontSize>11pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                    <Color>#000000</Color>
-                                  </Style>
-                                </TextRun>
-                                <TextRun>
-                                  <Value>.............................</Value>
-                                  <Style>
-                                    <FontStyle>Normal</FontStyle>
-                                    <FontFamily>Khmer OS Siemreap</FontFamily>
-                                    <FontWeight>Normal</FontWeight>
-                                    <TextDecoration>None</TextDecoration>
-                                    <Color>#000000</Color>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Left</TextAlign>
-                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox231</rd:DefaultName>
@@ -18632,7 +18635,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_1")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_1"))</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -18686,7 +18689,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_2")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_2"))</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -18740,7 +18743,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_3")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_3"))</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
@@ -21187,7 +21190,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_4")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_4"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>
@@ -21232,7 +21235,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_5")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_5"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>
@@ -21277,7 +21280,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_6")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_6"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>
@@ -22231,7 +22234,9 @@ WHERE
                               <TextRuns>
                                 <TextRun>
                                   <Value>=First(Fields!collateral_no.Value, "COL_9")</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Khmer OS Siemreap</FontFamily>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -22313,7 +22318,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_7")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_7"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>
@@ -22358,7 +22363,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_8")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_8"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>
@@ -22392,15 +22397,21 @@ WHERE
                               <TextRuns>
                                 <TextRun>
                                   <Value>=First(Fields!owner_name.Value, "COL_9")</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Khmer OS Siemreap</FontFamily>
+                                  </Style>
                                 </TextRun>
                                 <TextRun>
                                   <Value xml:space="preserve"> </Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Khmer OS Siemreap</FontFamily>
+                                  </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_9")</Value>
-                                  <Style />
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_9"))</Value>
+                                  <Style>
+                                    <FontFamily>Khmer OS Siemreap</FontFamily>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -22537,7 +22548,9 @@ WHERE
                               <TextRuns>
                                 <TextRun>
                                   <Value>=First(Fields!land_area.Value, "COL_9")</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Khmer OS Siemreap</FontFamily>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -22674,7 +22687,9 @@ WHERE
                               <TextRuns>
                                 <TextRun>
                                   <Value>=First(Fields!issued_date.Value, "COL_9")</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Khmer OS Siemreap</FontFamily>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -22811,7 +22826,9 @@ WHERE
                               <TextRuns>
                                 <TextRun>
                                   <Value>=First(Fields!issued_date.Value, "COL_9")</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Khmer OS Siemreap</FontFamily>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -23429,7 +23446,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_10")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_10"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>
@@ -23474,7 +23491,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_11")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_11"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>
@@ -23519,7 +23536,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_12")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_12"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>
@@ -24557,7 +24574,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_13")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_13"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>
@@ -24602,7 +24619,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_14")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_14"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>
@@ -24647,7 +24664,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_15")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_15"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>
@@ -25685,7 +25702,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_16")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_16"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>
@@ -25730,7 +25747,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_17")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_17"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>
@@ -25775,7 +25792,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_18")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_18"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>
@@ -26813,7 +26830,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_19")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_20"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>
@@ -26858,7 +26875,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_20")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_20"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>
@@ -26903,7 +26920,7 @@ WHERE
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value>=First(Fields!owner_name.Value, "COL_21")</Value>
+                                  <Value>=iif(First(Fields!co_owner.Value, "COL_1") is nothing,""," និង "&amp;First(Fields!co_owner.Value, "COL_21"))</Value>
                                   <Style>
                                     <FontFamily>Khmer OS Siemreap</FontFamily>
                                   </Style>

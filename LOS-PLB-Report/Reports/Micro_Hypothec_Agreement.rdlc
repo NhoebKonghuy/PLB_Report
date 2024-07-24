@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.9.34622.214</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-07-22T07:06:44.7696933Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-07-23T03:52:22.2128753Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -1606,10 +1606,15 @@ WHERE
 TRANSLATE(to_char(apd.approved_amount, 'fm999G999G999G999G999G999D00'),'1234567890,.','១២៣៤៥៦៧៨៩០.,') as approved_amount,
 kh_function(cast(apd.approved_amount as integer)) as approved_amount_kh,
 TRANSLATE(to_char(apd.annual_interest_rate, 'fm999G999G999G999G999G999D00'),'1234567890,.','១២៣៤៥៦៧៨៩០.,') as annual_interest_rate,
-NUM_TO_WORDS(CAST(annual_interest_rate AS numeric))||' ភាគរយ' as annual_interest_rate_kh
-
+NUM_TO_WORDS(CAST(annual_interest_rate AS numeric))||' ភាគរយ' as annual_interest_rate_kh,
+case when ac.currency = 'USD' then 'ដុល្លារ'
+when ac.currency ='KHR' then 'រៀល'
+when ac.currency ='THB' then 'បាត' end as currency_kh,
+ac.currency
 from app_application ap 
-inner join app_application_detail apd on apd.application_id = ap.id </CommandText>
+inner join app_application_detail apd on apd.application_id = ap.id
+inner join adm_currency ac on ac.id = apd.currency_id
+</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -1630,6 +1635,14 @@ inner join app_application_detail apd on apd.application_id = ap.id </CommandTex
         </Field>
         <Field Name="annual_interest_rate_kh">
           <DataField>annual_interest_rate_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="currency_kh">
+          <DataField>currency_kh</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="currency">
+          <DataField>currency</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -4254,7 +4267,27 @@ FROM
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>ចំនួនប្រាក់ដើម  </Value>
+                                                <Value>ចំនួនប្រាក់ដើម </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>=iif(First(Fields!currency.Value, "APPROVE_AMOUNT") is nothing,"",First(Fields!currency_kh.Value, "APPROVE_AMOUNT"))</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value xml:space="preserve"> </Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -4306,6 +4339,26 @@ FROM
                                               </TextRun>
                                               <TextRun>
                                                 <Value>=iif(First(Fields!approved_amount.Value, "APPROVE_AMOUNT") is nothing,"................",First(Fields!approved_amount_kh.Value, "APPROVE_AMOUNT"))</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value xml:space="preserve"> </Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value>=iif(First(Fields!currency_kh.Value, "APPROVE_AMOUNT") is nothing,"",First(Fields!currency_kh.Value, "APPROVE_AMOUNT"))</Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>

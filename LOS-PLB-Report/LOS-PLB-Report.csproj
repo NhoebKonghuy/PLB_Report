@@ -202,9 +202,9 @@
     <Content Include="Reports\Micro_Loan_Resultion.aspx" />
     <Content Include="Reports\Report.aspx" />
     <Content Include="Reports\Guarantee_Agreement.aspx" />
-    <Content Include="Reports\Facility_Agrement_Clean_Loan.aspx" />
-    <Content Include="Reports\Facility_Agrement_Clean_Loan_For_Normal_Customer.aspx" />
-    <Content Include="Reports\Colleteral_Receipt_Update.aspx" />
+    <Content Include="Reports\Facility_Agreement_Secured_Loan.aspx" />
+    <Content Include="Reports\Facility_Agreement_Clean_Loan.aspx" />
+    <Content Include="Reports\Receive_&amp;_Return_Title_Deed_Receipt.aspx" />
     <Content Include="Reports\Individual_Customer_Information.aspx" />
     <Content Include="Reports\Micro_Hypothec_Agreement_join.aspx" />
     <Content Include="Reports\Micro_Loan_Application_update.aspx" />
@@ -261,16 +261,16 @@
     <EmbeddedResource Include="Reports\Report.rdlc" />
     <EmbeddedResource Include="Reports\Guarantee_Agreement.rdlc" />
     <EmbeddedResource Include="Reports\Micro_Loan_Application_update.rdlc" />
-    <EmbeddedResource Include="Reports\Facility_Agrement_Clean_Loan.rdlc" />
-    <EmbeddedResource Include="Reports\Facility_Agrement_Clean_Loan_For_Normal_Customer.rdlc" />
+    <EmbeddedResource Include="Reports\Facility_Agreement_Clean_Loan.rdlc" />
     <EmbeddedResource Include="Reports\Individual_Customer_Information.rdlc" />
     <EmbeddedResource Include="Reports\Micro_Loan_Appraisal_Form.rdlc" />
     <EmbeddedResource Include="Reports\Micro_Hypothec_Agreement_join.rdlc" />
     <EmbeddedResource Include="Reports\SUB_COLLATERAL_INFORMATION.rdlc" />
-    <EmbeddedResource Include="Reports\SUB_COLLATERAL_INFORMATION_INDIVIDUAL.rdlC" />
+    <EmbeddedResource Include="Reports\SUB_COLLATERAL_INFORMATION_INDIVIDUAL.rdlc" />
+    <EmbeddedResource Include="Reports\Receive_&amp;_Return_Title_Deed_Receipt.rdlc" />
     <EmbeddedResource Include="Reports\Micro_Hypothec_Agreement.rdlc" />
-    <EmbeddedResource Include="Reports\Colleteral_Receipt_Update.rdlc" />
     <EmbeddedResource Include="Reports\Micro_Loan_Resultion.rdlc" />
+    <EmbeddedResource Include="Reports\Facility_Agreement_Secured_Loan.rdlc" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -364,26 +364,26 @@
     <Compile Include="Reports\Guarantee_Agreement.aspx.designer.cs">
       <DependentUpon>Guarantee_Agreement.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Reports\Facility_Agrement_Clean_Loan.aspx.cs">
-      <DependentUpon>Facility_Agrement_Clean_Loan.aspx</DependentUpon>
+    <Compile Include="Reports\Facility_Agreement_Secured_Loan.aspx.cs">
+      <DependentUpon>Facility_Agreement_Secured_Loan.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Reports\Facility_Agrement_Clean_Loan.aspx.designer.cs">
-      <DependentUpon>Facility_Agrement_Clean_Loan.aspx</DependentUpon>
+    <Compile Include="Reports\Facility_Agreement_Secured_Loan.aspx.designer.cs">
+      <DependentUpon>Facility_Agreement_Secured_Loan.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Reports\Facility_Agrement_Clean_Loan_For_Normal_Customer.aspx.cs">
-      <DependentUpon>Facility_Agrement_Clean_Loan_For_Normal_Customer.aspx</DependentUpon>
+    <Compile Include="Reports\Facility_Agreement_Clean_Loan.aspx.cs">
+      <DependentUpon>Facility_Agreement_Clean_Loan.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Reports\Facility_Agrement_Clean_Loan_For_Normal_Customer.aspx.designer.cs">
-      <DependentUpon>Facility_Agrement_Clean_Loan_For_Normal_Customer.aspx</DependentUpon>
+    <Compile Include="Reports\Facility_Agreement_Clean_Loan.aspx.designer.cs">
+      <DependentUpon>Facility_Agreement_Clean_Loan.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Reports\Colleteral_Receipt_Update.aspx.cs">
-      <DependentUpon>Colleteral_Receipt_Update.aspx</DependentUpon>
+    <Compile Include="Reports\Receive_&amp;_Return_Title_Deed_Receipt.aspx.cs">
+      <DependentUpon>Receive_&amp;_Return_Title_Deed_Receipt.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Reports\Colleteral_Receipt_Update.aspx.designer.cs">
-      <DependentUpon>Colleteral_Receipt_Update.aspx</DependentUpon>
+    <Compile Include="Reports\Receive_&amp;_Return_Title_Deed_Receipt.aspx.designer.cs">
+      <DependentUpon>Receive_&amp;_Return_Title_Deed_Receipt.aspx</DependentUpon>
     </Compile>
     <Compile Include="Reports\Individual_Customer_Information.aspx.cs">
       <DependentUpon>Individual_Customer_Information.aspx</DependentUpon>

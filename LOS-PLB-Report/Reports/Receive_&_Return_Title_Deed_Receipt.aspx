@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Receive & Return Title Deed Receipt" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="Colleteral_Receipt_Update.aspx.cs" Inherits="LOS_PLB_Report.Reports.Colleteral_Receipt_Update" %>
+﻿<%@ Page Title="Receive & Return Title Deed Receipt" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="Receive_&_Return_Title_Deed_Receipt.aspx.cs" Inherits="LOS_PLB_Report.Reports.Colleteral_Receipt_Update" %>
 <%@ Register Assembly="Microsoft.ReportViewer.WebForms" Namespace="Microsoft.Reporting.WebForms" TagPrefix="rsweb" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
