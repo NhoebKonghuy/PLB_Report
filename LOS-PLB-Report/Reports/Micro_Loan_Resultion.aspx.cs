@@ -287,8 +287,11 @@ LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID
 									ID LEFT JOIN app_loan_disbuse_response ACA ON ACA.app_detail_id = AAD.ID 
 									AND ACA.STATUS = 't'
 									WHERE AP.APPLICATION_NO='"+applicationNo+"'";
-				var BRANCH = @"SELECT * FROM BRANCH_PLB
-							 WHERE APPLICATION_NO='"+applicationNo+"'";
+				var BRANCH = @"SELECT SUBSTRING(MAS.NAME FROM 5) AS branch_kh,
+								ap.application_no
+								FROM APP_APPLICATION AP
+								INNER JOIN MAS_BRANCH MAS ON MAS.ID = AP.BRANCH_ID
+							 WHERE APPLICATION_NO='" + applicationNo+"'";
 				var MONTHLY = @"SELECT ap.application_no,
 			 aad.total_ang_monthly_commitment,
 			 acd.monthly_existing_debt_commitment 

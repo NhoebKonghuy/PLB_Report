@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.9.34622.214</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-07-23T04:21:05.4422746Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-07-25T01:06:37.6338738Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -25,29 +25,32 @@
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT AP.APPLICATION_NO,
-			 APP.total_exposure_amount as total_exposure_amount,
-			 APP.monthly_existing_debt_commitment,
-			 (AAD.total_ang_monthly_commitment + APP.request_loan_amount) - APP.monthly_existing_debt_commitment AS COMMIT_OF_LOAN_REQUEST,
-			 APP.request_loan_amount AS LOAN_AMOUNT,
-			 AC.currency as currency,
-			 APP.annual_interest_rate||'%' as annual_interest_rate,
-			 APP.monthly_interest_rate||'%' as monthly_interest_rate,
-			 APP.loan_fee,
-			 APP.cbc_fee AS cbc_fee,
-			 APP.TENOR,
-			 APP.period,
-			 ART.NAME AS REPAYMENT,
-			 APP.pay_principle_every_month,
-			 APP.total_average,
-			 APP.current_dscr AS CURENT_DSCR,
-			 APP.ltv_ratio AS LTV_RATIO
+										 APP.total_exposure_amount as total_exposure_amount,
+										 APP.monthly_existing_debt_commitment,
+										 AAD.total_ang_monthly_commitment AS COMMIT_OF_LOAN_REQUEST,
+										 LP.NAME LOAN_PRODUCT,
+										 APP.request_loan_amount AS LOAN_AMOUNT,
+										 AC.currency as currency,
+										 APP.annual_interest_rate||'%' as annual_interest_rate,
+										 APP.monthly_interest_rate||'%' as monthly_interest_rate,
+										 APP.loan_fee,
+										 APP.cbc_fee AS cbc_fee,
+										 APP.TENOR,
+										 App.period,
+										 ART.NAME AS REPAYMENT,
+										 AAD.pay_principle_every_month,
+										 APP.total_average,
+										 APP.current_dscr AS CURENT_DSCR,
+										 APP.ltv_ratio AS LTV_RATIO
 			 
-FROM APP_APPLICATION AP 
-INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID 
-INNER JOIN app_application_pre_approval APP ON APP.application_detail_id = AAD.ID
-INNER JOIN adm_currency AC ON AC.ID = APP.currency_id
-INNER JOIN adm_repayment_type ART ON ART.ID = APP.repayment_type_id 
-WHERE AP.APPLICATION_NO='012-A685743812'</CommandText>
+							FROM APP_APPLICATION AP 
+							INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID 
+							LEFT JOIN app_application_pre_approval APP ON APP.application_detail_id = AAD.ID
+							INNER JOIN CUS_CUSTOMER CC ON CC.ID = AAD.customer_id 
+							INNER JOIN mas_loan_product LP ON LP.ID = AAD.loan_product_id
+							INNER JOIN adm_currency AC ON AC.ID = APP.currency_id
+							INNER JOIN adm_repayment_type ART ON ART.ID = APP.repayment_type_id
+where ap.application_no ='012-A644714981'</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -65,6 +68,10 @@ WHERE AP.APPLICATION_NO='012-A685743812'</CommandText>
         <Field Name="commit_of_loan_request">
           <DataField>commit_of_loan_request</DataField>
           <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="loan_product">
+          <DataField>loan_product</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="loan_amount">
           <DataField>loan_amount</DataField>
@@ -166,7 +173,7 @@ WHERE ROL.ROLE = 'MBLS' AND AP.APPLICATION_NO='011-A827859391'</CommandText>
         <CommandText>SELECT AP.APPLICATION_NO,
 			 APP.total_exposure_amount as total_exposure_amount,
 			 APP.monthly_existing_debt_commitment,
-			 (APP.approval_request_loan_amount + aad.total_ang_monthly_commitment) - APP.monthly_existing_debt_commitment AS COMMIT_OF_LOAN_REQUEST,
+			 APP.total_average - APP.monthly_existing_debt_commitment AS COMMIT_OF_LOAN_REQUEST,
 			 APP.approval_request_loan_amount AS LOAN_AMOUNT,
 			 AC.currency as currency,
 			 APP.approval_annual_interest_rate||'%' as anual_inter_rate,
@@ -186,7 +193,7 @@ LEFT JOIN app_application_pre_approval APP ON APP.application_detail_id = AAD.ID
 INNER JOIN CUS_CUSTOMER CC ON CC.ID = AAD.customer_id 
 INNER JOIN adm_currency AC ON AC.ID = APP.currency_id
 LEFT JOIN adm_repayment_type ART ON ART.ID = APP.approval_repayment_type_id 
-WHERE AP.APPLICATION_NO='012-A685743812'</CommandText>
+where ap.application_no ='012-A644714981'</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -818,7 +825,10 @@ ACA.ACCOUNT_NO AS account_number					FROM
     <DataSet Name="BRANCH">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT * FROM BRANCH_PLB</CommandText>
+        <CommandText>SELECT SUBSTRING(MAS.NAME FROM 5) AS branch_kh,
+ap.application_no
+FROM APP_APPLICATION AP
+INNER JOIN MAS_BRANCH MAS ON MAS.ID = AP.BRANCH_ID</CommandText>
       </Query>
       <Fields>
         <Field Name="branch_kh">
@@ -2365,6 +2375,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2440,6 +2451,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2525,10 +2537,11 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=first(Fields!total_ang_monthly_commitment.Value, "MONTHLY")</Value>
+                                  <Value>=FIRST(Fields!monthly_existing_debt_commitment.Value, "FAC_REQUEST_INFO")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2600,10 +2613,11 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FIRST(Fields!total_ang_monthly_commitment.Value, "MONTHLY") - Sum(Fields!monthly_existing_debt_commitment.Value, "MONTHLY")</Value>
+                                  <Value>=FIRST(Fields!monthly_existing_debt_commitment.Value, "APPROVAL_FAC_REQUEST_INFO")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2699,6 +2713,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2774,6 +2789,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2944,6 +2960,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3039,6 +3056,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3114,6 +3132,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3379,6 +3398,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3453,6 +3473,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3717,6 +3738,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
@@ -3798,6 +3820,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
@@ -3900,6 +3923,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3974,6 +3998,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4576,6 +4601,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4650,6 +4676,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4745,6 +4772,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4819,6 +4847,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4914,6 +4943,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4988,6 +5018,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5083,6 +5114,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
@@ -5165,6 +5197,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
@@ -8103,7 +8136,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
             </Style>
           </Image>
         </ReportItems>
-        <Height>12.23761in</Height>
+        <Height>11.27928in</Height>
         <Style />
       </Body>
       <Width>9.21582in</Width>
