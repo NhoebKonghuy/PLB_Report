@@ -19,39 +19,40 @@ namespace LOS_PLB_Report.Reports
             {
                 var applicationNo = Request.QueryString["application_no"];
 				var LOAN_REQUEST = @"SELECT ap.application_no,
-										 mlsp.name as sub_product,
-										 ac.currency,
-										 aad.applied_amount,
-										 aad.annual_interest_rate,
-										 aad.tenor,
-										 aad.loan_fee,
-										 art.name as repayment_type,
- 								case when art.name= 'Decline' then aad.grace_period
- 										 when art.name= 'EMI' then aad.grace_period
- 										 when art.name= 'Flexible Principle' then null 
-	  								 when art.name= 'Semi-Balloon' then null
- 										 when art.name= 'Balloon' then null
-										 end as repayment_month,
-										 aad.total_ang_monthly_commitment
-							from app_application ap 
-							left join app_application_detail  aad on aad.application_id = ap.id
-							left join mas_loan_sub_product mlsp on mlsp.id = aad.loan_sub_product_id
-							left join adm_currency ac on ac.id = aad.currency_id
-							left join adm_repayment_type art on art.id = aad.repayment_type_id
+			 mlsp.name as sub_product,
+			 ac.currency,
+			 aad.applied_amount,
+			 aad.annual_interest_rate,
+			 aad.tenor,
+			 aad.loan_fee,
+			 art.name as repayment_type,
+ 	case when art.name= 'Decline' then aad.grace_period
+ 			 when art.name= 'EMI' then aad.grace_period
+ 			 when art.name= 'Flexible Principle' then null 
+	  	 when art.name= 'Semi-Balloon' then aad.pay_principle_every_month
+ 			 when art.name= 'Balloon' then null
+			 end as repayment_month,
+			 aad.total_ang_monthly_commitment
+from app_application ap 
+inner join app_application_detail  aad on aad.application_id = ap.id
+left join mas_loan_sub_product mlsp on mlsp.id = aad.loan_sub_product_id
+left join adm_currency ac on ac.id = aad.currency_id
+left join adm_repayment_type art on art.id = aad.repayment_type_id
 							WHERE AP.APPLICATION_NO='" + applicationNo + "'";
 				var MBLS = @"SELECT 
 AP.APPLICATION_NO ,
 AAR.COMMENTS AS COMMENT ,
 SA.application_status,
-DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
+DE.LAST_NAME||' '||DE.FIRST_NAME AS USER_NAME,
 TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
 FROM APP_APPLICATION AP 
+INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID
 INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
 INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
 INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
 INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
 INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
-LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID
+LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID AND AAR.application_detail_id = AAD.ID
 							WHERE ROL.ROLE = 'MBLS' AND AP.APPLICATION_NO='" + applicationNo+"'";
 				var COL_ASSET = @"SELECT ap.application_no,
 											 ast.name as sector,
@@ -65,15 +66,16 @@ LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID
 AP.APPLICATION_NO ,
 AAR.COMMENTS AS COMMENT ,
 SA.application_status,
-DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
+DE.LAST_NAME||' '||DE.FIRST_NAME AS USER_NAME,
 TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
 FROM APP_APPLICATION AP 
+INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID
 INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
 INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
 INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
 INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
 INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
-LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID
+LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID AND AAR.application_detail_id = AAD.ID
 							WHERE ROL.ROLE = 'BM' AND AP.APPLICATION_NO='" + applicationNo+"'";
 				var LOAN_PURPOSE = @"SELECT ap.application_no,
 											 apd.purpose_detail,
@@ -90,29 +92,31 @@ LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID
 AP.APPLICATION_NO ,
 AAR.COMMENTS AS COMMENT ,
 SA.application_status,
-DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
+DE.LAST_NAME||' '||DE.FIRST_NAME AS USER_NAME,
 TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
 FROM APP_APPLICATION AP 
+INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID
 INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
 INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
 INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
 INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
 INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
-LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID
+LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID AND AAR.application_detail_id = AAD.ID
 								WHERE ROL.ROLE = 'MBLO' AND AP.APPLICATION_NO='" + applicationNo+"'";
 				var ANALYST = @"SELECT 
 AP.APPLICATION_NO ,
 AAR.COMMENTS AS COMMENT ,
 SA.application_status,
-DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
+DE.LAST_NAME||' '||DE.FIRST_NAME AS USER_NAME,
 TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
 FROM APP_APPLICATION AP 
+INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID
 INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
 INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
 INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
 INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
 INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
-LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID
+LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID AND AAR.application_detail_id = AAD.ID
 							WHERE ROL.ROLE = 'Analyst' AND AP.APPLICATION_NO='" + applicationNo+"'";
 				var SUB_PURPOSE = @"SELECT ap.application_no,
 									 AAD.applied_amount,
@@ -344,28 +348,29 @@ LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID
 								inner join adm_loan_fund alf on alf.id = aad.loan_fund_id
 					WHERE AP.application_no='" + applicationNo+"'";
                 var COLLATERAL_INFO = @"SELECT AP.APPLICATION_NO,
-								   CCD.collateral_name,
-								   COL.collateral_NO,
-								   COL.owner_name,
-								   CT.NAME AS COL_TYPE,
-								   CCU.NAME AS PROPERTY,
-								   CVE.max_percent_ltv || '%' AS STD_LTV,
-								   HR.NAME AS HYPO,
-								   CASE WHEN CVE.fair_market_value IS NULL THEN 0 ELSE CVE.fair_market_value END AS FMV,
-								   CVE.force_sale_value AS FSV,
-								  CASE WHEN (CVE.max_percent_ltv * CVE.fair_market_value) / 100 IS NULL THEN 0 ELSE (CVE.max_percent_ltv * CVE.fair_market_value) / 100 END AS Max_eli,
-								   AC.currency
-							FROM APP_APPLICATION AP 
-							INNER JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID AND ACCA.STATUS = 't'
-							INNER JOIN APP_COL_COLLATERAL_SECURE CS ON CS.APP_COLLATERAL_ASSET_ID = ACCA.ID AND CS.STATUS = 't'
-							INNER JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID AND COL.STATUS = 't'
-							INNER JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID AND CCD.STATUS = 't'
-							INNER JOIN cus_customer CC ON CC.ID = COL.customer_id
-							LEFT JOIN app_col_value_evaluation CVE ON CVE.app_collateral_detail_id = CCD.ID
-							INNER JOIN adm_currency AC ON AC.ID = COL.currency_id
-							LEFT JOIN adm_collateral_type CT ON CT.ID = CCD.collateral_type_id
-							LEFT JOIN adm_col_current_using_land CCU ON CCU.ID = CCD.current_using_land_id
-							LEFT JOIN adm_hypothec_registeration HR ON HR.ID = CVE.hypothec_registration_id
+       Col.collateral_title as collateral_name,
+       CCD.collateral_name as collateral_NO,
+       case when col.co_owner_name is null then COL.owner_name
+			 ELSE COL.owner_name||' និង '||COL.owner_name end as owner_name,
+       CT.NAME AS COL_TYPE,
+       CCU.NAME AS PROPERTY,
+       CVE.max_percent_ltv || '%' AS STD_LTV,
+       HR.NAME AS HYPO,
+       CASE WHEN CVE.fair_market_value IS NULL THEN 0 ELSE CVE.fair_market_value END AS FMV,
+       CVE.force_sale_value AS FSV,
+      CASE WHEN (CVE.max_percent_ltv * CVE.fair_market_value) / 100 IS NULL THEN 0 ELSE (CVE.max_percent_ltv * CVE.fair_market_value) / 100 END AS Max_eli,
+       AC.currency
+FROM APP_APPLICATION AP 
+LEFT JOIN APP_COL_COLLATERAL_ASSET ACCA ON ACCA.APPLICATION_ID = AP.ID AND ACCA.STATUS = 't'
+LEFT JOIN APP_COL_COLLATERAL_SECURE CS ON CS.APP_COLLATERAL_ASSET_ID = ACCA.ID AND CS.STATUS = 't'
+LEFT JOIN APP_COL_COLLATERAL COL ON COL.ID = CS.APP_COLLATERAL_ID AND COL.STATUS = 't'
+LEFT JOIN APP_COL_COLLATERAL_DETAIL CCD ON CCD.COLLATERAL_ID = COL.ID AND CCD.STATUS = 't'
+LEFT JOIN cus_customer CC ON CC.ID = COL.customer_id
+LEFT JOIN app_col_value_evaluation CVE ON CVE.app_collateral_detail_id = CCD.ID
+LEFT JOIN adm_currency AC ON AC.ID = COL.currency_id
+LEFT JOIN adm_collateral_type CT ON CT.ID = CCD.collateral_type_id
+LEFT JOIN adm_col_current_using_land CCU ON CCU.ID = CCD.current_using_land_id
+LEFT JOIN adm_hypothec_registeration HR ON HR.ID = CVE.hypothec_registration_id
 							WHERE ap.application_no ='" + applicationNo + "'";
                 var COL_INFO = @"SELECT ap.application_no,
 								 MCT.NAME AS MAIN_COL,
@@ -376,8 +381,8 @@ LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID
 					LEFT JOIN adm_guarantee_third_party GTP ON GTP.ID = ACCA.guarantee_by_third_party_id
 					WHERE AP.application_no='" + applicationNo + "'";
 				var GENERAL_INFO = @"SELECT AP.APPLICATION_NO,
-									   MU.NAME MBLO_NAME,
-											 MB.NAME AS BRANCH_NAME,
+											 MUD.LAST_NAME||' '||MUD.FIRST_NAME AS MBLO_NAME,
+											 SUBSTRING(MB.NAME FROM 5) AS BRANCH_NAME,
 											 TO_CHAR(AP.created,'DD/MM/YYYY') AS REQUEST_DATE,
 											 AET.NAME AS EXPOSURE_TYPE,
 											 AAS.application_stages
@@ -391,8 +396,9 @@ LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID
 								LEFT JOIN adm_exposure_type AET ON AET.ID = ACVE.exposure_type_id
 								INNER JOIN app_application_stage AAS ON AAS.application_id = AP.ID
 								INNER JOIN mas_users MU ON MU.ID = AP.created_by_id
+								INNER JOIN mas_user_detail MUD ON MU.ID = MUD.user_id
 								INNER JOIN MAS_BRANCH MB ON MB.ID = AP.branch_id
-								WHERE AP.APPLICATION_NO='"+applicationNo+"'";
+								WHERE AP.APPLICATION_NO='" + applicationNo+"'";
 				var HYP_COL = @"SELECT AP.APPLICATION_NO,
 							   CCD.collateral_name,
 							   COL.collateral_NO,
@@ -449,11 +455,56 @@ LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID
 							LEFT JOIN app_application_credit_rating ACR ON ACR.application_detail_id = AAD.ID
 							LEFT JOIN mas_cs_risk_level MCRL ON MCRL.ID = AAD.risk_level_id
 							WHERE AP.application_no='"+applicationNo+"'";
-				var NET_INCOME = @"SELECT AP.APPLICATION_NO,
-									 ACP.net_income_after_personal_expense
-						FROM app_application AP 
-						INNER JOIN app_application_customer_personal_expense ACP ON ACP.APPLICATION_ID = AP.ID 
-						WHERE AP.APPLICATION_NO='"+applicationNo+"'";
+				var NET_INCOME = @"SELECT
+								CombinedIncomes.application_no,
+								SUM(CombinedIncomes.net_income) AS net_income_after_personal_expense
+							FROM
+								(
+									SELECT
+										AP.application_no,
+										CIB.net_income
+									FROM
+										app_application AP
+										INNER JOIN app_application_detail AAD ON AAD.application_id = AP.ID
+										INNER JOIN cus_customer CC ON CC.ID = AAD.customer_id
+										INNER JOIN app_customer_income_business CIB ON CIB.application_id = AP.ID
+											AND CC.ID = CIB.customer_id
+											AND CIB.STATUS = 't'
+
+									UNION
+
+									SELECT
+										AP.application_no,
+										CIB.net_income4
+									FROM
+										app_application AP
+										INNER JOIN app_application_detail AAD ON AAD.application_id = AP.ID
+										INNER JOIN cus_customer CC ON CC.ID = AAD.customer_id
+										INNER JOIN app_customer_income_employee CIB ON CIB.application_id = AP.ID
+											AND CC.ID = CIB.customer_id
+											AND CIB.STATUS = 't'
+
+									UNION
+
+									SELECT
+										AP.application_no,
+										CIB.net_income
+									FROM
+										app_application AP
+										INNER JOIN app_application_detail AAD ON AAD.application_id = AP.ID
+										INNER JOIN cus_customer CC ON CC.ID = AAD.customer_id
+										INNER JOIN app_cus_income_property_rental CIB ON CIB.application_id = AP.ID
+											AND CIB.customer_id = CC.ID
+											AND CIB.STATUS = 't'
+											UNION 
+				
+											SELECT 
+											  AP.APPLICATION_NO,
+												CIB.NET_INCOME 
+											FROM APP_APPLICATION AP 
+											INNER JOIN APP_CUSTOMER_INCOME_SOURCE CIB ON CIB.APPLICATION_ID = AP.ID 
+								) AS CombinedIncomes
+								WHERE CombinedIncomes.application_no ='" + applicationNo+"' GROUP BY CombinedIncomes.application_no";
 				var DEBT = @"SELECT AP.APPLICATION_NO,
 									 APP.current_dscr AS CURENT_DSCR,
 									 APP.monthly_existing_debt_commitment,

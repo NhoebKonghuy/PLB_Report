@@ -263,7 +263,6 @@
     <EmbeddedResource Include="Reports\Micro_Loan_Application_update.rdlc" />
     <EmbeddedResource Include="Reports\Facility_Agreement_Clean_Loan.rdlc" />
     <EmbeddedResource Include="Reports\Individual_Customer_Information.rdlc" />
-    <EmbeddedResource Include="Reports\Micro_Loan_Appraisal_Form.rdlc" />
     <EmbeddedResource Include="Reports\SUB_COLLATERAL_INFORMATION.rdlc" />
     <EmbeddedResource Include="Reports\SUB_COLLATERAL_INFORMATION_INDIVIDUAL.rdlc" />
     <EmbeddedResource Include="Reports\Receive_And_Return_Title_Deed_Receipt.rdlc" />
@@ -271,6 +270,7 @@
     <EmbeddedResource Include="Reports\Facility_Agreement_Secured_Loan.rdlc" />
     <EmbeddedResource Include="Reports\Joint_Hypothce_agreement.rdlc" />
     <EmbeddedResource Include="Reports\Micro_Loan_Resultion.rdlc" />
+    <EmbeddedResource Include="Reports\Micro_Loan_Appraisal_Form.rdlc" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

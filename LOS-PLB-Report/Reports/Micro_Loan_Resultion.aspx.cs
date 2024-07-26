@@ -102,7 +102,7 @@ LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID AND AA
 							WHERE ROL.ROLE = 'BM' AND AP.APPLICATION_NO='" + applicationNo+"'";
 				var HEAD_OF_MICRO = @"SELECT AP.APPLICATION_NO,
 MAS.comments,
-USE.NAME,
+MUD.last_name||' '||MUD.FIRST_NAME AS NAME,
 TO_CHAR(MAS.created,'DD/MM/YYYY') AS APPROVAL_DATE,
 CASE WHEN MAS.approval_status = 1 THEN 'APPROVED'
 WHEN MAS.approval_status = 2 THEN 'REJECTED'
@@ -113,6 +113,7 @@ INNER JOIN MAS_APPROVAL_USER MAS ON MAS.application_detail_id = AAD.ID
 INNER JOIN mas_allocate_user MAU ON MAU.ID = MAS.allocated_user_id 
 INNER JOIN MAS_ROLE ROL ON ROL.ID = MAU.role_id
 INNER JOIN mas_users USE ON USE.ID = MAU.user_id
+inner JOIN mas_user_detail MUD ON MUD.user_id = USE.ID 
 									WHERE ROL.ROLE = 'Head of Micro' AND AP.APPLICATION_NO='" + applicationNo+"'";
 				var SqlMBLO = @"SELECT 
 AP.APPLICATION_NO ,
@@ -148,7 +149,7 @@ LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = US.ID AND AA
 							WHERE ROL.ROLE = 'Analyst' AND AP.APPLICATION_NO='" + applicationNo+"'";
 				var SENOIR = @"SELECT AP.APPLICATION_NO,
 MAS.comments,
-USE.NAME,
+MUD.last_name||' '||MUD.FIRST_NAME AS NAME,
 TO_CHAR(MAS.created,'DD/MM/YYYY') AS APPROVAL_DATE,
 CASE WHEN MAS.approval_status = 1 THEN 'APPROVED'
 WHEN MAS.approval_status = 2 THEN 'REJECTED'
@@ -159,6 +160,7 @@ INNER JOIN MAS_APPROVAL_USER MAS ON MAS.application_detail_id = AAD.ID
 INNER JOIN mas_allocate_user MAU ON MAU.ID = MAS.allocated_user_id 
 INNER JOIN MAS_ROLE ROL ON ROL.ID = MAU.role_id
 INNER JOIN mas_users USE ON USE.ID = MAU.user_id
+inner JOIN mas_user_detail MUD ON MUD.user_id = USE.ID 
 							WHERE ROL.ROLE = 'Senior/Micro Loan Evaluation Manager' AND AP.APPLICATION_NO='" + applicationNo+"'";
 				var GENERA1 = @"SELECT AP.APPLICATION_NO,
 									 MU.NAME AS MBLO_NAME,
@@ -306,7 +308,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id
 WHERE AP.APPLICATION_NO='" + applicationNo+"'";
 				var BM_APP = @"SELECT AP.APPLICATION_NO,
 MAS.comments,
-USE.NAME,
+MUD.last_name||' '||MUD.FIRST_NAME AS NAME,
 TO_CHAR(MAS.created,'DD/MM/YYYY') AS APPROVAL_DATE,
 CASE WHEN MAS.approval_status = 1 THEN 'APPROVED'
 WHEN MAS.approval_status = 2 THEN 'REJECTED'
@@ -317,6 +319,7 @@ INNER JOIN MAS_APPROVAL_USER MAS ON MAS.application_detail_id = AAD.ID
 INNER JOIN mas_allocate_user MAU ON MAU.ID = MAS.allocated_user_id 
 INNER JOIN MAS_ROLE ROL ON ROL.ID = MAU.role_id
 INNER JOIN mas_users USE ON USE.ID = MAU.user_id
+inner JOIN mas_user_detail MUD ON MUD.user_id = USE.ID 
 where rol.role='BM' and ap.application_no ='" + applicationNo+"'";
 
 				var dtCONDITION = conn.getPostgreSQLDataTable(CONDITION);
