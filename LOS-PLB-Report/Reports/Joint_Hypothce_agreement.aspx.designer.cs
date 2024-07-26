@@ -11,7 +11,7 @@ namespace LOS_PLB_Report.Reports
 {
 
 
-    public partial class Micro_Hypothec_Agreement_join
+    public partial class Joint_Hypothce_agreement
     {
 
         /// <summary>

@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.9.34622.214</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2024-07-22T01:54:47.8073749Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2024-07-23T07:16:07.8771682Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -4290,6 +4290,16 @@ WHERE
                                               </TextRun>
                                               <TextRun>
                                                 <Value>=iif(First(Fields!approved_amount_kh.Value, "APPROVE_AMOUNT") is nothing,"...........",First(Fields!approved_amount_kh.Value, "APPROVE_AMOUNT"))</Value>
+                                                <Style>
+                                                  <FontStyle>Normal</FontStyle>
+                                                  <FontFamily>Khmer OS Content</FontFamily>
+                                                  <FontSize>9pt</FontSize>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <TextDecoration>None</TextDecoration>
+                                                </Style>
+                                              </TextRun>
+                                              <TextRun>
+                                                <Value xml:space="preserve"> </Value>
                                                 <Style>
                                                   <FontStyle>Normal</FontStyle>
                                                   <FontFamily>Khmer OS Content</FontFamily>
@@ -10485,11 +10495,21 @@ WHERE
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>9.09363in</Height>
+        <Height>8.5in</Height>
         <Style />
       </Body>
       <Width>7.25in</Width>
       <Page>
+        <PageFooter>
+          <Height>1in</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageFooter>
         <PageHeight>11.69in</PageHeight>
         <PageWidth>8.27in</PageWidth>
         <LeftMargin>0.79in</LeftMargin>

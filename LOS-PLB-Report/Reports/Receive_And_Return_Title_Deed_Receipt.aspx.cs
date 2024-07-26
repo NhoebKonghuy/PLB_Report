@@ -9,7 +9,7 @@ using WebGrease.Css.Ast.Selectors;
 
 namespace LOS_PLB_Report.Reports
 {
-    public partial class Colleteral_Receipt_Update : System.Web.UI.Page
+    public partial class Receive_And_Return_Title_Deed_Receipt : System.Web.UI.Page
     {
         DBConnect conn = new DBConnect();
         protected void Page_Load(object sender, EventArgs e)
@@ -554,7 +554,7 @@ CASE
                 var dsCO_BORROWER_3 = new ReportDataSource("CO_BORROWER_3", dtCO_BORROWER_3);
 
 
-                conn.generateReport(ReportViewer1, @"Colleteral_Receipt_Update", null, dsOWNERSHIP, dsOWNER_COL_INFO, dsCOL_INFO, dsBORROWER_INFO, dsCO_BORROWER_1, dsCO_BORROWER_2, dsCO_BORROWER_3);
+                conn.generateReport(ReportViewer1, @"Receive_And_Return_Title_Deed_Receipt", null, dsOWNERSHIP, dsOWNER_COL_INFO, dsCOL_INFO, dsBORROWER_INFO, dsCO_BORROWER_1, dsCO_BORROWER_2, dsCO_BORROWER_3);
             }
         }
         

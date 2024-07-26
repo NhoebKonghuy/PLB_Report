@@ -553,8 +553,12 @@ FROM
 			
 			WHEN CC.GENDER = 'MALE' THEN
 			'ប្រុស' ELSE'ស្រី' 
- ' ថ្ងៃខែឆ្នាំកំណើត​​ ថ្ងៃទី ' || convert_to_khmer_number ( CAST ( EXTRACT ( DAY FROM CC.DATE_OF_BIRTH ) AS INT ) ) || ' ខែ ' ||
 		END ||
+CASE
+	
+	WHEN ANN.NAME = 'Cambodian' THEN
+	' ខ្មែរ' ELSE'..........' 
+	END || ' ថ្ងៃខែឆ្នាំកំណើត​​ ថ្ងៃទី ' || convert_to_khmer_number ( CAST ( EXTRACT ( DAY FROM CC.DATE_OF_BIRTH ) AS INT ) ) || ' ខែ ' ||
 CASE
 		
 		WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'JAN' THEN
@@ -581,11 +585,7 @@ CASE
 		'វិច្ឆិកា' 
 		WHEN TO_CHAR( CC.DATE_OF_BIRTH, 'MON' ) = 'DEC' THEN
 		'ធ្នូ' 
-	END || ' ឆ្នាំ ' || convert_to_khmer_number ( CAST ( EXTRACT ( YEAR FROM CC.DATE_OF_BIRTH ) AS INT ) )||' សញ្ជាតិ '||CASE
-	
-	WHEN ANN.NAME = 'Cambodian' THEN
-	' ខ្មែរ' ELSE'..........' 
-	END || ' កាន់ ' ||
+	END || ' ឆ្នាំ ' || convert_to_khmer_number ( CAST ( EXTRACT ( YEAR FROM CC.DATE_OF_BIRTH ) AS INT ) ) || ' កាន់ ' ||
 CASE
 		
 		WHEN A.IDENTIFICATION_TYPE IS NULL THEN

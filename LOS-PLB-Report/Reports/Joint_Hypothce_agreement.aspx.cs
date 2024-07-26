@@ -9,7 +9,7 @@ using Microsoft.Reporting.WebForms;
 
 namespace LOS_PLB_Report.Reports
 {
-    public partial class Micro_Hypothec_Agreement_join : System.Web.UI.Page
+    public partial class Joint_Hypothce_agreement : System.Web.UI.Page
     {
         string applicationNo = "";
         DBConnect conn = new DBConnect();
@@ -1482,7 +1482,7 @@ inner join adm_currency ac on ac.id = apd.currency_id
 
                 generateReportWithSubReport(
 									ReportViewer1,
-                                    @"Micro_Hypothec_Agreement",
+                                    @"Joint_Hypothce_agreement",
 									null,
 									dsCOL_OWNER,
 									dsVILLAGE,
@@ -1515,7 +1515,7 @@ inner join adm_currency ac on ac.id = apd.currency_id
                 reportViewer.LocalReport.DataSources.Add(item);
             }
             // Add new
-            var param = new[] { new ReportParameter("param1", "RDLC Sub Report") };
+            var param = new[] { new ReportParameter("Param1", "RDLC Sub Report") };
             reportViewer.LocalReport.SetParameters(param);
 
             reportViewer.LocalReport.SubreportProcessing += new SubreportProcessingEventHandler(getSubReport);

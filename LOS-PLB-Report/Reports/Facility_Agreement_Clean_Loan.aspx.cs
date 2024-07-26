@@ -9,7 +9,7 @@ using WebGrease.Css.Ast.Selectors;
 
 namespace LOS_PLB_Report.Reports
 {
-    public partial class Facility_Agrement_Clean_Loan_For_Normal_Customer : System.Web.UI.Page
+    public partial class Facility_Agreement_Clean_Loan : System.Web.UI.Page
     {
         DBConnect conn = new DBConnect();
         protected void Page_Load(object sender, EventArgs e)
@@ -1170,7 +1170,7 @@ WHERE
 				var dsTICK = new ReportDataSource("TICK",dtTICK);
 
 
-                conn.generateReport(ReportViewer1, @"Facility_Agrement_Clean_Loan_For_Normal_Customer", null,dsCBC_FEE,dsTICK, dsPREFIX_SUB_NAME_1,dsPREFIX_SUB_NAME_2,dsPREFIX_SUB_NAME_3,dsPREFIX_SUB_NAME_4, dsCO_BORO_3,dsBRANCH, dsGUANRANTOR_LOAN, dsBORROWER_INFO, dsCO_BORO_1, dsCO_BORRO_2, dsPURPOSE, dsPURPOSEDT_1, dsPREFIX_NAME_BOR, dsPREFIX_SUB_NAME, dsREPATMENT, dsPURPOSEDT_2, dsPURPOSEDT_3, dsPURPOSEDT_4, dsTRANCE, dsBORROWER_INFO);
+                conn.generateReport(ReportViewer1, @"Facility_Agreement_Clean_Loan", null,dsCBC_FEE,dsTICK, dsPREFIX_SUB_NAME_1,dsPREFIX_SUB_NAME_2,dsPREFIX_SUB_NAME_3,dsPREFIX_SUB_NAME_4, dsCO_BORO_3,dsBRANCH, dsGUANRANTOR_LOAN, dsBORROWER_INFO, dsCO_BORO_1, dsCO_BORRO_2, dsPURPOSE, dsPURPOSEDT_1, dsPREFIX_NAME_BOR, dsPREFIX_SUB_NAME, dsREPATMENT, dsPURPOSEDT_2, dsPURPOSEDT_3, dsPURPOSEDT_4, dsTRANCE, dsBORROWER_INFO);
 
 
             }

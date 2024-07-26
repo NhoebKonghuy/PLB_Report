@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Join Hypothec Agreement" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="Micro_Hypothec_Agreement_join.aspx.cs" Inherits="LOS_PLB_Report.Reports.Micro_Hypothec_Agreement_join" %>
+﻿<%@ Page Title="Joint Hypothce agreement" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="Joint_Hypothce_agreement.aspx.cs" Inherits="LOS_PLB_Report.Reports.Joint_Hypothce_agreement" %>
 <%@ Register Assembly="Microsoft.ReportViewer.WebForms" Namespace="Microsoft.Reporting.WebForms" TagPrefix="rsweb" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">

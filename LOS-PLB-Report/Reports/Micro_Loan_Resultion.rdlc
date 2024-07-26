@@ -132,17 +132,18 @@ where ap.application_no ='012-A644714981'</CommandText>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT 
 AP.APPLICATION_NO ,
-SA.NOTE AS COMMENT ,
+AAR.COMMENTS AS COMMENT ,
 SA.application_status,
-DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
+DE.LAST_NAME||' '||DE.FIRST_NAME AS USER_NAME,
 TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
 FROM APP_APPLICATION AP 
+INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID
 INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
 INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
 INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
 INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
 INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
-WHERE ROL.ROLE = 'MBLS' AND AP.APPLICATION_NO='011-A827859391'</CommandText>
+LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = mu.User_ID AND AAR.application_detail_id = AAD.ID AND AAR.STATUS = 't'</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -271,17 +272,18 @@ where ap.application_no ='012-A644714981'</CommandText>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT 
 AP.APPLICATION_NO ,
-SA.NOTE AS COMMENT ,
+AAR.COMMENTS AS COMMENT ,
 SA.application_status,
-DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
+DE.LAST_NAME||' '||DE.FIRST_NAME AS USER_NAME,
 TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
 FROM APP_APPLICATION AP 
+INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID
 INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
 INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
 INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
 INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
 INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
-WHERE ROL.ROLE = 'BM' AND AP.APPLICATION_NO='011-A827859391'</CommandText>
+LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = mu.User_ID AND AAR.application_detail_id = AAD.ID AND AAR.STATUS = 't'</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -309,39 +311,39 @@ WHERE ROL.ROLE = 'BM' AND AP.APPLICATION_NO='011-A827859391'</CommandText>
     <DataSet Name="HEAD_OF_MICRO">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT 
-AP.APPLICATION_NO ,
-SA.NOTE AS COMMENT ,
-SA.application_status,
-DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
-TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
+        <CommandText>SELECT AP.APPLICATION_NO,
+MAS.comments,
+USE.NAME,
+TO_CHAR(MAS.created,'DD/MM/YYYY') AS APPROVAL_DATE,
+CASE WHEN MAS.approval_status = 1 THEN 'APPROVED'
+WHEN MAS.approval_status = 2 THEN 'REJECTED'
+ELSE 'NOT_YET_APPROVE' END AS STATUS
 FROM APP_APPLICATION AP 
-INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
-INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
-INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
-INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
-INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
-WHERE ROL.ROLE = 'Head of Micro' AND AP.APPLICATION_NO='011-A35574'</CommandText>
+INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID 
+INNER JOIN MAS_APPROVAL_USER MAS ON MAS.application_detail_id = AAD.ID 
+INNER JOIN mas_allocate_user MAU ON MAU.ID = MAS.allocated_user_id 
+INNER JOIN MAS_ROLE ROL ON ROL.ID = MAU.role_id
+INNER JOIN mas_users USE ON USE.ID = MAU.user_id</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
           <DataField>application_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="comment">
-          <DataField>comment</DataField>
+        <Field Name="comments">
+          <DataField>comments</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="application_status">
-          <DataField>application_status</DataField>
+        <Field Name="name">
+          <DataField>name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="user_name">
-          <DataField>user_name</DataField>
+        <Field Name="approval_date">
+          <DataField>approval_date</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="completed_date">
-          <DataField>completed_date</DataField>
+        <Field Name="status">
+          <DataField>status</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -351,17 +353,18 @@ WHERE ROL.ROLE = 'Head of Micro' AND AP.APPLICATION_NO='011-A35574'</CommandText
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT 
 AP.APPLICATION_NO ,
-SA.NOTE AS COMMENT ,
+AAR.COMMENTS AS COMMENT ,
 SA.application_status,
-DE.LAST_NAME_KH||' '||DE.FIRST_NAME_KH AS USER_NAME,
+DE.LAST_NAME||' '||DE.FIRST_NAME AS USER_NAME,
 TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
 FROM APP_APPLICATION AP 
+INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID
 INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
 INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
 INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
 INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
 INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
-WHERE ROL.ROLE = 'MBLO' AND AP.APPLICATION_NO='011-A35574'</CommandText>
+LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = mu.User_ID AND AAR.application_detail_id = AAD.ID AND AAR.STATUS = 't'</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -391,17 +394,18 @@ WHERE ROL.ROLE = 'MBLO' AND AP.APPLICATION_NO='011-A35574'</CommandText>
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>SELECT 
 AP.APPLICATION_NO ,
-SA.NOTE AS COMMENT ,
+AAR.COMMENTS AS COMMENT ,
 SA.application_status,
-DE.FIRST_NAME_KH||' '||DE.LAST_NAME_KH AS USER_NAME,
+DE.LAST_NAME||' '||DE.FIRST_NAME AS USER_NAME,
 TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
 FROM APP_APPLICATION AP 
+INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID
 INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
 INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
 INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
 INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
 INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
-WHERE ROL.ROLE = 'Analyst' AND AP.APPLICATION_NO='011-A35574'</CommandText>
+LEFT JOIN app_application_recommendation AAR ON AAR.created_by_id = mu.User_ID AND AAR.application_detail_id = AAD.ID AND AAR.STATUS = 't'</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
@@ -429,39 +433,39 @@ WHERE ROL.ROLE = 'Analyst' AND AP.APPLICATION_NO='011-A35574'</CommandText>
     <DataSet Name="SENOIR">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>SELECT 
-AP.APPLICATION_NO ,
-SA.NOTE AS COMMENT ,
-SA.application_status,
-DE.FIRST_NAME_KH||' '||DE.LAST_NAME_KH AS USER_NAME,
-TO_CHAR(SA.COMPLETE_DATE ,'DD/MM/YYYY') AS COMPLETED_DATE
+        <CommandText>SELECT AP.APPLICATION_NO,
+MAS.comments,
+USE.NAME,
+TO_CHAR(MAS.created,'DD/MM/YYYY') AS APPROVAL_DATE,
+CASE WHEN MAS.approval_status = 1 THEN 'APPROVED'
+WHEN MAS.approval_status = 2 THEN 'REJECTED'
+ELSE 'NOT_YET_APPROVE' END AS STATUS
 FROM APP_APPLICATION AP 
-INNER JOIN APP_APPLICATION_STAGE SA ON SA.APPLICATION_ID = AP.ID AND SA.STATUS = 't'
-INNER JOIN MAS_ALLOCATE_USER MU ON MU.APPLICATION_STAGE_ID = SA.ID AND MU.STATUS = 't'
-INNER JOIN MAS_USERS US ON US.ID = MU.USER_ID
-INNER JOIN MAS_USER_DETAIL DE ON DE.USER_ID = US.ID 
-INNER JOIN MAS_ROLE ROL ON ROL.ID = MU.ROLE_ID
-WHERE ROL.ROLE = 'Senior/Micro Loan Evaluation Manager' AND AP.APPLICATION_NO='011-A26198'</CommandText>
+INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID 
+INNER JOIN MAS_APPROVAL_USER MAS ON MAS.application_detail_id = AAD.ID 
+INNER JOIN mas_allocate_user MAU ON MAU.ID = MAS.allocated_user_id 
+INNER JOIN MAS_ROLE ROL ON ROL.ID = MAU.role_id
+INNER JOIN mas_users USE ON USE.ID = MAU.user_id</CommandText>
       </Query>
       <Fields>
         <Field Name="application_no">
           <DataField>application_no</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="comment">
-          <DataField>comment</DataField>
+        <Field Name="comments">
+          <DataField>comments</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="application_status">
-          <DataField>application_status</DataField>
+        <Field Name="name">
+          <DataField>name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="user_name">
-          <DataField>user_name</DataField>
+        <Field Name="approval_date">
+          <DataField>approval_date</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="completed_date">
-          <DataField>completed_date</DataField>
+        <Field Name="status">
+          <DataField>status</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -866,6 +870,46 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
         </Field>
       </Fields>
     </DataSet>
+    <DataSet Name="BM_APP">
+      <Query>
+        <DataSourceName>DataSource1</DataSourceName>
+        <CommandText>SELECT AP.APPLICATION_NO,
+MAS.comments,
+USE.NAME,
+TO_CHAR(MAS.created,'DD/MM/YYYY') AS APPROVAL_DATE,
+CASE WHEN MAS.approval_status = 1 THEN 'APPROVED'
+WHEN MAS.approval_status = 2 THEN 'REJECTED'
+ELSE 'NOT_YET_APPROVE' END AS STATUS
+FROM APP_APPLICATION AP 
+INNER JOIN APP_APPLICATION_DETAIL AAD ON AAD.APPLICATION_ID = AP.ID 
+INNER JOIN MAS_APPROVAL_USER MAS ON MAS.application_detail_id = AAD.ID 
+INNER JOIN mas_allocate_user MAU ON MAU.ID = MAS.allocated_user_id 
+INNER JOIN MAS_ROLE ROL ON ROL.ID = MAU.role_id
+INNER JOIN mas_users USE ON USE.ID = MAU.user_id</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="application_no">
+          <DataField>application_no</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="comments">
+          <DataField>comments</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="name">
+          <DataField>name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="approval_date">
+          <DataField>approval_date</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="status">
+          <DataField>status</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
   </DataSets>
   <ReportSections>
     <ReportSection>
@@ -1010,7 +1054,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Loan Account Number:ssssss</Value>
+                                  <Value>Loan Account Number:</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -1956,6 +2000,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>n2</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7216,7 +7261,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!user_name.Value, "BM")</Value>
+                                  <Value>=First(Fields!name.Value, "BM_APP")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -7249,7 +7294,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!comment.Value, "BM")</Value>
+                                  <Value>=First(Fields!comments.Value, "BM_APP")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -7284,7 +7329,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!application_status.Value, "BM")</Value>
+                                  <Value>=First(Fields!status.Value, "BM_APP")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -7317,7 +7362,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!completed_date.Value, "BM")</Value>
+                                  <Value>=First(Fields!approval_date.Value, "BM_APP")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -7442,7 +7487,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!user_name.Value, "SENOIR")</Value>
+                                  <Value>=First(Fields!name.Value, "SENOIR")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -7475,7 +7520,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!comment.Value, "SENOIR")</Value>
+                                  <Value>=First(Fields!comments.Value, "SENOIR")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -7510,7 +7555,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!application_status.Value, "SENOIR")</Value>
+                                  <Value>=First(Fields!status.Value, "SENOIR")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -7543,7 +7588,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!completed_date.Value, "SENOIR")</Value>
+                                  <Value>=First(Fields!approval_date.Value, "SENOIR")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -7662,7 +7707,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!user_name.Value, "HEAD_OF_MICRO")</Value>
+                                  <Value>=First(Fields!name.Value, "HEAD_OF_MICRO")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -7695,7 +7740,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!comment.Value, "HEAD_OF_MICRO")</Value>
+                                  <Value>=First(Fields!comments.Value, "HEAD_OF_MICRO")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -7730,7 +7775,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!application_status.Value, "HEAD_OF_MICRO")</Value>
+                                  <Value>=First(Fields!status.Value, "HEAD_OF_MICRO")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -7763,7 +7808,7 @@ inner join app_customer_debt_info acd on acd.application_id = ap.id</CommandText
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=First(Fields!completed_date.Value, "HEAD_OF_MICRO")</Value>
+                                  <Value>=First(Fields!approval_date.Value, "HEAD_OF_MICRO")</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>

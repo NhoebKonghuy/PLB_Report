@@ -204,9 +204,9 @@
     <Content Include="Reports\Guarantee_Agreement.aspx" />
     <Content Include="Reports\Facility_Agreement_Secured_Loan.aspx" />
     <Content Include="Reports\Facility_Agreement_Clean_Loan.aspx" />
-    <Content Include="Reports\Receive_&amp;_Return_Title_Deed_Receipt.aspx" />
+    <Content Include="Reports\Receive_And_Return_Title_Deed_Receipt.aspx" />
     <Content Include="Reports\Individual_Customer_Information.aspx" />
-    <Content Include="Reports\Micro_Hypothec_Agreement_join.aspx" />
+    <Content Include="Reports\Joint_Hypothce_agreement.aspx" />
     <Content Include="Reports\Micro_Loan_Application_update.aspx" />
     <Content Include="Reports\Micro_Hypothec_Agreement.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -264,13 +264,13 @@
     <EmbeddedResource Include="Reports\Facility_Agreement_Clean_Loan.rdlc" />
     <EmbeddedResource Include="Reports\Individual_Customer_Information.rdlc" />
     <EmbeddedResource Include="Reports\Micro_Loan_Appraisal_Form.rdlc" />
-    <EmbeddedResource Include="Reports\Micro_Hypothec_Agreement_join.rdlc" />
     <EmbeddedResource Include="Reports\SUB_COLLATERAL_INFORMATION.rdlc" />
     <EmbeddedResource Include="Reports\SUB_COLLATERAL_INFORMATION_INDIVIDUAL.rdlc" />
-    <EmbeddedResource Include="Reports\Receive_&amp;_Return_Title_Deed_Receipt.rdlc" />
+    <EmbeddedResource Include="Reports\Receive_And_Return_Title_Deed_Receipt.rdlc" />
     <EmbeddedResource Include="Reports\Micro_Hypothec_Agreement.rdlc" />
-    <EmbeddedResource Include="Reports\Micro_Loan_Resultion.rdlc" />
     <EmbeddedResource Include="Reports\Facility_Agreement_Secured_Loan.rdlc" />
+    <EmbeddedResource Include="Reports\Joint_Hypothce_agreement.rdlc" />
+    <EmbeddedResource Include="Reports\Micro_Loan_Resultion.rdlc" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -378,12 +378,12 @@
     <Compile Include="Reports\Facility_Agreement_Clean_Loan.aspx.designer.cs">
       <DependentUpon>Facility_Agreement_Clean_Loan.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Reports\Receive_&amp;_Return_Title_Deed_Receipt.aspx.cs">
-      <DependentUpon>Receive_&amp;_Return_Title_Deed_Receipt.aspx</DependentUpon>
+    <Compile Include="Reports\Receive_And_Return_Title_Deed_Receipt.aspx.cs">
+      <DependentUpon>Receive_And_Return_Title_Deed_Receipt.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Reports\Receive_&amp;_Return_Title_Deed_Receipt.aspx.designer.cs">
-      <DependentUpon>Receive_&amp;_Return_Title_Deed_Receipt.aspx</DependentUpon>
+    <Compile Include="Reports\Receive_And_Return_Title_Deed_Receipt.aspx.designer.cs">
+      <DependentUpon>Receive_And_Return_Title_Deed_Receipt.aspx</DependentUpon>
     </Compile>
     <Compile Include="Reports\Individual_Customer_Information.aspx.cs">
       <DependentUpon>Individual_Customer_Information.aspx</DependentUpon>
@@ -392,12 +392,12 @@
     <Compile Include="Reports\Individual_Customer_Information.aspx.designer.cs">
       <DependentUpon>Individual_Customer_Information.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Reports\Micro_Hypothec_Agreement_join.aspx.cs">
-      <DependentUpon>Micro_Hypothec_Agreement_join.aspx</DependentUpon>
+    <Compile Include="Reports\Joint_Hypothce_agreement.aspx.cs">
+      <DependentUpon>Joint_Hypothce_agreement.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Reports\Micro_Hypothec_Agreement_join.aspx.designer.cs">
-      <DependentUpon>Micro_Hypothec_Agreement_join.aspx</DependentUpon>
+    <Compile Include="Reports\Joint_Hypothce_agreement.aspx.designer.cs">
+      <DependentUpon>Joint_Hypothce_agreement.aspx</DependentUpon>
     </Compile>
     <Compile Include="Reports\Micro_Loan_Application_update.aspx.cs">
       <DependentUpon>Micro_Loan_Application_update.aspx</DependentUpon>

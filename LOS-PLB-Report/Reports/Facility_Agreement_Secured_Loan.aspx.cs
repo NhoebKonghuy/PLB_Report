@@ -9,7 +9,7 @@ using WebGrease.Css.Ast.Selectors;
 
 namespace LOS_PLB_Report.Reports
 {
-    public partial class Facility_Agrement_Clean_Loan : System.Web.UI.Page
+    public partial class Facility_Agreement_Secured_Loan : System.Web.UI.Page
     {
         DBConnect conn = new DBConnect();
         protected void Page_Load(object sender, EventArgs e)

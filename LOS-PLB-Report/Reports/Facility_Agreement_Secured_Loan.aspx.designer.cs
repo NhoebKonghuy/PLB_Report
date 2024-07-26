@@ -11,7 +11,7 @@ namespace LOS_PLB_Report.Reports
 {
 
 
-    public partial class Facility_Agrement_Clean_Loan
+    public partial class Facility_Agreement_Secured_Loan
     {
 
         /// <summary>

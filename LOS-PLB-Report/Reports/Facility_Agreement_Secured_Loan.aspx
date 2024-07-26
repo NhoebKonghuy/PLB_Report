@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Facility Agreement_Secured Loan" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="Facility_Agreement_Secured_Loan.aspx.cs" Inherits="LOS_PLB_Report.Reports.Facility_Agrement_Clean_Loan" %>
+﻿<%@ Page Title="Facility Agreement_Secured Loan" Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="Facility_Agreement_Secured_Loan.aspx.cs" Inherits="LOS_PLB_Report.Reports.Facility_Agreement_Secured_Loan" %>
 <%@ Register Assembly="Microsoft.ReportViewer.WebForms" Namespace="Microsoft.Reporting.WebForms" TagPrefix="rsweb" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">

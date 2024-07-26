@@ -11,7 +11,7 @@ namespace LOS_PLB_Report.Reports
 {
 
 
-    public partial class Colleteral_Receipt_Update
+    public partial class Receive_And_Return_Title_Deed_Receipt
     {
 
         /// <summary>
